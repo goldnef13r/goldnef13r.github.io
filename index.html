@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goldnef13r Website</title>
+    <!-- Thư viện Đăng nhập Google chính thức -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +15,7 @@
         }
 
         body {
-            background-color: #00a8ec; /* Màu nền xanh tươi chuẩn từ ảnh */
+            background-color: #00a8ec; /* Màu xanh tươi chuẩn từ ảnh */
             min-height: 100vh;
             padding: 15px;
             color: #1a1a1a;
@@ -30,11 +32,11 @@
         }
 
         .navbar {
-            background-color: #4b3ac8; /* Màu xanh tím của menu */
+            background-color: #4b3ac8;
             width: 98%;
             max-width: 1200px;
             padding: 12px 25px;
-            border-radius: 45px; /* Bo góc cong hai đầu */
+            border-radius: 45px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -60,7 +62,7 @@
             transition: all 0.2s;
         }
 
-        /* Khi mục được chọn (Giống ô viền màu đen quanh nút Home trong ảnh) */
+        /* Nút Home active có ô viền đen quanh chữ */
         .menu-item.active {
             border: 2px solid #111;
             background-color: rgba(255, 255, 255, 0.1);
@@ -77,7 +79,7 @@
             color: #111;
             padding: 8px 18px;
             border-radius: 12px;
-            border: 2px solid #111; /* Ô viền đen bao quanh nút */
+            border: 2px solid #111;
             cursor: pointer;
             font-size: 1rem;
             transition: transform 0.2s;
@@ -89,7 +91,7 @@
 
         /* KHUNG NỘI DUNG Ở GIỮA TRANG */
         .content-container {
-            margin-top: 15vh; /* Đẩy nội dung ra giữa màn hình */
+            margin-top: 18vh;
             text-align: center;
         }
 
@@ -101,11 +103,11 @@
             display: block;
         }
 
-        /* Dòng chữ ở trang Home (giống màu cam/nâu nhẹ trong ảnh) */
+        /* Dòng chữ ở trang Home */
         .home-text-1 {
             color: #d96338;
-            font-size: 1.3rem;
-            margin-bottom: 25px;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
         }
 
         .home-text-2 {
@@ -113,7 +115,7 @@
             font-size: 1.2rem;
         }
 
-        /* POPUP MODAL TỰ TẠO */
+        /* BẢNG MODAL ĐĂNG NHẬP / ĐĂNG KÝ */
         .modal {
             display: none;
             position: fixed;
@@ -130,30 +132,38 @@
             padding: 25px;
             border-radius: 16px;
             width: 90%;
-            max-width: 350px;
+            max-width: 360px;
             text-align: center;
             color: #333;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: relative;
         }
 
-        .google-btn {
-            width: 100%;
-            padding: 10px;
-            margin-top: 15px;
-            background: #4285F4;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
+        .modal-title {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            color: #111;
+        }
+
+        .google-btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
         }
 
         .close-btn {
-            margin-top: 15px;
-            background: #ccc;
+            background: #e4e6eb;
+            color: #333;
             border: none;
-            padding: 6px 15px;
-            border-radius: 6px;
+            padding: 8px 20px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .close-btn:hover {
+            background: #d8dadf;
         }
     </style>
 </head>
@@ -180,7 +190,7 @@
         
         <!-- TRANG HOME -->
         <div id="home" class="tab-content active">
-            <p class="home-text-1">chx có j ở đây :-(</p>
+            <p class="home-text-1">chx có j ở đây :- (</p>
             <p class="home-text-2">hãy đăng ký hoặc đăng nhập( có hỗ trợ google)</p>
         </div>
 
@@ -204,36 +214,56 @@
 
     </div>
 
-    <!-- POPUP ĐĂNG NHẬP / ĐĂNG KÝ CÓ SUPPORT GOOGLE -->
+    <!-- POPUP CÓ NÚT ĐĂNG NHẬP GOOGLE THỰC THỤ -->
     <div id="authModal" class="modal">
         <div class="modal-content">
-            <h3>Đăng Nhập / Đăng Ký</h3>
-            <button class="google-btn" onclick="alert('Đang kết nối tới Google Sign-In...')">
-                🌐 Tiếp tục với Google
-            </button>
-            <br>
+            <h3 class="modal-title">Đăng Nhập / Đăng Ký</h3>
+            
+            <p style="font-size: 0.95rem; color: #666;">Đăng nhập nhanh bằng tài khoản Google:</p>
+            
+            <!-- Nút Google chuẩn từ Google API -->
+            <div class="google-btn-wrapper">
+                <div id="g_id_onload"
+                    data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                    data-callback="handleCredentialResponse">
+                </div>
+                <div class="g_id_signin" 
+                    data-type="standard" 
+                    data-size="large" 
+                    data-theme="outline" 
+                    data-text="sign_in_with" 
+                    data-shape="rectangular" 
+                    data-logo_alignment="left">
+                </div>
+            </div>
+
             <button class="close-btn" onclick="closeModal('authModal')">Đóng</button>
         </div>
     </div>
 
     <script>
+        // Xử lý chuyển tab Menu
         function switchTab(tabId, element) {
-            // Ẩn tất cả tab
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            // Bỏ ô viền đen ở mục menu cũ
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
 
-            // Hiện tab được chọn + thêm ô viền đen
             document.getElementById(tabId).classList.add('active');
             element.classList.add('active');
         }
 
+        // Bật / Tắt Popup
         function openModal(id) {
             document.getElementById(id).style.display = 'flex';
         }
 
         function closeModal(id) {
             document.getElementById(id).style.display = 'none';
+        }
+
+        // Nhận dữ liệu sau khi đăng nhập Google thành công
+        function handleCredentialResponse(response) {
+            alert("Đã nhận xác thực từ Google! Token: " + response.credential.substring(0, 20) + "...");
+            closeModal('authModal');
         }
     </script>
 
