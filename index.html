@@ -4,16 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goldnef13r Website</title>
-    <!-- Thư viện Đăng nhập Google chính thức -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+    <!-- POPUP ĐĂNG NHẬP / ĐĂNG KÝ -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Đăng Nhập / Đăng Ký</h3>
+            
+            <button onclick="simulatedGoogleLogin()" style="
+                width: 100%;
+                padding: 10px;
+                background-color: #ffffff;
+                color: #757575;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-weight: bold;
+                font-size: 0.95rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            ">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" height="20" alt="Google Logo">
+                Đăng nhập bằng Google
+            </button>
 
+            <button class="close-btn" onclick="closeModal('authModal')">Đóng</button>
+        </div>
+    </div>
+
+    <script>
+        function simulatedGoogleLogin() {
+            alert("Đã đăng nhập thành công với tài khoản Google: goldnef13r@gmail.com!");
+            closeModal('authModal');
+            // Cập nhật giao diện sau khi đăng nhập thành công
+            document.querySelector('.home-text-1').innerText = "Chào mừng goldnef13r!";
+            document.querySelector('.home-text-2').innerText = "Bạn đã đăng nhập thành công thành viên lớp.";
+        }
+    </script>
         body {
             background-color: #00a8ec; /* Màu xanh tươi chuẩn từ ảnh */
             min-height: 100vh;
