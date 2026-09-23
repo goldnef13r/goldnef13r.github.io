@@ -3,116 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goldnef13r Lớp Giao Diện</title>
+    <title>Trang Lớp - Goldnef13r</title>
     <style>
-        /* CSS RESET để loại bỏ khoảng cách mặc định */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif; /* Sử dụng font Arial cho giống ảnh */
+            font-family: Arial, sans-serif;
         }
 
-        /* Tông màu nền chính: Xanh dương tươi */
         body {
-            background-color: #00b4ff; /* Mã màu xanh nền từ ảnh */
+            background-color: #00b4ff;
             min-height: 100vh;
             padding: 20px;
+            color: white;
         }
 
-        /* Thanh MENU CONTAINER bo góc */
+        /* THANH MENU NAVBAR */
         .navbar-container {
             width: 100%;
             display: flex;
-            justify-content: center; /* Căn giữa toàn bộ thanh menu */
+            justify-content: center;
+            margin-bottom: 30px;
         }
 
         .navbar {
-            background-color: #4b3ac8; /* Mã màu xanh đậm của thanh menu */
-            width: 90%; /* Chiều rộng thanh menu */
+            background-color: #4b3ac8;
+            width: 90%;
             max-width: 1200px;
             padding: 15px 30px;
-            border-radius: 40px; /* Bo góc cực mạnh như trong ảnh */
+            border-radius: 40px;
             display: flex;
-            justify-content: space-between; /* Đẩy nội dung ra 2 bên */
+            justify-content: space-between;
             align-items: center;
-            color: white; /* Màu chữ chính */
-            opacity: 0.9; /* Hơi mờ nhẹ để tách nền */
+            opacity: 0.95;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        /* Vùng chứa các mục MENU BÊN TRÁI */
         .menu-left {
             display: flex;
-            gap: 25px; /* Khoảng cách giữa các mục menu */
-            flex-wrap: wrap; /* Hỗ trợ menu tự xuống dòng trên mobile */
+            gap: 25px;
+            flex-wrap: wrap;
+            align-items: center;
         }
 
         .menu-item {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
             cursor: pointer;
-            transition: opacity 0.3s;
+            transition: opacity 0.2s;
         }
 
-        .menu-item:hover {
-            opacity: 0.7; /* Hiệu ứng khi di chuột */
+        .menu-item:hover, .menu-item.active {
+            opacity: 0.7;
+            font-weight: bold;
+            border-bottom: 2px solid white;
         }
 
-        /* Vùng chứa các NÚT BẤM BÊN PHẢI */
         .menu-right {
             display: flex;
-            gap: 10px; /* Khoảng cách giữa 2 nút đăng ký/đăng nhập */
+            gap: 10px;
         }
 
         .auth-btn {
-            background-color: transparent; /* Nền trong suốt */
+            background-color: #31219b;
             color: white;
             padding: 8px 18px;
-            border-radius: 20px; /* Nút bo góc nhẹ */
+            border-radius: 12px;
+            border: none;
             cursor: pointer;
             font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-
-        /* Thiết kế 2 nút Đăng Ký và Đăng Nhập (giống ảnh) */
-        .auth-btn:first-child { /* Nút Đăng Ký */
-            background-color: #31219b; /* Màu đậm hơn, bo góc mạnh hơn trong ảnh */
-            border-radius: 12px;
-        }
-
-        .auth-btn:last-child { /* Nút Đăng Nhập */
-            background-color: #31219b;
-            border-radius: 12px;
+            transition: transform 0.2s, background-color 0.2s;
         }
 
         .auth-btn:hover {
-            background-color: rgba(255,255,255,0.2); /* Hiệu ứng khi di chuột lên nút */
+            background-color: #24167a;
+            transform: scale(1.05);
         }
 
+        /* KHUNG NỘI DUNG CHÍNH (CONTENT) */
+        .content-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .tab-content {
+            display: none; /* Mặc định ẩn tất cả các trang */
+        }
+
+        .tab-content.active {
+            display: block; /* Chỉ hiện trang đang chọn */
+        }
+
+        /* BẢNG ĐĂNG KÝ / ĐĂNG NHẬP (MODAL) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            color: white;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background: #38bdf8;
+            border: none;
+            border-radius: 8px;
+            color: #0f172a;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <!-- BẮT ĐẦU THANH NAVBAR -->
+    <!-- THANH MENU -->
     <div class="navbar-container">
         <div class="navbar">
-
-            <!-- Các mục menu chính -->
             <div class="menu-left">
-                <div class="menu-item">home</div>
-                <div class="menu-item">bán đồ cũ</div>
-                <div class="menu-item">danh sách lớp</div>
-                <div class="menu-item">vòng quay may mắn(tên)</div>
+                <span class="menu-item active" onclick="switchTab('home', this)">home</span>
+                <span class="menu-item" onclick="switchTab('bando', this)">bán đồ cũ</span>
+                <span class="menu-item" onclick="switchTab('danhsach', this)">danh sách lớp</span>
+                <span class="menu-item" onclick="switchTab('vongquay', this)">vòng quay may mắn</span>
             </div>
-
-            <!-- Các nút bấm đăng ký/đăng nhập -->
             <div class="menu-right">
-                <div class="auth-btn">đăng ký</div>
-                <div class="auth-btn">đăng nhập</div>
+                <button class="auth-btn" onclick="openModal('registerModal')">đăng ký</button>
+                <button class="auth-btn" onclick="openModal('loginModal')">đăng nhập</button>
             </div>
-
         </div>
     </div>
-    <!-- KẾT THÚC THANH NAVBAR -->
+
+    <!-- KHUNG HIỂN THỊ NỘI DUNG KHI BẤM MENU -->
+    <div class="content-container">
+        
+        <!-- 1. MỤC HOME (Mặc định hiện) -->
+        <div id="home" class="tab-content active">
+            <h1>🎉 Chào mừng đến với Trang Web Lớp!</h1>
+            <p style="margin-top: 10px;">Đây là trang chủ chính thức. Chọn các mục trên thanh menu để khám phá nhé!</p>
+        </div>
+
+        <!-- 2. MỤC BÁN ĐỒ CŨ -->
+        <div id="bando" class="tab-content">
+            <h1>🛒 Chợ Bán Đồ Cũ Của Lớp</h1>
+            <p style="margin-top: 10px;">Nơi thanh lý sách vở, đồ dùng học tập cũ giá hạt dẻ!</p>
+        </div>
+
+        <!-- 3. MỤC DANH SÁCH LỚP -->
+        <div id="danhsach" class="tab-content">
+            <h1>📋 Danh Sách Thành Viên Lớp</h1>
+            <ul style="margin-top: 15px; padding-left: 20px;">
+                <li>Nguyễn Văn A - Lớp trưởng</li>
+                <li>Trần Thị B - Lớp phó</li>
+                <li>goldnef13r - Web Admin</li>
+            </ul>
+        </div>
+
+        <!-- 4. MỤC VÒNG QUAY MAY MẮN -->
+        <div id="vongquay" class="tab-content">
+            <h1>🎡 Vòng Quay May Mắn</h1>
+            <p style="margin-top: 10px;">Quay thưởng chọn tên ngẫu nhiên trả bài hoặc nhận quà!</p>
+        </div>
+
+    </div>
+
+    <!-- POPUP ĐĂNG NHẬP -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Đăng Nhập</h2>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Tên đăng nhập / Email</label>
+                <input type="text" placeholder="Nhập tên...">
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" placeholder="Nhập mật khẩu...">
+            </div>
+            <button class="submit-btn" onclick="alert('Đã đăng nhập thành công!')">Xác Nhận</button>
+        </div>
+    </div>
+
+    <!-- POPUP ĐĂNG KÝ -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Đăng Ký Tài Khoản</h2>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Họ và Tên</label>
+                <input type="text" placeholder="Nhập tên bạn...">
+            </div>
+            <div class="form-group">
+                <label>Email / SĐT</label>
+                <input type="text" placeholder="Nhập email...">
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" placeholder="Tạo mật khẩu...">
+            </div>
+            <button class="submit-btn" onclick="alert('Đăng ký tài khoản thành công!')">Tạo Tài Khoản</button>
+        </div>
+    </div>
+
+    <!-- SCRIPT CHUYỂN TAB VÀ HIỆN MODAL -->
+    <script>
+        // Hàm chuyển đổi nội dung khi bấm Menu
+        function switchTab(tabId, element) {
+            // Ẩn tất cả nội dung cũ
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.remove('active'));
+
+            // Bỏ gạch chân active ở menu cũ
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(m => m.classList.remove('active'));
+
+            // Hiển thị tab được chọn và gạch chân menu tương ứng
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // Hàm bật/tắt bảng Đăng ký & Đăng nhập
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+    </script>
+
 </body>
 </html>
-
 
