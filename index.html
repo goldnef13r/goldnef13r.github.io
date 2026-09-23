@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Lớp - Goldnef13r</title>
+    <title>Goldnef13r Website</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,52 +13,57 @@
         }
 
         body {
-            background-color: #00b4ff;
+            background-color: #00a8ec; /* Màu nền xanh tươi chuẩn từ ảnh */
             min-height: 100vh;
-            padding: 20px;
-            color: white;
+            padding: 15px;
+            color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* THANH MENU NAVBAR */
+        /* NAVBAR CONTAINER */
         .navbar-container {
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-bottom: 30px;
         }
 
         .navbar {
-            background-color: #4b3ac8;
-            width: 90%;
+            background-color: #4b3ac8; /* Màu xanh tím của menu */
+            width: 98%;
             max-width: 1200px;
-            padding: 15px 30px;
-            border-radius: 40px;
+            padding: 12px 25px;
+            border-radius: 45px; /* Bo góc cong hai đầu */
             display: flex;
             justify-content: space-between;
             align-items: center;
-            opacity: 0.95;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
         .menu-left {
             display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
+            gap: 15px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
+        /* CÁC MỤC MENU */
         .menu-item {
-            color: white;
+            color: #111;
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            padding: 8px 16px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
         }
 
-        .menu-item:hover, .menu-item.active {
-            opacity: 0.7;
-            font-weight: bold;
-            border-bottom: 2px solid white;
+        /* Khi mục được chọn (Giống ô viền màu đen quanh nút Home trong ảnh) */
+        .menu-item.active {
+            border: 2px solid #111;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         .menu-right {
@@ -66,208 +71,163 @@
             gap: 10px;
         }
 
+        /* NÚT ĐĂNG KÝ & ĐĂNG NHẬP */
         .auth-btn {
             background-color: #31219b;
-            color: white;
+            color: #111;
             padding: 8px 18px;
             border-radius: 12px;
-            border: none;
+            border: 2px solid #111; /* Ô viền đen bao quanh nút */
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: transform 0.2s, background-color 0.2s;
+            font-size: 1rem;
+            transition: transform 0.2s;
         }
 
         .auth-btn:hover {
-            background-color: #24167a;
             transform: scale(1.05);
         }
 
-        /* KHUNG NỘI DUNG CHÍNH (CONTENT) */
+        /* KHUNG NỘI DUNG Ở GIỮA TRANG */
         .content-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-top: 15vh; /* Đẩy nội dung ra giữa màn hình */
+            text-align: center;
         }
 
         .tab-content {
-            display: none; /* Mặc định ẩn tất cả các trang */
+            display: none;
         }
 
         .tab-content.active {
-            display: block; /* Chỉ hiện trang đang chọn */
+            display: block;
         }
 
-        /* BẢNG ĐĂNG KÝ / ĐĂNG NHẬP (MODAL) */
+        /* Dòng chữ ở trang Home (giống màu cam/nâu nhẹ trong ảnh) */
+        .home-text-1 {
+            color: #d96338;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+        }
+
+        .home-text-2 {
+            color: #d96338;
+            font-size: 1.2rem;
+        }
+
+        /* POPUP MODAL TỰ TẠO */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.5);
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
 
         .modal-content {
-            background: #1e293b;
-            padding: 30px;
+            background: #ffffff;
+            padding: 25px;
             border-radius: 16px;
             width: 90%;
-            max-width: 400px;
-            position: relative;
+            max-width: 350px;
+            text-align: center;
+            color: #333;
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background: #4285F4;
             color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
         .close-btn {
-            position: absolute;
-            top: 10px; right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #aaa;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            background: #0f172a;
-            color: white;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 10px;
-            background: #38bdf8;
+            margin-top: 15px;
+            background: #ccc;
             border: none;
-            border-radius: 8px;
-            color: #0f172a;
-            font-weight: bold;
+            padding: 6px 15px;
+            border-radius: 6px;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <!-- THANH MENU -->
+    <!-- THANH MENU NAVBAR -->
     <div class="navbar-container">
         <div class="navbar">
             <div class="menu-left">
                 <span class="menu-item active" onclick="switchTab('home', this)">home</span>
                 <span class="menu-item" onclick="switchTab('bando', this)">bán đồ cũ</span>
                 <span class="menu-item" onclick="switchTab('danhsach', this)">danh sách lớp</span>
-                <span class="menu-item" onclick="switchTab('vongquay', this)">vòng quay may mắn</span>
+                <span class="menu-item" onclick="switchTab('vongquay', this)">vòng quay may mắn(tên)</span>
             </div>
             <div class="menu-right">
-                <button class="auth-btn" onclick="openModal('registerModal')">đăng ký</button>
-                <button class="auth-btn" onclick="openModal('loginModal')">đăng nhập</button>
+                <button class="auth-btn" onclick="openModal('authModal')">đăng ký</button>
+                <button class="auth-btn" onclick="openModal('authModal')">đăng nhập</button>
             </div>
         </div>
     </div>
 
-    <!-- KHUNG HIỂN THỊ NỘI DUNG KHI BẤM MENU -->
+    <!-- NỘI DUNG HIỂN THỊ CHÍNH -->
     <div class="content-container">
         
-        <!-- 1. MỤC HOME (Mặc định hiện) -->
+        <!-- TRANG HOME -->
         <div id="home" class="tab-content active">
-            <h1>🎉 Chào mừng đến với Trang Web Lớp!</h1>
-            <p style="margin-top: 10px;">Đây là trang chủ chính thức. Chọn các mục trên thanh menu để khám phá nhé!</p>
+            <p class="home-text-1">chx có j ở đây :-(</p>
+            <p class="home-text-2">hãy đăng ký hoặc đăng nhập( có hỗ trợ google)</p>
         </div>
 
-        <!-- 2. MỤC BÁN ĐỒ CŨ -->
+        <!-- TRANG BÁN ĐỒ CŨ -->
         <div id="bando" class="tab-content">
-            <h1>🛒 Chợ Bán Đồ Cũ Của Lớp</h1>
-            <p style="margin-top: 10px;">Nơi thanh lý sách vở, đồ dùng học tập cũ giá hạt dẻ!</p>
+            <h2>🛒 Bán đồ cũ</h2>
+            <p style="margin-top: 10px;">Chợ thanh lý của lớp!</p>
         </div>
 
-        <!-- 3. MỤC DANH SÁCH LỚP -->
+        <!-- TRANG DANH SÁCH LỚP -->
         <div id="danhsach" class="tab-content">
-            <h1>📋 Danh Sách Thành Viên Lớp</h1>
-            <ul style="margin-top: 15px; padding-left: 20px;">
-                <li>Nguyễn Văn A - Lớp trưởng</li>
-                <li>Trần Thị B - Lớp phó</li>
-                <li>goldnef13r - Web Admin</li>
-            </ul>
+            <h2>📋 Danh sách lớp</h2>
+            <p style="margin-top: 10px;">Danh sách thành viên...</p>
         </div>
 
-        <!-- 4. MỤC VÒNG QUAY MAY MẮN -->
+        <!-- TRANG VÒNG QUAY MAY MẮN -->
         <div id="vongquay" class="tab-content">
-            <h1>🎡 Vòng Quay May Mắn</h1>
-            <p style="margin-top: 10px;">Quay thưởng chọn tên ngẫu nhiên trả bài hoặc nhận quà!</p>
+            <h2>🎡 Vòng quay may mắn</h2>
+            <p style="margin-top: 10px;">Quay tên ngẫu nhiên...</p>
         </div>
 
     </div>
 
-    <!-- POPUP ĐĂNG NHẬP -->
-    <div id="loginModal" class="modal">
+    <!-- POPUP ĐĂNG NHẬP / ĐĂNG KÝ CÓ SUPPORT GOOGLE -->
+    <div id="authModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
-            <h2>Đăng Nhập</h2>
-            <div class="form-group" style="margin-top: 15px;">
-                <label>Tên đăng nhập / Email</label>
-                <input type="text" placeholder="Nhập tên...">
-            </div>
-            <div class="form-group">
-                <label>Mật khẩu</label>
-                <input type="password" placeholder="Nhập mật khẩu...">
-            </div>
-            <button class="submit-btn" onclick="alert('Đã đăng nhập thành công!')">Xác Nhận</button>
+            <h3>Đăng Nhập / Đăng Ký</h3>
+            <button class="google-btn" onclick="alert('Đang kết nối tới Google Sign-In...')">
+                🌐 Tiếp tục với Google
+            </button>
+            <br>
+            <button class="close-btn" onclick="closeModal('authModal')">Đóng</button>
         </div>
     </div>
 
-    <!-- POPUP ĐĂNG KÝ -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('registerModal')">&times;</span>
-            <h2>Đăng Ký Tài Khoản</h2>
-            <div class="form-group" style="margin-top: 15px;">
-                <label>Họ và Tên</label>
-                <input type="text" placeholder="Nhập tên bạn...">
-            </div>
-            <div class="form-group">
-                <label>Email / SĐT</label>
-                <input type="text" placeholder="Nhập email...">
-            </div>
-            <div class="form-group">
-                <label>Mật khẩu</label>
-                <input type="password" placeholder="Tạo mật khẩu...">
-            </div>
-            <button class="submit-btn" onclick="alert('Đăng ký tài khoản thành công!')">Tạo Tài Khoản</button>
-        </div>
-    </div>
-
-    <!-- SCRIPT CHUYỂN TAB VÀ HIỆN MODAL -->
     <script>
-        // Hàm chuyển đổi nội dung khi bấm Menu
         function switchTab(tabId, element) {
-            // Ẩn tất cả nội dung cũ
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(c => c.classList.remove('active'));
+            // Ẩn tất cả tab
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            // Bỏ ô viền đen ở mục menu cũ
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
 
-            // Bỏ gạch chân active ở menu cũ
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(m => m.classList.remove('active'));
-
-            // Hiển thị tab được chọn và gạch chân menu tương ứng
+            // Hiện tab được chọn + thêm ô viền đen
             document.getElementById(tabId).classList.add('active');
             element.classList.add('active');
         }
 
-        // Hàm bật/tắt bảng Đăng ký & Đăng nhập
         function openModal(id) {
             document.getElementById(id).style.display = 'flex';
         }
