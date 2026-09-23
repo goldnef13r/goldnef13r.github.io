@@ -3,32 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goldnef13r Website</title>
+    <title>Goldnef13r Lớp Giao Diện</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #0d1117;
-            color: #c9d1d9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        /* CSS RESET để loại bỏ khoảng cách mặc định */
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif; /* Sử dụng font Arial cho giống ảnh */
         }
-        .container {
-            text-align: center;
-            padding: 40px;
-            border: 1px solid #30363d;
+
+        /* Tông màu nền chính: Xanh dương tươi */
+        body {
+            background-color: #00b4ff; /* Mã màu xanh nền từ ảnh */
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Thanh MENU CONTAINER bo góc */
+        .navbar-container {
+            width: 100%;
+            display: flex;
+            justify-content: center; /* Căn giữa toàn bộ thanh menu */
+        }
+
+        .navbar {
+            background-color: #4b3ac8; /* Mã màu xanh đậm của thanh menu */
+            width: 90%; /* Chiều rộng thanh menu */
+            max-width: 1200px;
+            padding: 15px 30px;
+            border-radius: 40px; /* Bo góc cực mạnh như trong ảnh */
+            display: flex;
+            justify-content: space-between; /* Đẩy nội dung ra 2 bên */
+            align-items: center;
+            color: white; /* Màu chữ chính */
+            opacity: 0.9; /* Hơi mờ nhẹ để tách nền */
+        }
+
+        /* Vùng chứa các mục MENU BÊN TRÁI */
+        .menu-left {
+            display: flex;
+            gap: 25px; /* Khoảng cách giữa các mục menu */
+            flex-wrap: wrap; /* Hỗ trợ menu tự xuống dòng trên mobile */
+        }
+
+        .menu-item {
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .menu-item:hover {
+            opacity: 0.7; /* Hiệu ứng khi di chuột */
+        }
+
+        /* Vùng chứa các NÚT BẤM BÊN PHẢI */
+        .menu-right {
+            display: flex;
+            gap: 10px; /* Khoảng cách giữa 2 nút đăng ký/đăng nhập */
+        }
+
+        .auth-btn {
+            background-color: transparent; /* Nền trong suốt */
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px; /* Nút bo góc nhẹ */
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        /* Thiết kế 2 nút Đăng Ký và Đăng Nhập (giống ảnh) */
+        .auth-btn:first-child { /* Nút Đăng Ký */
+            background-color: #31219b; /* Màu đậm hơn, bo góc mạnh hơn trong ảnh */
             border-radius: 12px;
-            background-color: #161b22;
         }
-        h1 { color: #58a6ff; }
+
+        .auth-btn:last-child { /* Nút Đăng Nhập */
+            background-color: #31219b;
+            border-radius: 12px;
+        }
+
+        .auth-btn:hover {
+            background-color: rgba(255,255,255,0.2); /* Hiệu ứng khi di chuột lên nút */
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Hello, World! 🚀</h1>
-        <p>Trang web của <strong>goldnef13r</strong> đã chính thức hoạt động trên GitHub Pages!</p>
+
+    <!-- BẮT ĐẦU THANH NAVBAR -->
+    <div class="navbar-container">
+        <div class="navbar">
+
+            <!-- Các mục menu chính -->
+            <div class="menu-left">
+                <div class="menu-item">home</div>
+                <div class="menu-item">bán đồ cũ</div>
+                <div class="menu-item">danh sách lớp</div>
+                <div class="menu-item">vòng quay may mắn(tên)</div>
+            </div>
+
+            <!-- Các nút bấm đăng ký/đăng nhập -->
+            <div class="menu-right">
+                <div class="auth-btn">đăng ký</div>
+                <div class="auth-btn">đăng nhập</div>
+            </div>
+
+        </div>
     </div>
+    <!-- KẾT THÚC THANH NAVBAR -->
+
 </body>
 </html>
