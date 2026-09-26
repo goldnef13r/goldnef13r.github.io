@@ -22,6 +22,75 @@
             align-items: center;
         }
 
+        /* MÀN HÌNH CHỜ DÀNH CHO KHÁCH CHƯA ĐĂNG NHẬP */
+        #guestScreen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80vh;
+            text-align: center;
+        }
+
+        .guest-card {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .guest-title {
+            font-size: 1.6rem;
+            color: #4b3ac8;
+            margin-bottom: 10px;
+        }
+
+        .guest-desc {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .guest-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .guest-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 2px solid #111;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-login {
+            background-color: #4b3ac8;
+            color: white;
+        }
+
+        .btn-reg {
+            background-color: #31219b;
+            color: white;
+        }
+
+        .guest-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* KHU VỰC TRANG WEB SAU KHI ĐĂNG NHẬP (MẶC ĐỊNH ẨN) */
+        #appScreen {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .navbar-container {
             width: 100%;
             display: flex;
@@ -64,56 +133,48 @@
             color: #111;
         }
 
-        .menu-right {
+        .user-info {
             display: flex;
-            gap: 10px;
+            align-items: center;
+            gap: 12px;
         }
 
-        .auth-btn {
-            background-color: #31219b;
-            color: #ffffff;
-            padding: 8px 18px;
-            border-radius: 12px;
-            border: 2px solid #111;
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 10px;
+            border: 1px solid #111;
             cursor: pointer;
-            font-size: 1rem;
-            transition: transform 0.2s;
-        }
-
-        .auth-btn:hover {
-            transform: scale(1.05);
+            font-size: 0.9rem;
         }
 
         .content-container {
-            margin-top: 18vh;
+            margin-top: 10vh;
             text-align: center;
+            width: 100%;
+            max-width: 1000px;
         }
 
         .tab-content {
             display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .tab-content.active {
             display: block;
         }
 
-        .home-text-1 {
-            color: #d96338;
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-        }
-
-        .home-text-2 {
-            color: #d96338;
-            font-size: 1.2rem;
-        }
-
+        /* MODAL KHUNG ĐĂNG NHẬP / ĐĂNG KÝ */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -181,40 +242,59 @@
 </head>
 <body>
 
-    <div class="navbar-container">
-        <div class="navbar">
-            <div class="menu-left">
-                <span class="menu-item active" onclick="switchTab('home', this)">home</span>
-                <span class="menu-item" onclick="switchTab('bando', this)">bán đồ cũ</span>
-                <span class="menu-item" onclick="switchTab('danhsach', this)">danh sách lớp</span>
-                <span class="menu-item" onclick="switchTab('vongquay', this)">vòng quay may mắn</span>
-            </div>
-            <div class="menu-right">
-                <button class="auth-btn" onclick="openModal('registerModal')">đăng ký</button>
-                <button class="auth-btn" onclick="openModal('loginModal')">đăng nhập</button>
+    <!-- 1. MÀN HÌNH CHỜ DÀNH CHO KHÁCH (CHƯA ĐĂNG NHẬP) -->
+    <div id="guestScreen">
+        <div class="guest-card">
+            <h2 class="guest-title">Chào Mừng Bạn!</h2>
+            <p class="guest-desc">Vui lòng đăng nhập hoặc đăng ký tài khoản để tiếp tục truy cập vào hệ thống.</p>
+            <div class="guest-btns">
+                <button class="guest-btn btn-login" onclick="openModal('loginModal')">Đăng Nhập</button>
+                <button class="guest-btn btn-reg" onclick="openModal('registerModal')">Đăng Ký</button>
             </div>
         </div>
     </div>
 
-    <div class="content-container">
-        <div id="home" class="tab-content active">
-            <p class="home-text-1">chx có j ở đây :- (</p>
-            <p class="home-text-2">hãy đăng ký hoặc đăng nhập bằng Email / Mật khẩu</p>
+    <!-- 2. KHU VỰC TRANG WEB CHÍNH (CHỈ HIỆN SAU KHI ĐĂNG NHẬP) -->
+    <div id="appScreen">
+        <div class="navbar-container">
+            <div class="navbar">
+                <div class="menu-left">
+                    <span class="menu-item active" onclick="navigateTo('home', this)">home</span>
+                    <span class="menu-item" onclick="navigateTo('bando', this)">bán đồ cũ</span>
+                    <span class="menu-item" onclick="navigateTo('danhsach', this)">danh sách lớp</span>
+                    <span class="menu-item" onclick="navigateTo('vongquay', this)">vòng quay may mắn</span>
+                </div>
+                <div class="user-info">
+                    <span id="userNameDisplay" style="font-weight: bold;"></span>
+                    <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+                </div>
+            </div>
         </div>
 
-        <div id="bando" class="tab-content">
-            <h2>🛒 Bán đồ cũ</h2>
-            <p style="margin-top: 10px;">Chợ thanh lý của lớp!</p>
-        </div>
+        <div class="content-container">
+            <!-- TRANG HOME -->
+            <div id="home" class="tab-content active">
+                <h2>🏠 Trang Chủ</h2>
+                <p style="margin-top: 15px;">Chào mừng bạn đã đến với hệ thống!</p>
+            </div>
 
-        <div id="danhsach" class="tab-content">
-            <h2>📋 Danh sách lớp</h2>
-            <p style="margin-top: 10px;">Danh sách thành viên...</p>
-        </div>
+            <!-- TRANG BÁN ĐỒ CŨ -->
+            <div id="bando" class="tab-content">
+                <h2>🛒 Bán Đồ Cũ</h2>
+                <p style="margin-top: 15px;">Khu vực đăng tin thanh lý mua bán đồ dùng của lớp.</p>
+            </div>
 
-        <div id="vongquay" class="tab-content">
-            <h2>🎡 Vòng quay may mắn</h2>
-            <p style="margin-top: 10px;">Quay tên ngẫu nhiên...</p>
+            <!-- TRANG DANH SÁCH LỚP -->
+            <div id="danhsach" class="tab-content">
+                <h2>📋 Danh Sách Lớp</h2>
+                <p style="margin-top: 15px;">Danh sách các thành viên trong lớp học.</p>
+            </div>
+
+            <!-- TRANG VÒNG QUAY MAY MẮN -->
+            <div id="vongquay" class="tab-content">
+                <h2>🎡 Vòng Quay May Mắn</h2>
+                <p style="margin-top: 15px;">Tính năng quay số/tên may mắn ngẫu nhiên.</p>
+            </div>
         </div>
     </div>
 
@@ -235,14 +315,14 @@
         </div>
     </div>
 
-    <!-- MODAL ĐĂNG KÝ (CÓ THÊM HỌ VÀ TÊN) -->
+    <!-- MODAL ĐĂNG KÝ -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('registerModal')">&times;</span>
             <h3 class="modal-title">Đăng Ký Tài Khoản</h3>
             <div class="form-group">
                 <label>Họ và Tên (*)</label>
-                <input type="text" id="regName" placeholder="Nhập họ và tên bạn...">
+                <input type="text" id="regName" placeholder="Nhập họ và tên...">
             </div>
             <div class="form-group">
                 <label>Gmail (*)</label>
@@ -266,64 +346,74 @@
 
     <script>
         let generatedOTP = null;
-        let registeredName = "";
-
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
-        }
+        let tempName = "";
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
+        // Chuyển trang + Đổi đường dẫn URL (/home, /bando, /danhsach, /vongquay)
+        function navigateTo(path, element) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            
+            document.getElementById(path).classList.add('active');
+            if (element) element.classList.add('active');
+
+            // Đổi đuôi thanh địa chỉ web (URL)
+            window.history.pushState({}, "", "/" + path);
+        }
+
+        // Bấm gửi OTP
         function sendOTP() {
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const pass = document.getElementById('regPass').value.trim();
 
-            if (!name) {
-                alert('Vui lòng nhập Họ và Tên!');
-                return;
-            }
-            if (!email) {
-                alert('Vui lòng nhập Gmail!');
-                return;
-            }
-            if (!pass) {
-                alert('Vui lòng nhập Mật khẩu!');
-                return;
-            }
+            if (!name) return alert('Vui lòng nhập Họ và Tên!');
+            if (!email) return alert('Vui lòng nhập Gmail!');
+            if (!pass) return alert('Vui lòng nhập Mật khẩu!');
 
-            registeredName = name;
+            tempName = name;
             generatedOTP = Math.floor(100000 + Math.random() * 900000);
             alert(`[MÃ XÁC NHẬN OTP CỦA BẠN LÀ]: ${generatedOTP}`);
             document.getElementById('otpSection').style.display = 'block';
         }
 
+        // Xác nhận OTP -> Mở giao diện chính
         function verifyOTP() {
             const userOTP = document.getElementById('otpInput').value;
             if (userOTP == generatedOTP) {
                 alert('Đăng ký tài khoản thành công!');
                 closeModal('registerModal');
-                document.querySelector('.home-text-1').innerText = `Chào mừng ${registeredName}!`;
-                document.querySelector('.home-text-2').innerText = "Bạn đã đăng ký và đăng nhập thành công.";
+                loginSuccess(tempName);
             } else {
                 alert('Mã OTP không đúng, vui lòng kiểm tra lại!');
             }
         }
 
+        // Xử lý đăng nhập thành công
         function handleLogin() {
-            const email = document.getElementById('loginEmail').value;
-            if (email) {
-                alert('Đăng nhập thành công!');
-                closeModal('loginModal');
-                document.querySelector('.home-text-1').innerText = `Chào mừng ${email}!`;
-                document.querySelector('.home-text-2').innerText = "Bạn đã đăng nhập thành công.";
-            } else {
-                alert('Vui lòng điền thông tin đăng nhập!');
-            }
+            const email = document.getElementById('loginEmail').value.trim();
+            if (!email) return alert('Vui lòng điền thông tin đăng nhập!');
+            
+            alert('Đăng nhập thành công!');
+            closeModal('loginModal');
+            loginSuccess(email.split('@')[0]);
+        }
+
+        // Kích hoạt giao diện ứng dụng sau khi đăng nhập thành công
+        function loginSuccess(name) {
+            document.getElementById('guestScreen').style.display = 'none';
+            document.getElementById('appScreen').style.display = 'flex';
+            document.getElementById('userNameDisplay').innerText = `👤 ${name}`;
+            navigateTo('home', document.querySelector('.menu-item'));
+        }
+
+        // Đăng xuất
+        function logout() {
+            document.getElementById('appScreen').style.display = 'none';
+            document.getElementById('guestScreen').style.display = 'flex';
+            window.history.pushState({}, "", "/");
         }
     </script>
 
