@@ -4,46 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goldnef13r Website</title>
-    <!-- POPUP ĐĂNG NHẬP / ĐĂNG KÝ -->
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <h3 class="modal-title">Đăng Nhập / Đăng Ký</h3>
-            
-            <button onclick="simulatedGoogleLogin()" style="
-                width: 100%;
-                padding: 10px;
-                background-color: #ffffff;
-                color: #757575;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                font-weight: bold;
-                font-size: 0.95rem;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            ">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" height="20" alt="Google Logo">
-                Đăng nhập bằng Google
-            </button>
-
-            <button class="close-btn" onclick="closeModal('authModal')">Đóng</button>
-        </div>
-    </div>
-
-    <script>
-        function simulatedGoogleLogin() {
-            alert("Đã đăng nhập thành công với tài khoản Google: goldnef13r@gmail.com!");
-            closeModal('authModal');
-            // Cập nhật giao diện sau khi đăng nhập thành công
-            document.querySelector('.home-text-1').innerText = "Chào mừng goldnef13r!";
-            document.querySelector('.home-text-2').innerText = "Bạn đã đăng nhập thành công thành viên lớp.";
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
         }
-    </script>
+
         body {
-            background-color: #00a8ec; /* Màu xanh tươi chuẩn từ ảnh */
+            background-color: #00a8ec;
             min-height: 100vh;
             padding: 15px;
             color: #1a1a1a;
@@ -52,7 +22,6 @@
             align-items: center;
         }
 
-        /* NAVBAR CONTAINER */
         .navbar-container {
             width: 100%;
             display: flex;
@@ -79,9 +48,8 @@
             flex-wrap: wrap;
         }
 
-        /* CÁC MỤC MENU */
         .menu-item {
-            color: #111;
+            color: #ffffff;
             text-decoration: none;
             font-size: 1.1rem;
             padding: 8px 16px;
@@ -90,10 +58,10 @@
             transition: all 0.2s;
         }
 
-        /* Nút Home active có ô viền đen quanh chữ */
         .menu-item.active {
             border: 2px solid #111;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #111;
         }
 
         .menu-right {
@@ -101,10 +69,9 @@
             gap: 10px;
         }
 
-        /* NÚT ĐĂNG KÝ & ĐĂNG NHẬP */
         .auth-btn {
             background-color: #31219b;
-            color: #111;
+            color: #ffffff;
             padding: 8px 18px;
             border-radius: 12px;
             border: 2px solid #111;
@@ -117,7 +84,6 @@
             transform: scale(1.05);
         }
 
-        /* KHUNG NỘI DUNG Ở GIỮA TRANG */
         .content-container {
             margin-top: 18vh;
             text-align: center;
@@ -131,7 +97,6 @@
             display: block;
         }
 
-        /* Dòng chữ ở trang Home */
         .home-text-1 {
             color: #d96338;
             font-size: 1.4rem;
@@ -143,7 +108,6 @@
             font-size: 1.2rem;
         }
 
-        /* BẢNG MODAL ĐĂNG NHẬP / ĐĂNG KÝ */
         .modal {
             display: none;
             position: fixed;
@@ -161,43 +125,62 @@
             border-radius: 16px;
             width: 90%;
             max-width: 360px;
-            text-align: center;
+            text-align: left;
             color: #333;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             position: relative;
         }
 
         .modal-title {
-            margin-bottom: 20px;
+            text-align: center;
+            margin-bottom: 15px;
             font-size: 1.3rem;
             color: #111;
         }
 
-        .google-btn-wrapper {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
+        .form-group {
+            margin-bottom: 12px;
         }
 
-        .close-btn {
-            background: #e4e6eb;
-            color: #333;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 8px;
-            cursor: pointer;
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
             font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 0.95rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4b3ac8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
             margin-top: 10px;
         }
 
-        .close-btn:hover {
-            background: #d8dadf;
+        .close-btn {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #888;
         }
     </style>
 </head>
 <body>
 
-    <!-- THANH MENU NAVBAR -->
     <div class="navbar-container">
         <div class="navbar">
             <div class="menu-left">
@@ -207,91 +190,120 @@
                 <span class="menu-item" onclick="switchTab('vongquay', this)">vòng quay may mắn(tên)</span>
             </div>
             <div class="menu-right">
-                <button class="auth-btn" onclick="openModal('authModal')">đăng ký</button>
-                <button class="auth-btn" onclick="openModal('authModal')">đăng nhập</button>
+                <button class="auth-btn" onclick="openModal('registerModal')">đăng ký</button>
+                <button class="auth-btn" onclick="openModal('loginModal')">đăng nhập</button>
             </div>
         </div>
     </div>
 
-    <!-- NỘI DUNG HIỂN THỊ CHÍNH -->
     <div class="content-container">
-        
-        <!-- TRANG HOME -->
         <div id="home" class="tab-content active">
             <p class="home-text-1">chx có j ở đây :- (</p>
-            <p class="home-text-2">hãy đăng ký hoặc đăng nhập( có hỗ trợ google)</p>
+            <p class="home-text-2">hãy đăng ký hoặc đăng nhập bằng Email / Mật khẩu</p>
         </div>
 
-        <!-- TRANG BÁN ĐỒ CŨ -->
         <div id="bando" class="tab-content">
             <h2>🛒 Bán đồ cũ</h2>
             <p style="margin-top: 10px;">Chợ thanh lý của lớp!</p>
         </div>
 
-        <!-- TRANG DANH SÁCH LỚP -->
         <div id="danhsach" class="tab-content">
             <h2>📋 Danh sách lớp</h2>
             <p style="margin-top: 10px;">Danh sách thành viên...</p>
         </div>
 
-        <!-- TRANG VÒNG QUAY MAY MẮN -->
         <div id="vongquay" class="tab-content">
             <h2>🎡 Vòng quay may mắn</h2>
             <p style="margin-top: 10px;">Quay tên ngẫu nhiên...</p>
         </div>
-
     </div>
 
-    <!-- POPUP CÓ NÚT ĐĂNG NHẬP GOOGLE THỰC THỤ -->
-    <div id="authModal" class="modal">
+    <div id="loginModal" class="modal">
         <div class="modal-content">
-            <h3 class="modal-title">Đăng Nhập / Đăng Ký</h3>
-            
-            <p style="font-size: 0.95rem; color: #666;">Đăng nhập nhanh bằng tài khoản Google:</p>
-            
-            <!-- Nút Google chuẩn từ Google API -->
-            <div class="google-btn-wrapper">
-                <div id="g_id_onload"
-                    data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-                    data-callback="handleCredentialResponse">
-                </div>
-                <div class="g_id_signin" 
-                    data-type="standard" 
-                    data-size="large" 
-                    data-theme="outline" 
-                    data-text="sign_in_with" 
-                    data-shape="rectangular" 
-                    data-logo_alignment="left">
-                </div>
+            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+            <h3 class="modal-title">Đăng Nhập</h3>
+            <div class="form-group">
+                <label>Gmail / Tên tài khoản</label>
+                <input type="text" id="loginEmail" placeholder="Nhập Gmail...">
             </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="loginPass" placeholder="Nhập mật khẩu...">
+            </div>
+            <button class="submit-btn" onclick="handleLogin()">Đăng Nhập</button>
+        </div>
+    </div>
 
-            <button class="close-btn" onclick="closeModal('authModal')">Đóng</button>
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('registerModal')">&times;</span>
+            <h3 class="modal-title">Đăng Ký Tài Khoản</h3>
+            <div class="form-group">
+                <label>Gmail</label>
+                <input type="email" id="regEmail" placeholder="example@gmail.com">
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="regPass" placeholder="Tạo mật khẩu...">
+            </div>
+            <button class="submit-btn" onclick="sendOTP()">Gửi Mã Xác Nhận (OTP)</button>
+
+            <div id="otpSection" style="display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
+                <div class="form-group">
+                    <label>Mã xác nhận (OTP)</label>
+                    <input type="text" id="otpInput" placeholder="Nhập 6 số mã OTP...">
+                </div>
+                <button class="submit-btn" style="background-color: #28a745;" onclick="verifyOTP()">Xác Nhận Đăng Ký</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Xử lý chuyển tab Menu
+        let generatedOTP = null;
+
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-
             document.getElementById(tabId).classList.add('active');
             element.classList.add('active');
         }
 
-        // Bật / Tắt Popup
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function sendOTP() {
+            const email = document.getElementById('regEmail').value;
+            if (!email) {
+                alert('Vui lòng nhập Gmail!');
+                return;
+            }
+            generatedOTP = Math.floor(100000 + Math.random() * 900000);
+            alert(`[MÃ XÁC NHẬN OTP CỦA BẠN LÀ]: ${generatedOTP}`);
+            document.getElementById('otpSection').style.display = 'block';
         }
 
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
+        function verifyOTP() {
+            const userOTP = document.getElementById('otpInput').value;
+            if (userOTP == generatedOTP) {
+                alert('Đăng ký tài khoản thành công!');
+                closeModal('registerModal');
+                document.querySelector('.home-text-1').innerText = "Chào mừng bạn!";
+                document.querySelector('.home-text-2').innerText = "Bạn đã đăng nhập hệ thống thành công.";
+            } else {
+                alert('Mã OTP không đúng, vui lòng kiểm tra lại!');
+            }
         }
 
-        // Nhận dữ liệu sau khi đăng nhập Google thành công
-        function handleCredentialResponse(response) {
-            alert("Đã nhận xác thực từ Google! Token: " + response.credential.substring(0, 20) + "...");
-            closeModal('authModal');
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            if (email) {
+                alert('Đăng nhập thành công!');
+                closeModal('loginModal');
+                document.querySelector('.home-text-1').innerText = `Chào mừng ${email}!`;
+                document.querySelector('.home-text-2').innerText = "Bạn đã đăng nhập thành công.";
+            } else {
+                alert('Vui lòng điền thông tin đăng nhập!');
+            }
         }
     </script>
 
