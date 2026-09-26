@@ -218,6 +218,7 @@
         </div>
     </div>
 
+    <!-- MODAL ĐĂNG NHẬP -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
@@ -234,16 +235,21 @@
         </div>
     </div>
 
+    <!-- MODAL ĐĂNG KÝ (CÓ THÊM HỌ VÀ TÊN) -->
     <div id="registerModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('registerModal')">&times;</span>
             <h3 class="modal-title">Đăng Ký Tài Khoản</h3>
             <div class="form-group">
-                <label>Gmail</label>
+                <label>Họ và Tên (*)</label>
+                <input type="text" id="regName" placeholder="Nhập họ và tên bạn...">
+            </div>
+            <div class="form-group">
+                <label>Gmail (*)</label>
                 <input type="email" id="regEmail" placeholder="example@gmail.com">
             </div>
             <div class="form-group">
-                <label>Mật khẩu</label>
+                <label>Mật khẩu (*)</label>
                 <input type="password" id="regPass" placeholder="Tạo mật khẩu...">
             </div>
             <button class="submit-btn" onclick="sendOTP()">Gửi Mã Xác Nhận (OTP)</button>
@@ -260,6 +266,7 @@
 
     <script>
         let generatedOTP = null;
+        let registeredName = "";
 
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -272,11 +279,24 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function sendOTP() {
-            const email = document.getElementById('regEmail').value;
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const pass = document.getElementById('regPass').value.trim();
+
+            if (!name) {
+                alert('Vui lòng nhập Họ và Tên!');
+                return;
+            }
             if (!email) {
                 alert('Vui lòng nhập Gmail!');
                 return;
             }
+            if (!pass) {
+                alert('Vui lòng nhập Mật khẩu!');
+                return;
+            }
+
+            registeredName = name;
             generatedOTP = Math.floor(100000 + Math.random() * 900000);
             alert(`[MÃ XÁC NHẬN OTP CỦA BẠN LÀ]: ${generatedOTP}`);
             document.getElementById('otpSection').style.display = 'block';
@@ -287,8 +307,8 @@
             if (userOTP == generatedOTP) {
                 alert('Đăng ký tài khoản thành công!');
                 closeModal('registerModal');
-                document.querySelector('.home-text-1').innerText = "Chào mừng bạn!";
-                document.querySelector('.home-text-2').innerText = "Bạn đã đăng nhập hệ thống thành công.";
+                document.querySelector('.home-text-1').innerText = `Chào mừng ${registeredName}!`;
+                document.querySelector('.home-text-2').innerText = "Bạn đã đăng ký và đăng nhập thành công.";
             } else {
                 alert('Mã OTP không đúng, vui lòng kiểm tra lại!');
             }
