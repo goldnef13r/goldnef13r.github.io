@@ -5,244 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goldnef13r Website</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: #00a8ec; min-height: 100vh; padding: 15px; color: #1a1a1a; display: flex; flex-direction: column; align-items: center; }
 
-        body {
-            background-color: #00a8ec;
-            min-height: 100vh;
-            padding: 15px;
-            color: #1a1a1a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        /* MÀN HÌNH CHỜ CHƯA ĐĂNG NHẬP */
+        #guestScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 85vh; text-align: center; }
+        .guest-card { background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); max-width: 400px; width: 90%; }
+        .guest-title { font-size: 1.6rem; color: #4b3ac8; margin-bottom: 10px; }
+        .guest-desc { color: #666; margin-bottom: 25px; font-size: 0.95rem; }
+        .guest-btns { display: flex; gap: 15px; justify-content: center; }
+        .guest-btn { padding: 12px 24px; border-radius: 12px; border: 2px solid #111; font-size: 1rem; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        .btn-login { background-color: #4b3ac8; color: white; }
+        .btn-reg { background-color: #31219b; color: white; }
+        .guest-btn:hover { transform: scale(1.05); }
 
-        /* MÀN HÌNH CHỜ DÀNH CHO KHÁCH CHƯA ĐĂNG NHẬP */
-        #guestScreen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 80vh;
-            text-align: center;
-        }
+        /* TRANG WEB SAU ĐĂNG NHẬP */
+        #appScreen { display: none; width: 100%; flex-direction: column; align-items: center; }
+        .navbar-container { width: 100%; display: flex; justify-content: center; position: relative; }
+        .navbar { background-color: #4b3ac8; width: 98%; max-width: 1200px; padding: 10px 25px; border-radius: 45px; display: flex; justify-content: space-between; align-items: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .menu-left { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .menu-item { color: #ffffff; text-decoration: none; font-size: 1.05rem; padding: 8px 16px; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+        .menu-item.active { border: 2px solid #111; background-color: rgba(255, 255, 255, 0.2); color: #111; }
 
-        .guest-card {
-            background: #ffffff;
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            max-width: 400px;
-            width: 90%;
-        }
+        /* HEADER USER PROFILE */
+        .user-profile-wrapper { position: relative; }
+        .user-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px 10px; border-radius: 30px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); }
+        .avatar-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
+        .user-name { font-weight: bold; font-size: 0.95rem; }
 
-        .guest-title {
-            font-size: 1.6rem;
-            color: #4b3ac8;
-            margin-bottom: 10px;
-        }
+        /* MENU TÙY CHỌN POPUP */
+        .user-dropdown { display: none; position: absolute; right: 0; top: 50px; background: white; color: #333; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); width: 180px; overflow: hidden; z-index: 100; }
+        .user-dropdown.show { display: block; }
+        .dropdown-item { padding: 12px 15px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #eee; transition: background 0.2s; }
+        .dropdown-item:hover { background: #f0f0f0; }
+        .dropdown-item.logout { color: #e74c3c; border-bottom: none; font-weight: bold; }
 
-        .guest-desc {
-            color: #666;
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-        }
+        /* CONTENT CONTAINER */
+        .content-container { margin-top: 25px; text-align: center; width: 100%; max-width: 900px; padding-bottom: 40px; }
+        .tab-content { display: none; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: left; }
+        .tab-content.active { display: block; }
 
-        .guest-btns {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
+        /* PHẦN BAN ĐỒ CỦ & HOME FEED */
+        .feed-card { background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .feed-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .feed-price { color: #27ae60; font-weight: bold; font-size: 1.1rem; margin-top: 5px; }
+        .add-post-btn { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 5px; }
 
-        .guest-btn {
-            padding: 12px 24px;
-            border-radius: 12px;
-            border: 2px solid #111;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+        /* VÒNG QUAY MAY MẮN */
+        .wheel-layout { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: center; }
+        .wheel-box { position: relative; width: 320px; height: 320px; }
+        canvas { width: 300px; height: 300px; }
+        .pointer { position: absolute; top: -10px; left: 140px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 20px solid #e74c3c; z-index: 10; }
+        .spin-btn { width: 100%; background: #e67e22; color: white; border: none; padding: 12px; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .wheel-input { width: 100%; max-width: 300px; height: 180px; padding: 10px; border-radius: 10px; border: 1px solid #ccc; font-size: 0.95rem; }
 
-        .btn-login {
-            background-color: #4b3ac8;
-            color: white;
-        }
-
-        .btn-reg {
-            background-color: #31219b;
-            color: white;
-        }
-
-        .guest-btn:hover {
-            transform: scale(1.05);
-        }
-
-        /* KHU VỰC TRANG WEB SAU KHI ĐĂNG NHẬP (MẶC ĐỊNH ẨN) */
-        #appScreen {
-            display: none;
-            width: 100%;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .navbar-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .navbar {
-            background-color: #4b3ac8;
-            width: 98%;
-            max-width: 1200px;
-            padding: 12px 25px;
-            border-radius: 45px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        .menu-left {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .menu-item {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.1rem;
-            padding: 8px 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .menu-item.active {
-            border: 2px solid #111;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #111;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logout-btn {
-            background-color: #e74c3c;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 10px;
-            border: 1px solid #111;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .content-container {
-            margin-top: 10vh;
-            text-align: center;
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        .tab-content {
-            display: none;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* MODAL KHUNG ĐĂNG NHẬP / ĐĂNG KÝ */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 360px;
-            text-align: left;
-            color: #333;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        .modal-title {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            color: #111;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 0.95rem;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #4b3ac8;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 10px; right: 15px;
-            font-size: 20px;
-            cursor: pointer;
-            color: #888;
-        }
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 360px; position: relative; }
+        .modal-title { text-align: center; margin-bottom: 15px; font-size: 1.3rem; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+        .submit-btn { width: 100%; padding: 10px; background-color: #4b3ac8; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
     </style>
 </head>
 <body>
 
-    <!-- 1. MÀN HÌNH CHỜ DÀNH CHO KHÁCH (CHƯA ĐĂNG NHẬP) -->
+    <!-- 1. MÀN HÌNH CHỜ CHƯA ĐĂNG NHẬP -->
     <div id="guestScreen">
         <div class="guest-card">
             <h2 class="guest-title">Chào Mừng Bạn!</h2>
@@ -254,7 +84,7 @@
         </div>
     </div>
 
-    <!-- 2. KHU VỰC TRANG WEB CHÍNH (CHỈ HIỆN SAU KHI ĐĂNG NHẬP) -->
+    <!-- 2. HỆ THỐNG TRANG WEB SAU ĐĂNG NHẬP -->
     <div id="appScreen">
         <div class="navbar-container">
             <div class="navbar">
@@ -264,36 +94,102 @@
                     <span class="menu-item" onclick="navigateTo('danhsach', this)">danh sách lớp</span>
                     <span class="menu-item" onclick="navigateTo('vongquay', this)">vòng quay may mắn</span>
                 </div>
-                <div class="user-info">
-                    <span id="userNameDisplay" style="font-weight: bold;"></span>
-                    <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+
+                <!-- USER AVATAR & DROPDOWN MENU -->
+                <div class="user-profile-wrapper">
+                    <div class="user-profile" onclick="toggleDropdown()">
+                        <img id="userAvatar" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="avatar-img" alt="Avatar">
+                        <span id="userNameDisplay" class="user-name">User</span>
+                    </div>
+
+                    <div id="userDropdown" class="user-dropdown">
+                        <div class="dropdown-item" onclick="navigateTo('setting')">⚙️ Cài đặt nhanh</div>
+                        <div class="dropdown-item" onclick="openChangeAvatar()">📷 Đổi ảnh đại diện</div>
+                        <div class="dropdown-item logout" onclick="logout()">🚪 Đăng xuất</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="content-container">
-            <!-- TRANG HOME -->
+            <!-- TAB HOME (BẢNG TIN MUA BÁN) -->
             <div id="home" class="tab-content active">
-                <h2>🏠 Trang Chủ</h2>
-                <p style="margin-top: 15px;">Chào mừng bạn đã đến với hệ thống!</p>
+                <h2 style="margin-bottom: 20px;">📢 Bảng Tin Lớp</h2>
+                
+                <div class="feed-card">
+                    <div class="feed-header">
+                        <img src="https://i.pravatar.cc/100?img=12" class="avatar-img" alt="User">
+                        <div>
+                            <strong>Nguyễn Văn A</strong>
+                            <div style="font-size: 0.8rem; color: #777;">2 giờ trước</div>
+                        </div>
+                    </div>
+                    <p>Mình đang dư một cuốn sách Toán nâng cao lớp 8 còn rất mới, bạn nào cần nhắn mình nhé!</p>
+                    <div class="feed-price">Giá: 30.000 VNĐ</div>
+                </div>
+
+                <div class="feed-card">
+                    <div class="feed-header">
+                        <img src="https://i.pravatar.cc/100?img=32" class="avatar-img" alt="User">
+                        <div>
+                            <strong>Trần Thị B</strong>
+                            <div style="font-size: 0.8rem; color: #777;">5 giờ trước</div>
+                        </div>
+                    </div>
+                    <p>Cần pass lại bộ thước kẻ + compa học vẽ kĩ thuật chưa qua sử dụng.</p>
+                    <div class="feed-price">Giá: 15.000 VNĐ</div>
+                </div>
             </div>
 
-            <!-- TRANG BÁN ĐỒ CŨ -->
+            <!-- TAB BÁN ĐỒ CỦ -->
             <div id="bando" class="tab-content">
-                <h2>🛒 Bán Đồ Cũ</h2>
-                <p style="margin-top: 15px;">Khu vực đăng tin thanh lý mua bán đồ dùng của lớp.</p>
+                <h2>🛒 Chợ Bán Đồ Cũ</h2>
+                <br>
+                <button class="add-post-btn" onclick="alert('Tính năng đăng tin sắp hoàn thiện!')">➕ Đăng bài mới</button>
+                <div style="text-align: center; color: #666; padding: 40px 0;">
+                    <p style="font-size: 1.1rem;">Chưa có ai đăng bán đồ cũ ở đây hết cả.</p>
+                </div>
             </div>
 
-            <!-- TRANG DANH SÁCH LỚP -->
+            <!-- TAB DANH SÁCH LỚP -->
             <div id="danhsach" class="tab-content">
                 <h2>📋 Danh Sách Lớp</h2>
-                <p style="margin-top: 15px;">Danh sách các thành viên trong lớp học.</p>
+                <div style="text-align: center; color: #666; padding: 50px 0;">
+                    <p style="font-size: 1.1rem; font-weight: bold;">Hiện tại chưa được cập nhật.</p>
+                </div>
             </div>
 
-            <!-- TRANG VÒNG QUAY MAY MẮN -->
+            <!-- TAB VÒNG QUAY MAY MẮN -->
             <div id="vongquay" class="tab-content">
                 <h2>🎡 Vòng Quay May Mắn</h2>
-                <p style="margin-top: 15px;">Tính năng quay số/tên may mắn ngẫu nhiên.</p>
+                <p style="margin-bottom: 20px; color: #666;">Nhập danh sách tùy chọn (Mỗi dòng là 1 ô), sau đó bấm Quay!</p>
+                
+                <div class="wheel-layout">
+                    <div>
+                        <textarea id="wheelList" class="wheel-input" onkeyup="drawWheel()">Bạn A&#10;Bạn B&#10;Bạn C&#10;Bạn D&#10;Bạn E</textarea>
+                        <button class="spin-btn" onclick="spinWheel()">🚀 QUAY NGAY</button>
+                    </div>
+
+                    <div class="wheel-box">
+                        <div class="pointer"></div>
+                        <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB CÀI ĐẶT (/setting) -->
+            <div id="setting" class="tab-content">
+                <h2>⚙️ Cài Đặt Hệ Thống</h2>
+                <br>
+                <div class="form-group">
+                    <label>Tên hiển thị:</label>
+                    <input type="text" id="settingNameInput" placeholder="Nhập tên mới...">
+                </div>
+                <div class="form-group">
+                    <label>URL Ảnh đại diện:</label>
+                    <input type="text" id="settingAvatarInput" placeholder="https://link-anh.com/avatar.jpg">
+                </div>
+                <button class="submit-btn" onclick="saveSettings()">Lưu Thay Đổi</button>
             </div>
         </div>
     </div>
@@ -322,7 +218,7 @@
             <h3 class="modal-title">Đăng Ký Tài Khoản</h3>
             <div class="form-group">
                 <label>Họ và Tên (*)</label>
-                <input type="text" id="regName" placeholder="Nhập họ và tên...">
+                <input type="text" id="regName" placeholder="Nhập họ tên...">
             </div>
             <div class="form-group">
                 <label>Gmail (*)</label>
@@ -346,77 +242,170 @@
 
     <script>
         let generatedOTP = null;
-        let tempName = "";
+        let currentUser = { name: "User", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // Chuyển trang + Đổi đường dẫn URL (/home, /bando, /danhsach, /vongquay)
+        function toggleDropdown() {
+            document.getElementById('userDropdown').classList.toggle('show');
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.user-profile-wrapper')) {
+                document.getElementById('userDropdown').classList.remove('show');
+            }
+        }
+
         function navigateTo(path, element) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            document.getElementById('userDropdown').classList.remove('show');
             
-            document.getElementById(path).classList.add('active');
+            const targetTab = document.getElementById(path);
+            if (targetTab) targetTab.classList.add('active');
             if (element) element.classList.add('active');
 
-            // Đổi đuôi thanh địa chỉ web (URL)
             window.history.pushState({}, "", "/" + path);
+            if (path === 'vongquay') setTimeout(drawWheel, 100);
         }
 
-        // Bấm gửi OTP
         function sendOTP() {
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const pass = document.getElementById('regPass').value.trim();
 
-            if (!name) return alert('Vui lòng nhập Họ và Tên!');
-            if (!email) return alert('Vui lòng nhập Gmail!');
-            if (!pass) return alert('Vui lòng nhập Mật khẩu!');
+            if (!name || !email || !pass) return alert('Vui lòng điền đầy đủ thông tin!');
 
-            tempName = name;
+            currentUser.name = name;
             generatedOTP = Math.floor(100000 + Math.random() * 900000);
             alert(`[MÃ XÁC NHẬN OTP CỦA BẠN LÀ]: ${generatedOTP}`);
             document.getElementById('otpSection').style.display = 'block';
         }
 
-        // Xác nhận OTP -> Mở giao diện chính
         function verifyOTP() {
             const userOTP = document.getElementById('otpInput').value;
             if (userOTP == generatedOTP) {
-                alert('Đăng ký tài khoản thành công!');
+                alert('Đăng ký thành công!');
                 closeModal('registerModal');
-                loginSuccess(tempName);
+                loginSuccess();
             } else {
-                alert('Mã OTP không đúng, vui lòng kiểm tra lại!');
+                alert('Mã OTP không đúng!');
             }
         }
 
-        // Xử lý đăng nhập thành công
         function handleLogin() {
             const email = document.getElementById('loginEmail').value.trim();
-            if (!email) return alert('Vui lòng điền thông tin đăng nhập!');
+            if (!email) return alert('Vui lòng điền thông tin!');
             
             alert('Đăng nhập thành công!');
             closeModal('loginModal');
-            loginSuccess(email.split('@')[0]);
+            currentUser.name = email.split('@')[0];
+            loginSuccess();
         }
 
-        // Kích hoạt giao diện ứng dụng sau khi đăng nhập thành công
-        function loginSuccess(name) {
+        function loginSuccess() {
             document.getElementById('guestScreen').style.display = 'none';
             document.getElementById('appScreen').style.display = 'flex';
-            document.getElementById('userNameDisplay').innerText = `👤 ${name}`;
+            document.getElementById('userNameDisplay').innerText = currentUser.name;
+            document.getElementById('userAvatar').src = currentUser.avatar;
+            document.getElementById('settingNameInput').value = currentUser.name;
+            document.getElementById('settingAvatarInput').value = currentUser.avatar;
             navigateTo('home', document.querySelector('.menu-item'));
         }
 
-        // Đăng xuất
         function logout() {
             document.getElementById('appScreen').style.display = 'none';
             document.getElementById('guestScreen').style.display = 'flex';
             window.history.pushState({}, "", "/");
         }
-    </script>
 
+        function openChangeAvatar() {
+            const newUrl = prompt("Nhập đường dẫn URL ảnh đại diện mới:", currentUser.avatar);
+            if (newUrl) {
+                currentUser.avatar = newUrl;
+                document.getElementById('userAvatar').src = newUrl;
+            }
+        }
+
+        function saveSettings() {
+            const newName = document.getElementById('settingNameInput').value.trim();
+            const newAvatar = document.getElementById('settingAvatarInput').value.trim();
+            if (newName) currentUser.name = newName;
+            if (newAvatar) currentUser.avatar = newAvatar;
+
+            document.getElementById('userNameDisplay').innerText = currentUser.name;
+            document.getElementById('userAvatar').src = currentUser.avatar;
+            alert('Lưu cài đặt thành công!');
+        }
+
+        /* KHỞI TẠO VÒNG QUAY MAY MẮN */
+        let colors = ["#e74c3c", "#e67e22", "#f1c40f", "#2ecc71", "#3498db", "#9b59b6", "#1abc9c"];
+        let startAngle = 0;
+        let isSpinning = false;
+
+        function getItems() {
+            return document.getElementById('wheelList').value.split('\n').filter(i => i.trim() !== "");
+        }
+
+        function drawWheel() {
+            const items = getItems();
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const numOptions = items.length;
+            if (numOptions === 0) return;
+
+            const arcSize = (2 * Math.PI) / numOptions;
+            ctx.clearRect(0, 0, 300, 300);
+
+            for (let i = 0; i < numOptions; i++) {
+                const angle = startAngle + i * arcSize;
+                ctx.beginPath();
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.moveTo(150, 150);
+                ctx.arc(150, 150, 140, angle, angle + arcSize);
+                ctx.lineTo(150, 150);
+                ctx.fill();
+
+                ctx.save();
+                ctx.fillStyle = "white";
+                ctx.font = "bold 14px Arial";
+                ctx.translate(150 + Math.cos(angle + arcSize / 2) * 90, 150 + Math.sin(angle + arcSize / 2) * 90);
+                ctx.rotate(angle + arcSize / 2 + Math.PI / 2);
+                ctx.fillText(items[i], -ctx.measureText(items[i]).width / 2, 0);
+                ctx.restore();
+            }
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            const items = getItems();
+            if (items.length === 0) return alert('Vui lòng nhập danh sách!');
+
+            isSpinning = true;
+            let spinAngleStart = Math.random() * 10 + 20;
+            let spinTime = 0;
+            let spinTimeTotal = Math.random() * 3000 + 4000;
+
+            function rotate() {
+                spinTime += 30;
+                if (spinTime >= spinTimeTotal) {
+                    isSpinning = false;
+                    const degrees = (startAngle * 180 / Math.PI) % 360;
+                    const arcd = (360 / items.length);
+                    const index = Math.floor((360 - degrees + 270) % 360 / arcd);
+                    alert("🎉 KẾT QUẢ: " + items[index]);
+                    return;
+                }
+                const spinAngle = spinAngleStart - (spinTime / spinTimeTotal) * spinAngleStart;
+                startAngle += (spinAngle * Math.PI / 180);
+                drawWheel();
+                requestAnimationFrame(rotate);
+            }
+            rotate();
+        }
+    </script>
 </body>
 </html>
 
