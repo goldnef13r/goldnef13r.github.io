@@ -59,6 +59,10 @@
 
         .add-post-btn { background: #27ae60; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 1rem; }
 
+        /* PREVIEW IMAGE CONTAINER */
+        .image-preview-container { margin-top: 10px; text-align: center; }
+        .image-preview { max-width: 100%; max-height: 180px; border-radius: 8px; display: none; margin: 0 auto; border: 1px solid #ddd; }
+
         /* BẢNG CHAT MUA BÁN */
         .chat-box { border: 1px solid #ddd; border-radius: 12px; height: 350px; display: flex; flex-direction: column; overflow: hidden; }
         .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
@@ -124,12 +128,15 @@
 
                     <div id="userDropdown" class="user-dropdown">
                         <div class="dropdown-item" onclick="navigateTo('setting')">⚙️ Cài đặt nhanh</div>
-                        <div class="dropdown-item" onclick="openChangeAvatar()">📷 Đổi ảnh đại diện</div>
+                        <div class="dropdown-item" onclick="triggerAvatarUpload()">📷 Đổi ảnh đại diện</div>
                         <div class="dropdown-item logout" onclick="logout()">🚪 Đăng xuất</div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Hidden input chọn ảnh avatar -->
+        <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarSelect(event)">
 
         <div class="content-container">
             <!-- TAB HOME (MỘT SỐ ĐỒ CỦ CỦA LỚP) -->
@@ -205,8 +212,8 @@
                     <input type="text" id="settingNameInput" placeholder="Nhập tên mới...">
                 </div>
                 <div class="form-group">
-                    <label>URL Ảnh đại diện:</label>
-                    <input type="text" id="settingAvatarInput" placeholder="https://link-anh.com/avatar.jpg">
+                    <label>Tải ảnh đại diện từ thiết bị:</label>
+                    <button class="submit-btn" style="background:#555;" onclick="triggerAvatarUpload()">📷 Chọn ảnh mới từ điện thoại</button>
                 </div>
                 <button class="submit-btn" onclick="saveSettings()">Lưu Thay Đổi</button>
             </div>
@@ -289,8 +296,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>URL Hình ảnh sản phẩm (*)</label>
-                <input type="text" id="postImage" placeholder="https://anh-san-pham.jpg">
+                <label>Hình ảnh sản phẩm (*)</label>
+                <input type="file" id="postImageFile" accept="image/*" onchange="previewPostImage(event)">
+                <div class="image-preview-container">
+                    <img id="postImagePreview" class="image-preview" src="" alt="Ảnh xem trước">
+                </div>
             </div>
             <div class="form-group">
                 <label>Mô tả chi tiết / Lý do bán (*)</label>
@@ -304,6 +314,7 @@
         let generatedOTP = null;
         let currentUser = { name: "User", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
         let products = JSON.parse(localStorage.getItem('class_products') || '[]');
+        let currentUploadedImageBase64 = '';
 
         // TỰ ĐỘNG KIỂM TRA LƯU ĐĂNG NHẬP
         window.onload = function() {
@@ -384,7 +395,6 @@
             document.getElementById('userNameDisplay').innerText = currentUser.name;
             document.getElementById('userAvatar').src = currentUser.avatar;
             document.getElementById('settingNameInput').value = currentUser.name;
-            document.getElementById('settingAvatarInput').value = currentUser.avatar;
             navigateTo('home', document.querySelector('.menu-item'));
         }
 
@@ -395,22 +405,55 @@
             window.history.pushState({}, "", "/");
         }
 
+        /* XỬ LÝ CHỌN ẢNH TỪ MÁY / ĐIỆN THOẠI */
+        function previewPostImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUploadedImageBase64 = e.target.result;
+                    const imgPreview = document.getElementById('postImagePreview');
+                    imgPreview.src = currentUploadedImageBase64;
+                    imgPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function triggerAvatarUpload() {
+            document.getElementById('avatarFileInput').click();
+        }
+
+        function handleAvatarSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUser.avatar = e.target.result;
+                    document.getElementById('userAvatar').src = currentUser.avatar;
+                    localStorage.setItem('saved_user', JSON.stringify(currentUser));
+                    alert('Đã cập nhật ảnh đại diện thành công!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
         /* ĐĂNG BÀI BÁN ĐỒ CỦ & HIỂN THỊ */
         function submitPost() {
             const title = document.getElementById('postTitle').value.trim();
             const price = document.getElementById('postPrice').value.trim();
             const status = document.getElementById('postStatus').value;
-            const image = document.getElementById('postImage').value.trim() || 'https://via.placeholder.com/300x200?text=No+Image';
             const desc = document.getElementById('postDesc').value.trim();
 
             if (!title || !price || !desc) return alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+            if (!currentUploadedImageBase64) return alert('Vui lòng chọn hình ảnh sản phẩm từ máy!');
 
             const newProduct = {
                 id: Date.now(),
                 title: title,
                 price: parseInt(price).toLocaleString('vi-VN') + ' VNĐ',
                 status: status,
-                image: image,
+                image: currentUploadedImageBase64,
                 desc: desc,
                 seller: currentUser.name,
                 time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' - ' + new Date().toLocaleDateString('vi-VN')
@@ -426,7 +469,9 @@
             document.getElementById('postTitle').value = '';
             document.getElementById('postPrice').value = '';
             document.getElementById('postDesc').value = '';
-            document.getElementById('postImage').value = '';
+            document.getElementById('postImageFile').value = '';
+            document.getElementById('postImagePreview').style.display = 'none';
+            currentUploadedImageBase64 = '';
         }
 
         function renderProducts() {
@@ -444,7 +489,7 @@
             products.forEach(p => {
                 html += `
                     <div class="product-card">
-                        <img src="${p.image}" class="product-img" alt="${p.title}" onerror="this.src='https://via.placeholder.com/300x200?text=Loi+Anh'">
+                        <img src="${p.image}" class="product-img" alt="${p.title}">
                         <div class="product-body">
                             <div class="product-title">${p.title}</div>
                             <div class="product-price">${p.price}</div>
@@ -483,22 +528,12 @@
             msgBox.scrollTop = msgBox.scrollHeight;
         }
 
-        function openChangeAvatar() {
-            const newUrl = prompt("Nhập đường dẫn URL ảnh đại diện mới:", currentUser.avatar);
-            if (newUrl) {
-                currentUser.avatar = newUrl;
-                document.getElementById('userAvatar').src = newUrl;
-            }
-        }
-
         function saveSettings() {
             const newName = document.getElementById('settingNameInput').value.trim();
-            const newAvatar = document.getElementById('settingAvatarInput').value.trim();
             if (newName) currentUser.name = newName;
-            if (newAvatar) currentUser.avatar = newAvatar;
 
             document.getElementById('userNameDisplay').innerText = currentUser.name;
-            document.getElementById('userAvatar').src = currentUser.avatar;
+            localStorage.setItem('saved_user', JSON.stringify(currentUser));
             alert('Lưu cài đặt thành công!');
         }
 
