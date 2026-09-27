@@ -23,8 +23,8 @@
         #appScreen { display: none; width: 100%; flex-direction: column; align-items: center; }
         .navbar-container { width: 100%; display: flex; justify-content: center; position: relative; }
         .navbar { background-color: #4b3ac8; width: 98%; max-width: 1200px; padding: 10px 25px; border-radius: 45px; display: flex; justify-content: space-between; align-items: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .menu-left { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-        .menu-item { color: #ffffff; text-decoration: none; font-size: 1.05rem; padding: 8px 16px; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+        .menu-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .menu-item { color: #ffffff; text-decoration: none; font-size: 1rem; padding: 8px 14px; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
         .menu-item.active { border: 2px solid #111; background-color: rgba(255, 255, 255, 0.2); color: #111; }
 
         /* HEADER USER PROFILE */
@@ -33,7 +33,7 @@
         .avatar-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
         .user-name { font-weight: bold; font-size: 0.95rem; }
 
-        /* MENU TÙY CHỌN POPUP */
+        /* MENU POPUP */
         .user-dropdown { display: none; position: absolute; right: 0; top: 50px; background: white; color: #333; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); width: 180px; overflow: hidden; z-index: 100; }
         .user-dropdown.show { display: block; }
         .dropdown-item { padding: 12px 15px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #eee; transition: background 0.2s; }
@@ -45,11 +45,29 @@
         .tab-content { display: none; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: left; }
         .tab-content.active { display: block; }
 
-        /* PHẦN BAN ĐỒ CỦ & HOME FEED */
-        .feed-card { background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-        .feed-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .feed-price { color: #27ae60; font-weight: bold; font-size: 1.1rem; margin-top: 5px; }
-        .add-post-btn { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 5px; }
+        /* DANH SÁCH BÁN ĐỒ CỦ */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 20px; }
+        .product-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        .product-img { width: 100%; height: 180px; object-fit: cover; background: #eee; }
+        .product-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .product-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 6px; color: #111; }
+        .product-price { color: #27ae60; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px; }
+        .product-status { font-size: 0.85rem; padding: 4px 8px; border-radius: 6px; background: #eef2ff; color: #4b3ac8; display: inline-block; margin-bottom: 8px; width: fit-content; }
+        .product-desc { font-size: 0.9rem; color: #555; margin-bottom: 15px; flex: 1; }
+        .product-seller { font-size: 0.8rem; color: #888; margin-bottom: 12px; display: flex; justify-content: space-between; }
+        .buy-btn { background: #4b3ac8; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center; width: 100%; }
+
+        .add-post-btn { background: #27ae60; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 1rem; }
+
+        /* BẢNG CHAT MUA BÁN */
+        .chat-box { border: 1px solid #ddd; border-radius: 12px; height: 350px; display: flex; flex-direction: column; overflow: hidden; }
+        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
+        .msg { max-width: 70%; padding: 10px 14px; border-radius: 12px; font-size: 0.95rem; }
+        .msg.me { background: #4b3ac8; color: white; align-self: flex-end; }
+        .msg.other { background: #e4e6eb; color: #111; align-self: flex-start; }
+        .chat-input-area { display: flex; border-top: 1px solid #ddd; }
+        .chat-input-area input { flex: 1; border: none; padding: 12px; outline: none; }
+        .chat-input-area button { background: #4b3ac8; color: white; border: none; padding: 0 20px; font-weight: bold; cursor: pointer; }
 
         /* VÒNG QUAY MAY MẮN */
         .wheel-layout { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: center; }
@@ -61,13 +79,14 @@
 
         /* MODALS */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 360px; position: relative; }
+        .modal-content { background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 420px; position: relative; max-height: 90vh; overflow-y: auto; }
         .modal-title { text-align: center; margin-bottom: 15px; font-size: 1.3rem; }
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
-        .form-group input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
-        .submit-btn { width: 100%; padding: 10px; background-color: #4b3ac8; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.95rem; }
+        .submit-btn { width: 100%; padding: 12px; background-color: #4b3ac8; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
+        .remember-box { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -91,6 +110,7 @@
                 <div class="menu-left">
                     <span class="menu-item active" onclick="navigateTo('home', this)">home</span>
                     <span class="menu-item" onclick="navigateTo('bando', this)">bán đồ cũ</span>
+                    <span class="menu-item" onclick="navigateTo('chat', this)">tin nhắn</span>
                     <span class="menu-item" onclick="navigateTo('danhsach', this)">danh sách lớp</span>
                     <span class="menu-item" onclick="navigateTo('vongquay', this)">vòng quay may mắn</span>
                 </div>
@@ -112,42 +132,41 @@
         </div>
 
         <div class="content-container">
-            <!-- TAB HOME (BẢNG TIN MUA BÁN) -->
+            <!-- TAB HOME (MỘT SỐ ĐỒ CỦ CỦA LỚP) -->
             <div id="home" class="tab-content active">
-                <h2 style="margin-bottom: 20px;">📢 Bảng Tin Lớp</h2>
-                
-                <div class="feed-card">
-                    <div class="feed-header">
-                        <img src="https://i.pravatar.cc/100?img=12" class="avatar-img" alt="User">
-                        <div>
-                            <strong>Nguyễn Văn A</strong>
-                            <div style="font-size: 0.8rem; color: #777;">2 giờ trước</div>
-                        </div>
-                    </div>
-                    <p>Mình đang dư một cuốn sách Toán nâng cao lớp 8 còn rất mới, bạn nào cần nhắn mình nhé!</p>
-                    <div class="feed-price">Giá: 30.000 VNĐ</div>
-                </div>
+                <h2>📢 Một số đồ cũ của lớp</h2>
+                <p style="color: #666; margin-top: 5px; font-size: 0.95rem;">Bài đăng thanh lý mới nhất từ các thành viên trong lớp.</p>
 
-                <div class="feed-card">
-                    <div class="feed-header">
-                        <img src="https://i.pravatar.cc/100?img=32" class="avatar-img" alt="User">
-                        <div>
-                            <strong>Trần Thị B</strong>
-                            <div style="font-size: 0.8rem; color: #777;">5 giờ trước</div>
-                        </div>
-                    </div>
-                    <p>Cần pass lại bộ thước kẻ + compa học vẽ kĩ thuật chưa qua sử dụng.</p>
-                    <div class="feed-price">Giá: 15.000 VNĐ</div>
+                <div id="homeProductContainer" class="product-grid">
+                    <!-- Tự động đổ dữ liệu sản phẩm mới vào đây -->
                 </div>
             </div>
 
             <!-- TAB BÁN ĐỒ CỦ -->
             <div id="bando" class="tab-content">
-                <h2>🛒 Chợ Bán Đồ Cũ</h2>
-                <br>
-                <button class="add-post-btn" onclick="alert('Tính năng đăng tin sắp hoàn thiện!')">➕ Đăng bài mới</button>
-                <div style="text-align: center; color: #666; padding: 40px 0;">
-                    <p style="font-size: 1.1rem;">Chưa có ai đăng bán đồ cũ ở đây hết cả.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>🛒 Chợ Bán Đồ Cũ</h2>
+                    <button class="add-post-btn" onclick="openModal('postModal')">➕ Đăng bài mới</button>
+                </div>
+
+                <div id="bandoProductContainer" class="product-grid">
+                    <!-- Sản phẩm sẽ hiện ở đây -->
+                </div>
+            </div>
+
+            <!-- TAB TIN NHẮN (CHAT MUA ĐỒ) -->
+            <div id="chat" class="tab-content">
+                <h2>💬 Khung Chat Mua Bán</h2>
+                <p id="chatWithTitle" style="color: #666; margin-bottom: 15px;">Chọn một sản phẩm để nhắn tin thỏa thuận với người bán.</p>
+                
+                <div class="chat-box">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="msg other">Hãy chọn sản phẩm để bắt đầu trò chuyện hẹn giao hàng trên lớp!</div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatInput" placeholder="Nhập tin nhắn..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                        <button onclick="sendChatMessage()">Gửi</button>
+                    </div>
                 </div>
             </div>
 
@@ -207,6 +226,10 @@
                 <label>Mật khẩu</label>
                 <input type="password" id="loginPass" placeholder="Nhập mật khẩu...">
             </div>
+            <div class="remember-box">
+                <input type="checkbox" id="rememberLogin" checked>
+                <label for="rememberLogin">Lưu thông tin đăng nhập</label>
+            </div>
             <button class="submit-btn" onclick="handleLogin()">Đăng Nhập</button>
         </div>
     </div>
@@ -228,6 +251,10 @@
                 <label>Mật khẩu (*)</label>
                 <input type="password" id="regPass" placeholder="Tạo mật khẩu...">
             </div>
+            <div class="remember-box">
+                <input type="checkbox" id="rememberReg" checked>
+                <label for="rememberReg">Lưu thông tin đăng nhập</label>
+            </div>
             <button class="submit-btn" onclick="sendOTP()">Gửi Mã Xác Nhận (OTP)</button>
 
             <div id="otpSection" style="display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
@@ -240,16 +267,57 @@
         </div>
     </div>
 
+    <!-- MODAL ĐĂNG BÀI BÁN ĐỒ CỦ -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('postModal')">&times;</span>
+            <h3 class="modal-title">Đăng Bài Bán Đồ Cũ</h3>
+            <div class="form-group">
+                <label>Tên món đồ (*)</label>
+                <input type="text" id="postTitle" placeholder="Ví dụ: Sách Toán 8, Hộp bút...">
+            </div>
+            <div class="form-group">
+                <label>Giá bán (VNĐ) (*)</label>
+                <input type="number" id="postPrice" placeholder="Ví dụ: 20000">
+            </div>
+            <div class="form-group">
+                <label>Tình trạng đồ (*)</label>
+                <select id="postStatus">
+                    <option value="Mới 100%">Mới 100%</option>
+                    <option value="Đã sử dụng (Còn tốt)">Đã sử dụng (Còn tốt)</option>
+                    <option value="Đã sử dụng (Có lỗi nhẹ)">Đã sử dụng (Có lỗi nhẹ)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>URL Hình ảnh sản phẩm (*)</label>
+                <input type="text" id="postImage" placeholder="https://anh-san-pham.jpg">
+            </div>
+            <div class="form-group">
+                <label>Mô tả chi tiết / Lý do bán (*)</label>
+                <textarea id="postDesc" rows="3" placeholder="Mô tả tình trạng, có bị hỏng gì không..."></textarea>
+            </div>
+            <button class="submit-btn" style="background-color: #27ae60;" onclick="submitPost()">Đăng Lên Chợ</button>
+        </div>
+    </div>
+
     <script>
         let generatedOTP = null;
         let currentUser = { name: "User", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
+        let products = JSON.parse(localStorage.getItem('class_products') || '[]');
+
+        // TỰ ĐỘNG KIỂM TRA LƯU ĐĂNG NHẬP
+        window.onload = function() {
+            const savedUser = localStorage.getItem('saved_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                loginSuccess(false);
+            }
+            renderProducts();
+        };
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        function toggleDropdown() {
-            document.getElementById('userDropdown').classList.toggle('show');
-        }
+        function toggleDropdown() { document.getElementById('userDropdown').classList.toggle('show'); }
 
         window.onclick = function(event) {
             if (!event.target.closest('.user-profile-wrapper')) {
@@ -270,6 +338,7 @@
             if (path === 'vongquay') setTimeout(drawWheel, 100);
         }
 
+        /* ĐĂNG KÝ & ĐĂNG NHẬP */
         function sendOTP() {
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
@@ -288,7 +357,8 @@
             if (userOTP == generatedOTP) {
                 alert('Đăng ký thành công!');
                 closeModal('registerModal');
-                loginSuccess();
+                const isRemember = document.getElementById('rememberReg').checked;
+                loginSuccess(isRemember);
             } else {
                 alert('Mã OTP không đúng!');
             }
@@ -301,10 +371,14 @@
             alert('Đăng nhập thành công!');
             closeModal('loginModal');
             currentUser.name = email.split('@')[0];
-            loginSuccess();
+            const isRemember = document.getElementById('rememberLogin').checked;
+            loginSuccess(isRemember);
         }
 
-        function loginSuccess() {
+        function loginSuccess(saveToLocal = true) {
+            if (saveToLocal) {
+                localStorage.setItem('saved_user', JSON.stringify(currentUser));
+            }
             document.getElementById('guestScreen').style.display = 'none';
             document.getElementById('appScreen').style.display = 'flex';
             document.getElementById('userNameDisplay').innerText = currentUser.name;
@@ -315,9 +389,98 @@
         }
 
         function logout() {
+            localStorage.removeItem('saved_user');
             document.getElementById('appScreen').style.display = 'none';
             document.getElementById('guestScreen').style.display = 'flex';
             window.history.pushState({}, "", "/");
+        }
+
+        /* ĐĂNG BÀI BÁN ĐỒ CỦ & HIỂN THỊ */
+        function submitPost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const price = document.getElementById('postPrice').value.trim();
+            const status = document.getElementById('postStatus').value;
+            const image = document.getElementById('postImage').value.trim() || 'https://via.placeholder.com/300x200?text=No+Image';
+            const desc = document.getElementById('postDesc').value.trim();
+
+            if (!title || !price || !desc) return alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+
+            const newProduct = {
+                id: Date.now(),
+                title: title,
+                price: parseInt(price).toLocaleString('vi-VN') + ' VNĐ',
+                status: status,
+                image: image,
+                desc: desc,
+                seller: currentUser.name,
+                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' - ' + new Date().toLocaleDateString('vi-VN')
+            };
+
+            products.unshift(newProduct);
+            localStorage.setItem('class_products', JSON.stringify(products));
+            renderProducts();
+            closeModal('postModal');
+            alert('Đăng bài bán đồ cũ thành công!');
+
+            // Reset form
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postPrice').value = '';
+            document.getElementById('postDesc').value = '';
+            document.getElementById('postImage').value = '';
+        }
+
+        function renderProducts() {
+            const homeContainer = document.getElementById('homeProductContainer');
+            const bandoContainer = document.getElementById('bandoProductContainer');
+
+            if (products.length === 0) {
+                const emptyHTML = `<div style="grid-column: 1/-1; text-align: center; color: #666; padding: 40px 0;">Hiện tại chưa có ai đăng bán đồ cũ cả.</div>`;
+                homeContainer.innerHTML = emptyHTML;
+                bandoContainer.innerHTML = emptyHTML;
+                return;
+            }
+
+            let html = '';
+            products.forEach(p => {
+                html += `
+                    <div class="product-card">
+                        <img src="${p.image}" class="product-img" alt="${p.title}" onerror="this.src='https://via.placeholder.com/300x200?text=Loi+Anh'">
+                        <div class="product-body">
+                            <div class="product-title">${p.title}</div>
+                            <div class="product-price">${p.price}</div>
+                            <span class="product-status">📌 ${p.status}</span>
+                            <div class="product-desc">${p.desc}</div>
+                            <div class="product-seller">
+                                <span>👤 ${p.seller}</span>
+                                <span>🕒 ${p.time}</span>
+                            </div>
+                            <button class="buy-btn" onclick="startChat('${p.seller}', '${p.title}')">💬 Nhắn tin mua</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            homeContainer.innerHTML = html;
+            bandoContainer.innerHTML = html;
+        }
+
+        /* CHAT TRỰC TIẾP MUA BÁN */
+        function startChat(sellerName, itemTitle) {
+            navigateTo('chat');
+            document.getElementById('chatWithTitle').innerText = `Đang nhắn tin với người bán: ${sellerName} (Sản phẩm: ${itemTitle})`;
+            const msgBox = document.getElementById('chatMessages');
+            msgBox.innerHTML = `<div class="msg other">Chào bạn, mình muốn mua món đồ "<strong>${itemTitle}</strong>" của bạn. Hẹn gặp bạn ở lớp nhé!</div>`;
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const msgBox = document.getElementById('chatMessages');
+            msgBox.innerHTML += `<div class="msg me">${text}</div>`;
+            input.value = '';
+            msgBox.scrollTop = msgBox.scrollHeight;
         }
 
         function openChangeAvatar() {
