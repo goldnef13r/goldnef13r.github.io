@@ -1,613 +1,279 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goldnef13r Website</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { background-color: #00a8ec; min-height: 100vh; padding: 15px; color: #1a1a1a; display: flex; flex-direction: column; align-items: center; }
-
-        /* MÀN HÌNH CHỜ CHƯA ĐĂNG NHẬP */
-        #guestScreen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 85vh; text-align: center; }
-        .guest-card { background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); max-width: 400px; width: 90%; }
-        .guest-title { font-size: 1.6rem; color: #4b3ac8; margin-bottom: 10px; }
-        .guest-desc { color: #666; margin-bottom: 25px; font-size: 0.95rem; }
-        .guest-btns { display: flex; gap: 15px; justify-content: center; }
-        .guest-btn { padding: 12px 24px; border-radius: 12px; border: 2px solid #111; font-size: 1rem; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
-        .btn-login { background-color: #4b3ac8; color: white; }
-        .btn-reg { background-color: #31219b; color: white; }
-        .guest-btn:hover { transform: scale(1.05); }
-
-        /* TRANG WEB SAU ĐĂNG NHẬP */
-        #appScreen { display: none; width: 100%; flex-direction: column; align-items: center; }
-        .navbar-container { width: 100%; display: flex; justify-content: center; position: relative; }
-        .navbar { background-color: #4b3ac8; width: 98%; max-width: 1200px; padding: 10px 25px; border-radius: 45px; display: flex; justify-content: space-between; align-items: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .menu-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .menu-item { color: #ffffff; text-decoration: none; font-size: 1rem; padding: 8px 14px; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
-        .menu-item.active { border: 2px solid #111; background-color: rgba(255, 255, 255, 0.2); color: #111; }
-
-        /* HEADER USER PROFILE */
-        .user-profile-wrapper { position: relative; }
-        .user-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px 10px; border-radius: 30px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); }
-        .avatar-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
-        .user-name { font-weight: bold; font-size: 0.95rem; }
-
-        /* MENU POPUP */
-        .user-dropdown { display: none; position: absolute; right: 0; top: 50px; background: white; color: #333; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); width: 180px; overflow: hidden; z-index: 100; }
-        .user-dropdown.show { display: block; }
-        .dropdown-item { padding: 12px 15px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #eee; transition: background 0.2s; }
-        .dropdown-item:hover { background: #f0f0f0; }
-        .dropdown-item.logout { color: #e74c3c; border-bottom: none; font-weight: bold; }
-
-        /* CONTENT CONTAINER */
-        .content-container { margin-top: 25px; text-align: center; width: 100%; max-width: 900px; padding-bottom: 40px; }
-        .tab-content { display: none; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: left; }
-        .tab-content.active { display: block; }
-
-        /* DANH SÁCH BÁN ĐỒ CỦ */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 20px; }
-        .product-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-        .product-img { width: 100%; height: 180px; object-fit: cover; background: #eee; }
-        .product-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
-        .product-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 6px; color: #111; }
-        .product-price { color: #27ae60; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px; }
-        .product-status { font-size: 0.85rem; padding: 4px 8px; border-radius: 6px; background: #eef2ff; color: #4b3ac8; display: inline-block; margin-bottom: 8px; width: fit-content; }
-        .product-desc { font-size: 0.9rem; color: #555; margin-bottom: 15px; flex: 1; }
-        .product-seller { font-size: 0.8rem; color: #888; margin-bottom: 12px; display: flex; justify-content: space-between; }
-        .buy-btn { background: #4b3ac8; color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center; width: 100%; }
-
-        .add-post-btn { background: #27ae60; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 1rem; }
-
-        .image-preview-container { margin-top: 10px; text-align: center; }
-        .image-preview { max-width: 100%; max-height: 180px; border-radius: 8px; display: none; margin: 0 auto; border: 1px solid #ddd; }
-
-        /* BẢNG CHAT MUA BÁN */
-        .chat-box { border: 1px solid #ddd; border-radius: 12px; height: 350px; display: flex; flex-direction: column; overflow: hidden; }
-        .chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
-        .msg { max-width: 70%; padding: 10px 14px; border-radius: 12px; font-size: 0.95rem; }
-        .msg.me { background: #4b3ac8; color: white; align-self: flex-end; }
-        .msg.other { background: #e4e6eb; color: #111; align-self: flex-start; }
-        .chat-input-area { display: flex; border-top: 1px solid #ddd; }
-        .chat-input-area input { flex: 1; border: none; padding: 12px; outline: none; }
-        .chat-input-area button { background: #4b3ac8; color: white; border: none; padding: 0 20px; font-weight: bold; cursor: pointer; }
-
-        /* VÒNG QUAY MAY MẮN */
-        .wheel-layout { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: center; }
-        .wheel-box { position: relative; width: 320px; height: 320px; }
-        canvas { width: 300px; height: 300px; }
-        .pointer { position: absolute; top: -10px; left: 140px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 20px solid #e74c3c; z-index: 10; }
-        .spin-btn { width: 100%; background: #e67e22; color: white; border: none; padding: 12px; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .wheel-input { width: 100%; max-width: 300px; height: 180px; padding: 10px; border-radius: 10px; border: 1px solid #ccc; font-size: 0.95rem; }
-
-        /* MODALS */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 25px; border-radius: 16px; width: 90%; max-width: 420px; position: relative; max-height: 90vh; overflow-y: auto; }
-        .modal-title { text-align: center; margin-bottom: 15px; font-size: 1.3rem; }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 0.95rem; }
-        .submit-btn { width: 100%; padding: 12px; background-color: #4b3ac8; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; color: #888; }
-        .remember-box { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; margin-top: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ClassOS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial,sans-serif}
+html,body{height:100%;overflow:hidden}
+body{background:linear-gradient(135deg,#00a8ec,#4b3ac8);color:#1a1a1a}
+[hidden]{display:none!important}
+button{cursor:pointer;font-weight:700}
+.btn{background:#4b3ac8;color:#fff;border:0;border-radius:10px;padding:11px 16px;width:100%;margin-top:10px}
+.btn.alt{background:#e8e8f4;color:#31219b}
+input,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;margin-top:6px}
+label{font-size:.9rem;font-weight:700}
+#auth{height:100%;display:flex;align-items:center;justify-content:center;padding:15px}
+.card{background:#fff;border-radius:20px;padding:28px;width:100%;max-width:400px;box-shadow:0 8px 25px rgba(0,0,0,.25)}
+.card h2{color:#4b3ac8;margin-bottom:14px;text-align:center}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tabs button{flex:1;padding:9px;border:2px solid #4b3ac8;border-radius:10px;background:#fff;color:#4b3ac8}
+.tabs button.on{background:#4b3ac8;color:#fff}
+.row{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.9rem}
+.row input{width:auto;margin:0}
+#msg{margin-top:10px;font-size:.9rem;min-height:1.2em;color:#c0392b}
+#msg.ok{color:#1e8449}
+/* OS */
+#os{height:100%;position:relative}
+#desk{position:absolute;inset:0 0 48px 0;padding:16px;display:flex;flex-direction:column;flex-wrap:wrap;gap:10px;align-content:flex-start}
+.ico{width:84px;background:none;border:0;color:#fff;font-size:.8rem;text-align:center;padding:8px 4px;border-radius:10px}
+.ico:hover{background:rgba(255,255,255,.18)}
+.ico b{display:block;font-size:2.2rem;line-height:1.2}
+#bar{position:absolute;left:0;right:0;bottom:0;height:48px;background:#31219b;color:#fff;display:flex;align-items:center;gap:6px;padding:0 10px}
+#tasks{flex:1;display:flex;gap:6px;overflow:auto}
+#tasks button{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;padding:6px 12px;white-space:nowrap}
+#tasks button.on{background:rgba(255,255,255,.35)}
+#clock{font-size:.85rem;white-space:nowrap}
+.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:460px;max-width:100vw;height:420px;max-height:calc(100% - 48px)}
+.win header{background:#4b3ac8;color:#fff;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;cursor:move;touch-action:none;user-select:none}
+.win header button{background:#e74c3c;color:#fff;border:0;border-radius:6px;width:26px;height:26px}
+.win .body{padding:14px;overflow:auto;flex:1}
+@media(max-width:600px){.win{left:0!important;top:0!important;width:100%;height:calc(100% - 48px);max-height:none;border-radius:0}}
+.bar{height:12px;background:#e4e6eb;border-radius:6px;overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;background:#4b3ac8}
+.file{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #eee;font-size:.9rem}
+.file span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.file button{border:0;background:#eef;color:#31219b;border-radius:6px;padding:5px 9px}
+.file button.del{background:#fdecea;color:#c0392b}
+.small{font-size:.85rem;color:#666}
+canvas{display:block;margin:0 auto;max-width:100%}
+</style>
 </head>
 <body>
 
-    <!-- 1. MÀN HÌNH CHỜ CHƯA ĐĂNG NHẬP -->
-    <div id="guestScreen">
-        <div class="guest-card">
-            <h2 class="guest-title">Chào Mừng Bạn!</h2>
-            <p class="guest-desc">Vui lòng đăng nhập hoặc đăng ký tài khoản để tiếp tục truy cập vào hệ thống.</p>
-            <div class="guest-btns">
-                <button class="guest-btn btn-login" onclick="openModal('loginModal')">Đăng Nhập</button>
-                <button class="guest-btn btn-reg" onclick="openModal('registerModal')">Đăng Ký</button>
-            </div>
-        </div>
-    </div>
+<!-- ĐĂNG NHẬP / ĐĂNG KÝ -->
+<div id="auth">
+ <div class="card">
+  <h2>ClassOS</h2>
+  <div class="tabs">
+   <button id="tLogin" class="on" onclick="tab('login')">Đăng nhập</button>
+   <button id="tReg" onclick="tab('reg')">Đăng ký</button>
+  </div>
 
-    <!-- 2. HỆ THỐNG TRANG WEB SAU ĐĂNG NHẬP -->
-    <div id="appScreen">
-        <div class="navbar-container">
-            <div class="navbar">
-                <div class="menu-left">
-                    <span class="menu-item active" onclick="navigateTo('home', this)">home</span>
-                    <span class="menu-item" onclick="navigateTo('bando', this)">bán đồ cũ</span>
-                    <span class="menu-item" onclick="navigateTo('chat', this)">tin nhắn</span>
-                    <span class="menu-item" onclick="navigateTo('danhsach', this)">danh sách lớp</span>
-                    <span class="menu-item" onclick="navigateTo('vongquay', this)">vòng quay may mắn</span>
-                </div>
+  <div id="fLogin">
+   <label>Gmail</label><input id="lEmail" type="email" autocomplete="email" placeholder="ten@gmail.com">
+   <label style="display:block;margin-top:10px">Mật khẩu</label><input id="lPass" type="password" autocomplete="current-password">
+   <button class="btn" onclick="doLogin()">Đăng nhập</button>
+  </div>
 
-                <!-- USER AVATAR & DROPDOWN MENU -->
-                <div class="user-profile-wrapper">
-                    <div class="user-profile" onclick="toggleDropdown()">
-                        <img id="userAvatar" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="avatar-img" alt="Avatar">
-                        <span id="userNameDisplay" class="user-name">User</span>
-                    </div>
+  <div id="fReg" hidden>
+   <label>Gmail</label><input id="rEmail" type="email" autocomplete="email" placeholder="ten@gmail.com">
+   <button class="btn alt" onclick="sendCode()">Gửi mã xác nhận về Gmail</button>
+   <div id="rStep2" hidden>
+    <label style="display:block;margin-top:12px">Mã xác nhận (từ Gmail)</label><input id="rCode" inputmode="numeric" placeholder="Nhập mã">
+    <label style="display:block;margin-top:10px">Tạo mật khẩu (tối thiểu 6 ký tự)</label><input id="rPass" type="password" autocomplete="new-password">
+    <button class="btn" onclick="doRegister()">Hoàn tất đăng ký</button>
+   </div>
+  </div>
 
-                    <div id="userDropdown" class="user-dropdown">
-                        <div class="dropdown-item" onclick="navigateTo('setting')">⚙️ Cài đặt nhanh</div>
-                        <div class="dropdown-item" onclick="triggerAvatarUpload()">📷 Đổi ảnh đại diện</div>
-                        <div class="dropdown-item logout" onclick="logout()">🚪 Đăng xuất</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="row"><input type="checkbox" id="remember" checked><label for="remember" style="font-weight:400">Luôn đăng nhập trên thiết bị này</label></div>
+  <div id="msg"></div>
+ </div>
+</div>
 
-        <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarSelect(event)">
+<!-- HỆ ĐIỀU HÀNH -->
+<div id="os" hidden>
+ <div id="desk"></div>
+ <div id="bar"><div id="tasks"></div><span id="clock"></span></div>
+</div>
 
-        <div class="content-container">
-            <!-- TAB HOME -->
-            <div id="home" class="tab-content active">
-                <h2>📢 Một số đồ cũ của lớp</h2>
-                <p style="color: #666; margin-top: 5px; font-size: 0.95rem;">Bài đăng thanh lý mới nhất từ các thành viên trong lớp.</p>
-                <div id="homeProductContainer" class="product-grid"></div>
-            </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* ====== ĐIỀN 2 DÒNG NÀY (xem HUONG-DAN.md) ====== */
+const SUPABASE_URL = 'https://XXXX.supabase.co';
+const SUPABASE_KEY = 'ANON_PUBLIC_KEY';
+/* ================================================ */
 
-            <!-- TAB BÁN ĐỒ CỦ -->
-            <div id="bando" class="tab-content">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2>🛒 Chợ Bán Đồ Cũ</h2>
-                    <button class="add-post-btn" onclick="openModal('postModal')">➕ Đăng bài mới</button>
-                </div>
-                <div id="bandoProductContainer" class="product-grid"></div>
-            </div>
+const PLANS = { free: 5, pro: 15, promax: 50 }; // GB
+const GB = 1024 ** 3;
+const $ = id => document.getElementById(id);
+let sb, user;
+const mk = st => supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storage: st, persistSession: true, autoRefreshToken: true } });
+const store = () => $('remember').checked ? localStorage : sessionStorage;
+const say = (t, ok) => { $('msg').textContent = t; $('msg').className = ok ? 'ok' : ''; };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-            <!-- TAB TIN NHẮN -->
-            <div id="chat" class="tab-content">
-                <h2>💬 Khung Chat Mua Bán</h2>
-                <p id="chatWithTitle" style="color: #666; margin-bottom: 15px;">Chọn một sản phẩm để nhắn tin thỏa thuận với người bán.</p>
-                
-                <div class="chat-box">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="msg other">Hãy chọn sản phẩm để bắt đầu trò chuyện hẹn giao hàng trên lớp!</div>
-                    </div>
-                    <div class="chat-input-area">
-                        <input type="text" id="chatInput" placeholder="Nhập tin nhắn..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-                        <button onclick="sendChatMessage()">Gửi</button>
-                    </div>
-                </div>
-            </div>
+function tab(t) {
+  $('fLogin').hidden = t !== 'login'; $('fReg').hidden = t !== 'reg';
+  $('tLogin').className = t === 'login' ? 'on' : ''; $('tReg').className = t === 'reg' ? 'on' : '';
+  say('');
+}
 
-            <!-- TAB DANH SÁCH LỚP -->
-            <div id="danhsach" class="tab-content">
-                <h2>📋 Danh Sách Lớp</h2>
-                <div style="text-align: center; color: #666; padding: 50px 0;">
-                    <p style="font-size: 1.1rem; font-weight: bold;">Hiện tại chưa được cập nhật.</p>
-                </div>
-            </div>
+/* ---- Đăng ký: gửi mã OTP thật về Gmail ---- */
+async function sendCode() {
+  const email = $('rEmail').value.trim();
+  if (!email) return say('Nhập Gmail trước.');
+  sb = mk(store());
+  say('Đang gửi mã...', true);
+  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+  if (error) return say('Không gửi được mã: ' + error.message);
+  $('rStep2').hidden = false;
+  say('Đã gửi mã. Kiểm tra Gmail (cả mục Spam).', true);
+}
+async function doRegister() {
+  const email = $('rEmail').value.trim(), token = $('rCode').value.trim(), pw = $('rPass').value;
+  if (pw.length < 6) return say('Mật khẩu cần ít nhất 6 ký tự.');
+  const v = await sb.auth.verifyOtp({ email, token, type: 'email' });
+  if (v.error) return say('Mã sai hoặc đã hết hạn.');
+  const u = await sb.auth.updateUser({ password: pw });
+  if (u.error) return say('Không lưu được mật khẩu: ' + u.error.message);
+  enter(v.data.session);
+}
 
-            <!-- TAB VÒNG QUAY MAY MẮN -->
-            <div id="vongquay" class="tab-content">
-                <h2>🎡 Vòng Quay May Mắn</h2>
-                <p style="margin-bottom: 20px; color: #666;">Nhập danh sách tùy chọn (Mỗi dòng là 1 ô), sau đó bấm Quay!</p>
-                
-                <div class="wheel-layout">
-                    <div>
-                        <textarea id="wheelList" class="wheel-input" onkeyup="drawWheel()">Bạn A&#10;Bạn B&#10;Bạn C&#10;Bạn D&#10;Bạn E</textarea>
-                        <button class="spin-btn" onclick="spinWheel()">🚀 QUAY NGAY</button>
-                    </div>
+/* ---- Đăng nhập bằng mật khẩu ---- */
+async function doLogin() {
+  sb = mk(store());
+  const { data, error } = await sb.auth.signInWithPassword({ email: $('lEmail').value.trim(), password: $('lPass').value });
+  if (error) return say('Sai Gmail hoặc mật khẩu.');
+  enter(data.session);
+}
+async function logout() { await sb.auth.signOut(); location.reload(); }
 
-                    <div class="wheel-box">
-                        <div class="pointer"></div>
-                        <canvas id="wheelCanvas" width="300" height="300"></canvas>
-                    </div>
-                </div>
-            </div>
+/* ---- Vào hệ thống ---- */
+function enter(session) {
+  user = session.user;
+  $('auth').hidden = true; $('os').hidden = false;
+  buildDesktop();
+  tick(); setInterval(tick, 30000);
+}
+(async () => {
+  try {
+    sb = mk(localStorage);
+    const { data } = await sb.auth.getSession();
+    if (data.session) enter(data.session);
+  } catch (e) { say('Chưa cấu hình Supabase (xem HUONG-DAN.md).'); }
+})();
+const tick = () => $('clock').textContent = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
 
-            <!-- TAB CÀI ĐẶT -->
-            <div id="setting" class="tab-content">
-                <h2>⚙️ Cài Đặt Hệ Thống</h2>
-                <br>
-                <div class="form-group">
-                    <label>Tên hiển thị:</label>
-                    <input type="text" id="settingNameInput" placeholder="Nhập tên mới...">
-                </div>
-                <div class="form-group">
-                    <label>Tải ảnh đại diện từ thiết bị:</label>
-                    <button class="submit-btn" style="background:#555;" onclick="triggerAvatarUpload()">📷 Chọn ảnh mới từ điện thoại</button>
-                </div>
-                <button class="submit-btn" onclick="saveSettings()">Lưu Thay Đổi</button>
-            </div>
-        </div>
-    </div>
+/* ---- Cửa sổ ---- */
+const APPS = { files: ['📁', 'Tệp của tôi', filesApp], wheel: ['🎡', 'Vòng quay', wheelApp], settings: ['⚙️', 'Cài đặt', settingsApp] };
+const wins = {}; let z = 10;
+function buildDesktop() {
+  $('desk').innerHTML = Object.entries(APPS).map(([k, a]) => `<button class="ico" onclick="openApp('${k}')"><b>${a[0]}</b>${a[1]}</button>`).join('');
+}
+function openApp(k) {
+  if (wins[k]) return focusWin(k);
+  const a = APPS[k], w = document.createElement('div');
+  w.className = 'win';
+  w.style.left = (60 + Object.keys(wins).length * 30) + 'px'; w.style.top = (30 + Object.keys(wins).length * 30) + 'px';
+  w.innerHTML = `<header><span>${a[0]} ${a[1]}</span><button aria-label="Đóng">×</button></header><div class="body"></div>`;
+  $('os').appendChild(w);
+  const t = document.createElement('button'); t.textContent = a[0] + ' ' + a[1]; t.onclick = () => focusWin(k); $('tasks').appendChild(t);
+  wins[k] = { w, t };
+  w.querySelector('button').onclick = () => { w.remove(); t.remove(); delete wins[k]; };
+  w.addEventListener('pointerdown', () => focusWin(k));
+  drag(w, w.querySelector('header'));
+  focusWin(k);
+  a[2](w.querySelector('.body'));
+}
+function focusWin(k) {
+  Object.values(wins).forEach(o => o.t.className = '');
+  wins[k].w.style.zIndex = ++z; wins[k].t.className = 'on';
+}
+function drag(w, h) {
+  h.addEventListener('pointerdown', e => {
+    if (e.target.tagName === 'BUTTON' || innerWidth <= 600) return;
+    const dx = e.clientX - w.offsetLeft, dy = e.clientY - w.offsetTop;
+    const mv = ev => { w.style.left = Math.max(0, ev.clientX - dx) + 'px'; w.style.top = Math.max(0, ev.clientY - dy) + 'px'; };
+    const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); };
+    addEventListener('pointermove', mv); addEventListener('pointerup', up);
+  });
+}
 
-    <!-- MODAL ĐĂNG NHẬP -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
-            <h3 class="modal-title">Đăng Nhập</h3>
-            <div class="form-group">
-                <label>Gmail / Tên tài khoản</label>
-                <input type="text" id="loginEmail" placeholder="Nhập Gmail...">
-            </div>
-            <div class="form-group">
-                <label>Mật khẩu</label>
-                <input type="password" id="loginPass" placeholder="Nhập mật khẩu...">
-            </div>
-            <div class="remember-box">
-                <input type="checkbox" id="rememberLogin" checked>
-                <label for="rememberLogin">Lưu thông tin đăng nhập</label>
-            </div>
-            <button class="submit-btn" onclick="handleLogin()">Đăng Nhập</button>
-        </div>
-    </div>
+/* ---- App: Tệp (lưu trữ đám mây) ---- */
+const planGB = () => PLANS[(user.app_metadata || {}).plan] || PLANS.free;
+const fmt = b => b > GB ? (b / GB).toFixed(2) + ' GB' : b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.ceil(b / 1024) + ' KB';
+function filesApp(el) {
+  el.innerHTML = `<div id="q"></div><div class="bar"><i id="qb"></i></div>
+   <input type="file" id="up" multiple><div id="fl" style="margin-top:8px"></div>`;
+  const q = el.querySelector('#q'), qb = el.querySelector('#qb'), fl = el.querySelector('#fl'), up = el.querySelector('#up');
+  const bucket = () => sb.storage.from('files');
+  let used = 0;
+  async function load() {
+    const { data, error } = await bucket().list(user.id, { limit: 1000, sortBy: { column: 'created_at', order: 'desc' } });
+    if (error) { fl.textContent = 'Lỗi tải danh sách: ' + error.message; return; }
+    used = data.reduce((s, f) => s + ((f.metadata && f.metadata.size) || 0), 0);
+    q.innerHTML = `Đã dùng <b>${fmt(used)}</b> / ${planGB()} GB`;
+    qb.style.width = Math.min(100, used / (planGB() * GB) * 100) + '%';
+    fl.innerHTML = data.length ? '' : '<p class="small">Chưa có tệp nào. Chọn tệp ở trên để tải lên.</p>';
+    data.forEach(f => {
+      const r = document.createElement('div'); r.className = 'file';
+      r.innerHTML = `<span title="${esc(f.name)}">${esc(f.name)}</span><small>${fmt(f.metadata.size)}</small><button>Tải</button><button class="del">Xóa</button>`;
+      const [dl, del] = r.querySelectorAll('button');
+      dl.onclick = async () => { const s = await bucket().createSignedUrl(user.id + '/' + f.name, 60, { download: f.name }); if (s.data) location.href = s.data.signedUrl; };
+      del.onclick = async () => { if (confirm('Xóa "' + f.name + '"?')) { await bucket().remove([user.id + '/' + f.name]); load(); } };
+      fl.appendChild(r);
+    });
+  }
+  up.onchange = async () => {
+    for (const f of up.files) {
+      if (used + f.size > planGB() * GB) { alert('Hết dung lượng gói ' + planGB() + ' GB. Xóa bớt tệp hoặc nâng cấp gói.'); break; }
+      const name = f.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^\w.\-]+/g, '_');
+      const { error } = await bucket().upload(user.id + '/' + name, f, { upsert: true });
+      if (error) alert('Không tải lên được "' + f.name + '": ' + error.message); else used += f.size;
+    }
+    up.value = ''; load();
+  };
+  load();
+}
 
-    <!-- MODAL ĐĂNG KÝ -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('registerModal')">&times;</span>
-            <h3 class="modal-title">Đăng Ký Tài Khoản</h3>
-            <div class="form-group">
-                <label>Họ và Tên (*)</label>
-                <input type="text" id="regName" placeholder="Nhập họ tên...">
-            </div>
-            <div class="form-group">
-                <label>Gmail (*)</label>
-                <input type="email" id="regEmail" placeholder="example@gmail.com">
-            </div>
-            <div class="form-group">
-                <label>Mật khẩu (*)</label>
-                <input type="password" id="regPass" placeholder="Tạo mật khẩu...">
-            </div>
-            <button class="submit-btn" onclick="sendOTP()">Gửi Mã Xác Nhận (OTP)</button>
+/* ---- App: Vòng quay ---- */
+function wheelApp(el) {
+  el.innerHTML = `<canvas width="280" height="280"></canvas>
+   <textarea rows="4" style="margin-top:10px">Bạn A\nBạn B\nBạn C\nBạn D</textarea>
+   <button class="btn">Quay</button><p class="small" style="text-align:center;margin-top:8px"></p>`;
+  const c = el.querySelector('canvas'), x = c.getContext('2d'), ta = el.querySelector('textarea'), out = el.querySelector('p');
+  let rot = 0, busy = false;
+  const items = () => ta.value.split('\n').map(s => s.trim()).filter(Boolean);
+  function draw() {
+    const l = items(), n = l.length || 1, a = 2 * Math.PI / n;
+    x.clearRect(0, 0, 280, 280);
+    l.forEach((s, i) => {
+      x.beginPath(); x.moveTo(140, 140); x.arc(140, 140, 128, rot + i * a, rot + (i + 1) * a); x.fillStyle = `hsl(${i * 360 / n},70%,60%)`; x.fill();
+      x.save(); x.translate(140, 140); x.rotate(rot + (i + .5) * a); x.fillStyle = '#111'; x.font = '14px system-ui'; x.textAlign = 'right'; x.fillText(s.slice(0, 14), 118, 5); x.restore();
+    });
+    x.fillStyle = '#e74c3c'; x.beginPath(); x.moveTo(140, 18); x.lineTo(130, 0); x.lineTo(150, 0); x.fill();
+  }
+  ta.oninput = draw;
+  el.querySelector('.btn').onclick = () => {
+    const l = items(); if (busy || l.length < 2) return;
+    busy = true; out.textContent = '';
+    const start = rot, total = 2 * Math.PI * (5 + Math.random() * 3) + Math.random() * 2 * Math.PI, t0 = performance.now(), D = 4000;
+    (function step(t) {
+      const p = Math.min(1, (t - t0) / D); rot = start + total * (1 - Math.pow(1 - p, 3)); draw();
+      if (p < 1) return requestAnimationFrame(step);
+      const a = 2 * Math.PI / l.length, ang = ((1.5 * Math.PI - rot) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+      out.innerHTML = 'Kết quả: <b>' + esc(l[Math.floor(ang / a)]) + '</b>'; busy = false;
+    })(t0);
+  };
+  draw();
+}
 
-            <div id="otpSection" style="display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
-                <div class="form-group">
-                    <label>Mã xác nhận (OTP)</label>
-                    <input type="text" id="otpInput" placeholder="Nhập 6 số mã OTP...">
-                </div>
-                <button class="submit-btn" style="background-color: #28a745;" onclick="verifyOTP()">Xác Nhận Đăng Ký</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL ĐĂNG BÀI -->
-    <div id="postModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('postModal')">&times;</span>
-            <h3 class="modal-title">Đăng Bài Bán Đồ Cũ</h3>
-            <div class="form-group">
-                <label>Tên món đồ (*)</label>
-                <input type="text" id="postTitle" placeholder="Ví dụ: Sách Toán 8...">
-            </div>
-            <div class="form-group">
-                <label>Giá bán (VNĐ) (*)</label>
-                <input type="number" id="postPrice" placeholder="Ví dụ: 20000">
-            </div>
-            <div class="form-group">
-                <label>Tình trạng đồ (*)</label>
-                <select id="postStatus">
-                    <option value="Mới 100%">Mới 100%</option>
-                    <option value="Đã sử dụng (Còn tốt)">Đã sử dụng (Còn tốt)</option>
-                    <option value="Đã sử dụng (Có lỗi nhẹ)">Đã sử dụng (Có lỗi nhẹ)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Hình ảnh sản phẩm (*)</label>
-                <input type="file" id="postImageFile" accept="image/*" onchange="previewPostImage(event)">
-                <div class="image-preview-container">
-                    <img id="postImagePreview" class="image-preview" src="" alt="Ảnh xem trước">
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Mô tả chi tiết (*)</label>
-                <textarea id="postDesc" rows="3" placeholder="Mô tả tình trạng..."></textarea>
-            </div>
-            <button class="submit-btn" style="background-color: #27ae60;" onclick="submitPost()">Đăng Lên Chợ</button>
-        </div>
-    </div>
-
-    <script>
-        let generatedOTP = null;
-        let currentUser = { name: "User", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
-        let currentUploadedImageBase64 = '';
-
-        // Tải danh sách bài đăng mặc định (Tạo sẵn 1 bài mẫu giống bài test cũ)
-        const defaultProduct = {
-            id: 1,
-            title: "đây là 1 bài test tính năng web ko nhấp vào",
-            price: "10.000 VNĐ",
-            status: "Đã sử dụng (Còn tốt)",
-            image: "https://images.hdqwalls.com/wallpapers/windows-11-stock-dark-4k-mm.jpg",
-            desc: "abcdefghijk...",
-            seller: "goldnef13r",
-            time: "20:55 - 27/9/2026"
-        };
-
-        let products = JSON.parse(localStorage.getItem('class_products') || 'null');
-        if (!products || products.length === 0) {
-            products = [defaultProduct];
-            localStorage.setItem('class_products', JSON.stringify(products));
-        }
-
-        window.onload = function() {
-            const savedUser = localStorage.getItem('saved_user');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                loginSuccess(false);
-            }
-            renderProducts();
-            
-            // Xử lý tự chuyển Tab theo đường dẫn
-            const path = window.location.pathname.replace('/', '');
-            if (['home', 'bando', 'chat', 'danhsach', 'vongquay', 'setting'].includes(path)) {
-                const menuItem = Array.from(document.querySelectorAll('.menu-item')).find(el => el.innerText.trim().toLowerCase() === path);
-                navigateTo(path, menuItem);
-            }
-        };
-
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function toggleDropdown() { document.getElementById('userDropdown').classList.toggle('show'); }
-
-        window.onclick = function(event) {
-            if (!event.target.closest('.user-profile-wrapper')) {
-                document.getElementById('userDropdown').classList.remove('show');
-            }
-        }
-
-        function navigateTo(path, element) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-            document.getElementById('userDropdown').classList.remove('show');
-            
-            const targetTab = document.getElementById(path);
-            if (targetTab) targetTab.classList.add('active');
-            if (element) element.classList.add('active');
-
-            window.history.pushState({}, "", "/" + path);
-            if (path === 'vongquay') setTimeout(drawWheel, 100);
-        }
-
-        function sendOTP() {
-            const name = document.getElementById('regName').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const pass = document.getElementById('regPass').value.trim();
-
-            if (!name || !email || !pass) return alert('Vui lòng điền đầy đủ thông tin!');
-
-            currentUser.name = name;
-            generatedOTP = Math.floor(100000 + Math.random() * 900000);
-            alert(`[MÃ XÁC NHẬN OTP CỦA BẠN LÀ]: ${generatedOTP}`);
-            document.getElementById('otpSection').style.display = 'block';
-        }
-
-        function verifyOTP() {
-            const userOTP = document.getElementById('otpInput').value;
-            if (userOTP == generatedOTP) {
-                alert('Đăng ký thành công!');
-                closeModal('registerModal');
-                loginSuccess(true);
-            } else {
-                alert('Mã OTP không đúng!');
-            }
-        }
-
-        function handleLogin() {
-            const email = document.getElementById('loginEmail').value.trim();
-            if (!email) return alert('Vui lòng điền thông tin!');
-            
-            alert('Đăng nhập thành công!');
-            closeModal('loginModal');
-            currentUser.name = email.split('@')[0];
-            const isRemember = document.getElementById('rememberLogin').checked;
-            loginSuccess(isRemember);
-        }
-
-        function loginSuccess(saveToLocal = true) {
-            if (saveToLocal) {
-                localStorage.setItem('saved_user', JSON.stringify(currentUser));
-            }
-            document.getElementById('guestScreen').style.display = 'none';
-            document.getElementById('appScreen').style.display = 'flex';
-            document.getElementById('userNameDisplay').innerText = currentUser.name;
-            document.getElementById('userAvatar').src = currentUser.avatar;
-            document.getElementById('settingNameInput').value = currentUser.name;
-        }
-
-        function logout() {
-            localStorage.removeItem('saved_user');
-            document.getElementById('appScreen').style.display = 'none';
-            document.getElementById('guestScreen').style.display = 'flex';
-            window.history.pushState({}, "", "/");
-        }
-
-        function previewPostImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentUploadedImageBase64 = e.target.result;
-                    const imgPreview = document.getElementById('postImagePreview');
-                    imgPreview.src = currentUploadedImageBase64;
-                    imgPreview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function triggerAvatarUpload() {
-            document.getElementById('avatarFileInput').click();
-        }
-
-        function handleAvatarSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentUser.avatar = e.target.result;
-                    document.getElementById('userAvatar').src = currentUser.avatar;
-                    localStorage.setItem('saved_user', JSON.stringify(currentUser));
-                    alert('Đã cập nhật ảnh đại diện thành công!');
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function submitPost() {
-            const title = document.getElementById('postTitle').value.trim();
-            const price = document.getElementById('postPrice').value.trim();
-            const status = document.getElementById('postStatus').value;
-            const desc = document.getElementById('postDesc').value.trim();
-
-            if (!title || !price || !desc) return alert('Vui lòng điền đầy đủ thông tin!');
-            if (!currentUploadedImageBase64) return alert('Vui lòng chọn hình ảnh!');
-
-            const newProduct = {
-                id: Date.now(),
-                title: title,
-                price: parseInt(price).toLocaleString('vi-VN') + ' VNĐ',
-                status: status,
-                image: currentUploadedImageBase64,
-                desc: desc,
-                seller: currentUser.name,
-                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' - ' + new Date().toLocaleDateString('vi-VN')
-            };
-
-            products.unshift(newProduct);
-            localStorage.setItem('class_products', JSON.stringify(products));
-            renderProducts();
-            closeModal('postModal');
-            alert('Đăng bài thành công!');
-
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postPrice').value = '';
-            document.getElementById('postDesc').value = '';
-            document.getElementById('postImageFile').value = '';
-            document.getElementById('postImagePreview').style.display = 'none';
-            currentUploadedImageBase64 = '';
-        }
-
-        function renderProducts() {
-            const homeContainer = document.getElementById('homeProductContainer');
-            const bandoContainer = document.getElementById('bandoProductContainer');
-
-            if (products.length === 0) {
-                const emptyHTML = `<div style="grid-column: 1/-1; text-align: center; color: #666; padding: 40px 0;">Hiện tại chưa có ai đăng bán đồ cũ cả.</div>`;
-                homeContainer.innerHTML = emptyHTML;
-                bandoContainer.innerHTML = emptyHTML;
-                return;
-            }
-
-            let html = '';
-            products.forEach(p => {
-                html += `
-                    <div class="product-card">
-                        <img src="${p.image}" class="product-img" alt="${p.title}">
-                        <div class="product-body">
-                            <div class="product-title">${p.title}</div>
-                            <div class="product-price">${p.price}</div>
-                            <span class="product-status">📌 ${p.status}</span>
-                            <div class="product-desc">${p.desc}</div>
-                            <div class="product-seller">
-                                <span>👤 ${p.seller}</span>
-                                <span>🕒 ${p.time}</span>
-                            </div>
-                            <button class="buy-btn" onclick="startChat('${p.seller}', '${p.title}')">💬 Nhắn tin mua</button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            homeContainer.innerHTML = html;
-            bandoContainer.innerHTML = html;
-        }
-
-        function startChat(sellerName, itemTitle) {
-            navigateTo('chat');
-            document.getElementById('chatWithTitle').innerText = `Đang nhắn tin với người bán: ${sellerName} (Sản phẩm: ${itemTitle})`;
-            const msgBox = document.getElementById('chatMessages');
-            msgBox.innerHTML = `<div class="msg other">Chào bạn, mình muốn mua món đồ "<strong>${itemTitle}</strong>" của bạn. Hẹn gặp bạn ở lớp nhé!</div>`;
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const msgBox = document.getElementById('chatMessages');
-            msgBox.innerHTML += `<div class="msg me">${text}</div>`;
-            input.value = '';
-            msgBox.scrollTop = msgBox.scrollHeight;
-        }
-
-        function saveSettings() {
-            const newName = document.getElementById('settingNameInput').value.trim();
-            if (newName) currentUser.name = newName;
-
-            document.getElementById('userNameDisplay').innerText = currentUser.name;
-            localStorage.setItem('saved_user', JSON.stringify(currentUser));
-            alert('Lưu cài đặt thành công!');
-        }
-
-        /* VÒNG QUAY MAY MẮN */
-        let colors = ["#e74c3c", "#e67e22", "#f1c40f", "#2ecc71", "#3498db", "#9b59b6", "#1abc9c"];
-        let startAngle = 0;
-        let isSpinning = false;
-
-        function getItems() {
-            return document.getElementById('wheelList').value.split('\n').filter(i => i.trim() !== "");
-        }
-
-        function drawWheel() {
-            const items = getItems();
-            const canvas = document.getElementById('wheelCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const numOptions = items.length;
-            if (numOptions === 0) return;
-
-            const arcSize = (2 * Math.PI) / numOptions;
-            ctx.clearRect(0, 0, 300, 300);
-
-            for (let i = 0; i < numOptions; i++) {
-                const angle = startAngle + i * arcSize;
-                ctx.beginPath();
-                ctx.fillStyle = colors[i % colors.length];
-                ctx.moveTo(150, 150);
-                ctx.arc(150, 150, 140, angle, angle + arcSize);
-                ctx.lineTo(150, 150);
-                ctx.fill();
-
-                ctx.save();
-                ctx.fillStyle = "white";
-                ctx.font = "bold 14px Arial";
-                ctx.translate(150 + Math.cos(angle + arcSize / 2) * 90, 150 + Math.sin(angle + arcSize / 2) * 90);
-                ctx.rotate(angle + arcSize / 2 + Math.PI / 2);
-                ctx.fillText(items[i], -ctx.measureText(items[i]).width / 2, 0);
-                ctx.restore();
-            }
-        }
-
-        function spinWheel() {
-            if (isSpinning) return;
-            const items = getItems();
-            if (items.length === 0) return alert('Vui lòng nhập danh sách!');
-
-            isSpinning = true;
-            let spinAngleStart = Math.random() * 10 + 20;
-            let spinTime = 0;
-            let spinTimeTotal = Math.random() * 3000 + 4000;
-
-            function rotate() {
-                spinTime += 30;
-                if (spinTime >= spinTimeTotal) {
-                    isSpinning = false;
-                    const degrees = (startAngle * 180 / Math.PI) % 360;
-                    const arcd = (360 / items.length);
-                    const index = Math.floor((360 - degrees + 270) % 360 / arcd);
-                    alert("🎉 KẾT QUẢ: " + items[index]);
-                    return;
-                }
-                const spinAngle = spinAngleStart - (spinTime / spinTimeTotal) * spinAngleStart;
-                startAngle += (spinAngle * Math.PI / 180);
-                drawWheel();
-                requestAnimationFrame(rotate);
-            }
-            rotate();
-        }
-    </script>
+/* ---- App: Cài đặt ---- */
+function settingsApp(el) {
+  const plan = (user.app_metadata || {}).plan || 'free';
+  el.innerHTML = `<p><b>${esc(user.email)}</b></p>
+   <p class="small" style="margin:4px 0 12px">Gói hiện tại: <b>${esc(plan)}</b> (${planGB()} GB)</p>
+   <label>Đổi mật khẩu</label><input type="password" id="np" placeholder="Mật khẩu mới (từ 6 ký tự)">
+   <button class="btn" id="sp">Lưu mật khẩu</button><p class="small" id="sm" style="margin-top:6px"></p>
+   <button class="btn alt" id="lo" style="margin-top:16px">Đăng xuất</button>`;
+  el.querySelector('#sp').onclick = async () => {
+    const { error } = await sb.auth.updateUser({ password: el.querySelector('#np').value });
+    el.querySelector('#sm').textContent = error ? 'Lỗi: ' + error.message : 'Đã đổi mật khẩu.';
+  };
+  el.querySelector('#lo').onclick = logout;
+}
+</script>
 </body>
 </html>
-
