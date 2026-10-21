@@ -32,7 +32,7 @@ label{font-size:.9rem;font-weight:700}
 .ico b{display:block;font-size:2.2rem;line-height:1.2}
 #bar{z-index:9998;position:absolute;left:0;right:0;bottom:0;height:48px;background:#31219b;color:#fff;display:flex;align-items:center;gap:6px;padding:0 10px}
 #tasks{flex:1;display:flex;gap:6px;overflow:auto}
-#tasks button{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;padding:6px 12px;white-space:nowrap}
+#tasks button{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;width:42px;height:34px;font-size:1.25rem;white-space:nowrap;flex:none}
 #tasks button.on{background:rgba(255,255,255,.35)}
 #clock{font-size:.85rem;white-space:nowrap}
 .win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:460px;max-width:96vw;height:420px;max-height:calc(100% - 48px)}
@@ -211,7 +211,7 @@ function openApp(k) {
   $('os').appendChild(w);
   w.style.left = Math.max(0, Math.min(40 + n * 28, innerWidth - w.offsetWidth)) + 'px';
   w.style.top = Math.max(0, Math.min(24 + n * 28, innerHeight - 48 - w.offsetHeight)) + 'px';
-  const t = document.createElement('button'); t.textContent = a[0] + ' ' + a[1]; $('tasks').appendChild(t);
+  const t = document.createElement('button'); t.textContent = a[0]; t.title = t.ariaLabel = a[1]; $('tasks').appendChild(t);
   const o = wins[k] = { w, t, min: false };
   t.onclick = () => (o.min || !t.classList.contains('on')) ? show(k) : hide(k);
   w.querySelector('.mn').onclick = () => hide(k);
