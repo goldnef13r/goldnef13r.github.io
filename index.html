@@ -26,20 +26,20 @@ label{font-size:.9rem;font-weight:700}
 #msg.ok{color:#1e8449}
 /* OS */
 #os{height:100%;position:relative}
-#desk{position:absolute;inset:0 0 48px 0;padding:16px;display:flex;flex-direction:column;flex-wrap:wrap;gap:10px;align-content:flex-start}
-.ico{width:84px;background:none;border:0;color:#fff;font-size:.8rem;text-align:center;padding:8px 4px;border-radius:10px}
+#desk{position:absolute;inset:0 0 48px 0}
+.ico{position:absolute;touch-action:none;user-select:none;width:84px;background:none;border:0;color:#fff;font-size:.8rem;text-align:center;padding:8px 4px;border-radius:10px}
 .ico:hover{background:rgba(255,255,255,.18)}
 .ico b{display:block;font-size:2.2rem;line-height:1.2}
-#bar{position:absolute;left:0;right:0;bottom:0;height:48px;background:#31219b;color:#fff;display:flex;align-items:center;gap:6px;padding:0 10px}
+#bar{z-index:9998;position:absolute;left:0;right:0;bottom:0;height:48px;background:#31219b;color:#fff;display:flex;align-items:center;gap:6px;padding:0 10px}
 #tasks{flex:1;display:flex;gap:6px;overflow:auto}
 #tasks button{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;padding:6px 12px;white-space:nowrap}
 #tasks button.on{background:rgba(255,255,255,.35)}
 #clock{font-size:.85rem;white-space:nowrap}
-.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:460px;max-width:100vw;height:420px;max-height:calc(100% - 48px)}
+.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:460px;max-width:96vw;height:420px;max-height:calc(100% - 48px)}
 .win header{background:#4b3ac8;color:#fff;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;cursor:move;touch-action:none;user-select:none}
-.win header button{background:#e74c3c;color:#fff;border:0;border-radius:6px;width:26px;height:26px}
+.win header div{display:flex;gap:6px}.win header button{background:rgba(255,255,255,.25);color:#fff;border:0;border-radius:6px;width:30px;height:28px;font-size:1rem}.win header .x{background:#e74c3c}
 .win .body{padding:14px;overflow:auto;flex:1}
-@media(max-width:600px){.win{left:0!important;top:0!important;width:100%;height:calc(100% - 48px);max-height:none;border-radius:0}}
+.win.max{left:0!important;top:0!important;width:100%!important;height:calc(100% - 48px)!important;max-height:none;max-width:none;border-radius:0}
 .bar{height:12px;background:#e4e6eb;border-radius:6px;overflow:hidden;margin:6px 0}
 .bar i{display:block;height:100%;background:#4b3ac8}
 .file{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #eee;font-size:.9rem}
@@ -47,6 +47,21 @@ label{font-size:.9rem;font-weight:700}
 .file button{border:0;background:#eef;color:#31219b;border-radius:6px;padding:5px 9px}
 .file button.del{background:#fdecea;color:#c0392b}
 .small{font-size:.85rem;color:#666}
+select{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;margin-top:6px}
+#tasks button.mn{opacity:.55}
+#start{background:#4b3ac8;color:#fff;border:0;border-radius:8px;width:40px;height:34px;font-size:1.2rem}
+#menu{position:absolute;left:8px;bottom:56px;z-index:9999;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.4);padding:6px;width:220px;max-height:70%;overflow:auto}
+#menu button{display:block;width:100%;text-align:left;background:none;border:0;padding:11px 12px;border-radius:8px;font-size:1rem;font-weight:400}
+#menu button:hover{background:#eef}
+.msgs{height:250px;overflow:auto;background:#f4f5f9;border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px}
+.msg{align-self:flex-start;background:#e4e6eb;border-radius:12px;padding:6px 10px;max-width:80%;font-size:.95rem}
+.msg.me{align-self:flex-end;background:#4b3ac8;color:#fff}
+.msg small{display:block;opacity:.7;font-size:.72rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.prod{border:1px solid #e0e0e0;border-radius:12px;padding:8px;font-size:.9rem}
+.prod img{width:100%;height:110px;object-fit:cover;border-radius:8px;background:#eee}
+.pr{color:#27ae60;font-weight:700}
+.prod .del{margin-top:6px;border:0;background:#fdecea;color:#c0392b;border-radius:6px;padding:5px 9px}
 canvas{display:block;margin:0 auto;max-width:100%}
 </style>
 </head>
@@ -85,7 +100,7 @@ canvas{display:block;margin:0 auto;max-width:100%}
 <!-- HỆ ĐIỀU HÀNH -->
 <div id="os" hidden>
  <div id="desk"></div>
- <div id="bar"><div id="tasks"></div><span id="clock"></span></div>
+ <div id="menu" hidden></div><div id="bar"><button id="start" onclick="toggleMenu()" aria-label="Menu">⊞</button><div id="tasks"></div><span id="clock"></span></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -141,11 +156,13 @@ async function doLogin() {
 async function logout() { await sb.auth.signOut(); location.reload(); }
 
 /* ---- Vào hệ thống ---- */
-function enter(session) {
+async function enter(session) {
   user = session.user;
   $('auth').hidden = true; $('os').hidden = false;
+  await loadProfile();
   buildDesktop();
   tick(); setInterval(tick, 30000);
+  if (!me) openApp('settings');
 }
 (async () => {
   try {
@@ -157,39 +174,76 @@ function enter(session) {
 const tick = () => $('clock').textContent = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
 
 /* ---- Cửa sổ ---- */
-const APPS = { files: ['📁', 'Tệp của tôi', filesApp], wheel: ['🎡', 'Vòng quay', wheelApp], settings: ['⚙️', 'Cài đặt', settingsApp] };
-const wins = {}; let z = 10;
+const APPS = { files: ['📁', 'Tệp', filesApp], chat: ['💬', 'Tin nhắn', chatApp], market: ['🛒', 'Chợ đồ cũ', marketApp], people: ['📋', 'Danh sách lớp', peopleApp], browser: ['🌐', 'Trình duyệt', browserApp], wheel: ['🎡', 'Vòng quay', wheelApp], settings: ['⚙️', 'Cài đặt', settingsApp] };
+const wins = {}; let z = 10, me = null;
+const safe = n => n.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^\w.\-]+/g, '_');
+async function loadProfile() { const { data } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle(); me = data; }
+
 function buildDesktop() {
-  $('desk').innerHTML = Object.entries(APPS).map(([k, a]) => `<button class="ico" onclick="openApp('${k}')"><b>${a[0]}</b>${a[1]}</button>`).join('');
-}
-function openApp(k) {
-  if (wins[k]) return focusWin(k);
-  const a = APPS[k], w = document.createElement('div');
-  w.className = 'win';
-  w.style.left = (60 + Object.keys(wins).length * 30) + 'px'; w.style.top = (30 + Object.keys(wins).length * 30) + 'px';
-  w.innerHTML = `<header><span>${a[0]} ${a[1]}</span><button aria-label="Đóng">×</button></header><div class="body"></div>`;
-  $('os').appendChild(w);
-  const t = document.createElement('button'); t.textContent = a[0] + ' ' + a[1]; t.onclick = () => focusWin(k); $('tasks').appendChild(t);
-  wins[k] = { w, t };
-  w.querySelector('button').onclick = () => { w.remove(); t.remove(); delete wins[k]; };
-  w.addEventListener('pointerdown', () => focusWin(k));
-  drag(w, w.querySelector('header'));
-  focusWin(k);
-  a[2](w.querySelector('.body'));
-}
-function focusWin(k) {
-  Object.values(wins).forEach(o => o.t.className = '');
-  wins[k].w.style.zIndex = ++z; wins[k].t.className = 'on';
-}
-function drag(w, h) {
-  h.addEventListener('pointerdown', e => {
-    if (e.target.tagName === 'BUTTON' || innerWidth <= 600) return;
-    const dx = e.clientX - w.offsetLeft, dy = e.clientY - w.offsetTop;
-    const mv = ev => { w.style.left = Math.max(0, ev.clientX - dx) + 'px'; w.style.top = Math.max(0, ev.clientY - dy) + 'px'; };
-    const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); };
-    addEventListener('pointermove', mv); addEventListener('pointerup', up);
+  const pos = JSON.parse(localStorage.getItem('ipos') || '{}');
+  $('desk').innerHTML = '';
+  Object.entries(APPS).forEach(([k, a], i) => {
+    const b = document.createElement('button'); b.className = 'ico'; b.innerHTML = `<b>${a[0]}</b>${a[1]}`;
+    const p = pos[k] || [12 + (i % 3) * 92, 12 + Math.floor(i / 3) * 100];
+    b.style.left = p[0] + 'px'; b.style.top = p[1] + 'px';
+    b.addEventListener('pointerdown', e => {
+      const sx = e.clientX, sy = e.clientY, ox = b.offsetLeft, oy = b.offsetTop; let moved = false;
+      const mv = ev => {
+        if (Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) > 8) moved = true;
+        if (moved) { b.style.left = Math.max(0, Math.min(innerWidth - 84, ox + ev.clientX - sx)) + 'px'; b.style.top = Math.max(0, Math.min(innerHeight - 150, oy + ev.clientY - sy)) + 'px'; }
+      };
+      const up = ev => {
+        removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
+        if (moved) { pos[k] = [b.offsetLeft, b.offsetTop]; localStorage.setItem('ipos', JSON.stringify(pos)); } else if (ev.type === 'pointerup') openApp(k);
+      };
+      addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
+    });
+    $('desk').appendChild(b);
   });
 }
+
+function openApp(k) {
+  closeMenu();
+  if (wins[k]) return show(k);
+  const a = APPS[k], w = document.createElement('div'), n = Object.keys(wins).length;
+  w.className = 'win';
+  w.innerHTML = `<header><span>${a[0]} ${a[1]}</span><div><button class="mn" aria-label="Thu nhỏ">–</button><button class="mx" aria-label="Phóng to">□</button><button class="x" aria-label="Đóng">×</button></div></header><div class="body"></div>`;
+  $('os').appendChild(w);
+  w.style.left = Math.max(0, Math.min(40 + n * 28, innerWidth - w.offsetWidth)) + 'px';
+  w.style.top = Math.max(0, Math.min(24 + n * 28, innerHeight - 48 - w.offsetHeight)) + 'px';
+  const t = document.createElement('button'); t.textContent = a[0] + ' ' + a[1]; $('tasks').appendChild(t);
+  const o = wins[k] = { w, t, min: false };
+  t.onclick = () => (o.min || !t.classList.contains('on')) ? show(k) : hide(k);
+  w.querySelector('.mn').onclick = () => hide(k);
+  w.querySelector('.mx').onclick = () => w.classList.toggle('max');
+  w.querySelector('.x').onclick = () => { o.off && o.off(); w.remove(); t.remove(); delete wins[k]; };
+  w.addEventListener('pointerdown', () => show(k));
+  w.querySelector('header').addEventListener('dblclick', () => w.classList.toggle('max'));
+  drag(w, w.querySelector('header'));
+  show(k);
+  a[2](w.querySelector('.body'));
+}
+function show(k) { const o = wins[k]; o.min = false; o.w.style.display = 'flex'; Object.values(wins).forEach(x => x.t.classList.remove('on')); o.w.style.zIndex = ++z; o.t.classList.add('on'); o.t.classList.remove('mn'); }
+function hide(k) { const o = wins[k]; o.min = true; o.w.style.display = 'none'; o.t.classList.remove('on'); o.t.classList.add('mn'); }
+function drag(w, h) {
+  h.addEventListener('pointerdown', e => {
+    if (e.target.closest('button') || w.classList.contains('max')) return;
+    const dx = e.clientX - w.offsetLeft, dy = e.clientY - w.offsetTop;
+    const mv = ev => { w.style.left = Math.max(0, Math.min(innerWidth - 60, ev.clientX - dx)) + 'px'; w.style.top = Math.max(0, Math.min(innerHeight - 100, ev.clientY - dy)) + 'px'; };
+    const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up); };
+    addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
+  });
+}
+
+/* ---- Menu Start ---- */
+function toggleMenu() { $('menu').hidden ? openMenu() : closeMenu(); }
+function openMenu() {
+  const m = $('menu');
+  m.innerHTML = Object.entries(APPS).map(([k, a]) => `<button onclick="openApp('${k}')">${a[0]} ${a[1]}</button>`).join('') + '<button onclick="logout()">🚪 Đăng xuất</button>';
+  m.hidden = false;
+}
+function closeMenu() { $('menu').hidden = true; }
+addEventListener('pointerdown', e => { if (!e.target.closest('#menu,#start')) closeMenu(); });
 
 /* ---- App: Tệp (lưu trữ đám mây) ---- */
 const planGB = () => PLANS[(user.app_metadata || {}).plan] || PLANS.free;
@@ -260,17 +314,119 @@ function wheelApp(el) {
   draw();
 }
 
+/* ---- App: Tin nhắn (Cả lớp + tổ) ---- */
+function chatApp(el) {
+  if (!me) return el.innerHTML = '<p class="small">Vào Cài đặt, đặt tên và chọn tổ trước.</p>';
+  const rooms = [['all', 'Cả lớp']]; if (me.team) rooms.push(['t' + me.team, 'Tổ ' + me.team]);
+  el.innerHTML = '<div class="tabs"></div><div class="msgs"></div><div style="display:flex;gap:6px;margin-top:8px"><input placeholder="Nhập tin nhắn..." style="margin:0"><button class="btn" style="width:auto;margin:0">Gửi</button></div>';
+  const rs = el.querySelector('.tabs'), ms = el.querySelector('.msgs'), mi = el.querySelector('input'); let room, ch;
+  const add = m => {
+    const d = document.createElement('div'); d.className = 'msg' + (m.user_id === user.id ? ' me' : '');
+    const s = document.createElement('small'); s.textContent = m.name; const t = document.createElement('div'); t.textContent = m.body;
+    d.append(s, t); ms.appendChild(d); ms.scrollTop = ms.scrollHeight;
+  };
+  async function go(r) {
+    room = r; ms.innerHTML = ''; ch && sb.removeChannel(ch);
+    [...rs.children].forEach(b => b.className = b.dataset.r === r ? 'on' : '');
+    const { data, error } = await sb.from('messages').select('*').eq('room', r).order('created_at', { ascending: false }).limit(100);
+    if (error) { ms.textContent = 'Chưa cài đặt tin nhắn (xem hướng dẫn SQL).'; return; }
+    data.reverse().forEach(add);
+    ch = sb.channel('room-' + r).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'room=eq.' + r }, p => add(p.new)).subscribe();
+    wins.chat.off = () => sb.removeChannel(ch);
+  }
+  const send = async () => {
+    const b = mi.value.trim(); if (!b) return; mi.value = '';
+    const { error } = await sb.from('messages').insert({ room, name: me.name, body: b.slice(0, 500) });
+    if (error) alert('Không gửi được: ' + error.message);
+  };
+  el.querySelector('.btn').onclick = send; mi.onkeydown = e => e.key === 'Enter' && send();
+  rooms.forEach(([r, n]) => { const b = document.createElement('button'); b.textContent = n; b.dataset.r = r; b.onclick = () => go(r); rs.appendChild(b); });
+  go('all');
+}
+
+/* ---- App: Chợ đồ cũ ---- */
+function marketApp(el) {
+  el.innerHTML = `<button class="btn" id="nb" style="margin:0 0 10px">➕ Đăng bài bán đồ</button>
+   <div id="fm" hidden style="margin-bottom:12px"><input id="t" placeholder="Tên món đồ"><input id="p" type="number" placeholder="Giá (VNĐ)">
+   <select id="s"><option>Mới 100%</option><option>Đã dùng (còn tốt)</option><option>Đã dùng (có lỗi nhẹ)</option></select>
+   <textarea id="d" rows="2" placeholder="Mô tả" style="margin-top:6px"></textarea><input type="file" id="i" accept="image/*">
+   <button class="btn" id="g">Đăng lên chợ</button></div><div class="grid" id="pl"></div>`;
+  const q = x => el.querySelector(x), pl = q('#pl');
+  q('#nb').onclick = () => q('#fm').hidden = !q('#fm').hidden;
+  async function load() {
+    const { data, error } = await sb.from('products').select('*').order('created_at', { ascending: false }).limit(60);
+    pl.innerHTML = error ? 'Chưa cài đặt chợ (xem hướng dẫn SQL).' : data.length ? '' : '<p class="small">Chưa có bài nào.</p>';
+    (data || []).forEach(p => {
+      const d = document.createElement('div'); d.className = 'prod';
+      d.innerHTML = `${p.image ? `<img src="${esc(p.image)}" alt="">` : ''}<b>${esc(p.title)}</b><div class="pr">${Number(p.price).toLocaleString('vi-VN')} đ</div><small>${esc(p.status || '')} - ${esc(p.seller)}</small><p>${esc(p.descr || '')}</p>${p.user_id === user.id ? '<button class="del">Xóa bài</button>' : ''}`;
+      const x = d.querySelector('.del');
+      if (x) x.onclick = async () => { if (confirm('Xóa bài này?')) { await sb.from('products').delete().eq('id', p.id); load(); } };
+      pl.appendChild(d);
+    });
+  }
+  q('#g').onclick = async () => {
+    if (!me) return alert('Vào Cài đặt đặt tên trước.');
+    const title = q('#t').value.trim(), price = q('#p').value, f = q('#i').files[0];
+    if (!title || price === '') return alert('Nhập tên món đồ và giá.');
+    let image = null;
+    if (f) {
+      const path = user.id + '/' + Date.now() + '_' + safe(f.name), u = await sb.storage.from('market').upload(path, f);
+      if (u.error) return alert('Lỗi tải ảnh: ' + u.error.message);
+      image = sb.storage.from('market').getPublicUrl(path).data.publicUrl;
+    }
+    const { error } = await sb.from('products').insert({ seller: me.name, title, price: +price, status: q('#s').value, descr: q('#d').value.trim(), image });
+    if (error) return alert('Không đăng được: ' + error.message);
+    ['#t', '#p', '#d', '#i'].forEach(x => q(x).value = ''); q('#fm').hidden = true; load();
+  };
+  load();
+}
+
+/* ---- App: Danh sách lớp ---- */
+async function peopleApp(el) {
+  el.textContent = 'Đang tải...';
+  const { data, error } = await sb.from('profiles').select('name,team').order('name');
+  if (error) return el.textContent = 'Chưa cài đặt danh sách (xem hướng dẫn SQL).';
+  el.innerHTML = `<p class="small">${data.length} thành viên đã đăng ký</p>` + [1, 2, 3, 4, 0].map(t => {
+    const l = data.filter(p => p.team === t);
+    return l.length ? `<h4 style="margin:12px 0 4px">${t ? 'Tổ ' + t : 'Chưa chọn tổ'} (${l.length})</h4>` + l.map(p => `<div class="file">${esc(p.name)}</div>`).join('') : '';
+  }).join('');
+}
+
+/* ---- App: Trình duyệt ---- */
+function browserApp(el) {
+  el.style.cssText = 'padding:0;display:flex;flex-direction:column';
+  el.innerHTML = '<div style="display:flex;gap:6px;padding:8px"><input placeholder="Địa chỉ web, ví dụ vi.wikipedia.org" style="margin:0"><button class="btn" style="width:auto;margin:0">Đi</button><button class="btn alt" style="width:auto;margin:0" aria-label="Mở tab mới">↗</button></div><iframe sandbox="allow-scripts allow-same-origin allow-forms allow-popups" style="flex:1;min-height:240px;border:0;width:100%"></iframe><p class="small" style="padding:6px 10px">Khung trống nghĩa là trang đó không cho nhúng. Bấm ↗ để mở ở tab mới.</p>';
+  const inp = el.querySelector('input'), [go, out] = el.querySelectorAll('button'), fr = el.querySelector('iframe');
+  const url = () => { let u = inp.value.trim(); if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u; return u; };
+  go.onclick = () => { const u = url(); if (u) fr.src = u; };
+  out.onclick = () => { const u = url(); if (u) window.open(u, '_blank', 'noopener'); };
+  inp.onkeydown = e => e.key === 'Enter' && go.onclick();
+}
+
 /* ---- App: Cài đặt ---- */
 function settingsApp(el) {
   const plan = (user.app_metadata || {}).plan || 'free';
   el.innerHTML = `<p><b>${esc(user.email)}</b></p>
-   <p class="small" style="margin:4px 0 12px">Gói hiện tại: <b>${esc(plan)}</b> (${planGB()} GB)</p>
+   <p class="small" style="margin:4px 0 12px">Gói: <b>${esc(plan)}</b> (${planGB()} GB)</p>
+   <label>Tên hiển thị</label><input id="pn" maxlength="30" value="${esc(me ? me.name : '')}" placeholder="Tên của bạn">
+   <label style="display:block;margin-top:10px">Tổ</label>
+   <select id="pt"><option value="0">Chưa chọn</option>${[1, 2, 3, 4].map(i => `<option value="${i}"${me && me.team == i ? ' selected' : ''}>Tổ ${i}</option>`).join('')}</select>
+   <button class="btn" id="sv">Lưu hồ sơ</button><p class="small" id="sm" style="margin-top:6px"></p>
+   <hr style="margin:12px 0;border:0;border-top:1px solid #eee">
    <label>Đổi mật khẩu</label><input type="password" id="np" placeholder="Mật khẩu mới (từ 6 ký tự)">
-   <button class="btn" id="sp">Lưu mật khẩu</button><p class="small" id="sm" style="margin-top:6px"></p>
+   <button class="btn alt" id="sp">Lưu mật khẩu</button>
    <button class="btn alt" id="lo" style="margin-top:16px">Đăng xuất</button>`;
+  const sm = el.querySelector('#sm');
+  el.querySelector('#sv').onclick = async () => {
+    const name = el.querySelector('#pn').value.trim(); if (!name) return sm.textContent = 'Nhập tên trước.';
+    const row = { id: user.id, name, team: +el.querySelector('#pt').value };
+    const { error } = await sb.from('profiles').upsert(row);
+    if (error) return sm.textContent = 'Lỗi: ' + error.message;
+    me = row; sm.textContent = 'Đã lưu. Đóng và mở lại Tin nhắn để cập nhật nhóm tổ.';
+  };
   el.querySelector('#sp').onclick = async () => {
     const { error } = await sb.auth.updateUser({ password: el.querySelector('#np').value });
-    el.querySelector('#sm').textContent = error ? 'Lỗi: ' + error.message : 'Đã đổi mật khẩu.';
+    sm.textContent = error ? 'Lỗi: ' + error.message : 'Đã đổi mật khẩu.';
   };
   el.querySelector('#lo').onclick = logout;
 }
