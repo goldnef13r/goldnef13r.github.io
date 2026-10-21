@@ -339,7 +339,7 @@ function chatApp(el) {
     const { error } = await sb.from('messages').insert({ room, name: me.name, body: b.slice(0, 500) });
     if (error) alert('Không gửi được: ' + error.message);
   };
-  el.querySelector('.btn').onclick = send; mi.onkeydown = e => e.key === 'Enter' && send();
+  el.querySelector('.btn').onclick = send; mi.onkeydown = e => { if (e.key === 'Enter') send(); };
   rooms.forEach(([r, n]) => { const b = document.createElement('button'); b.textContent = n; b.dataset.r = r; b.onclick = () => go(r); rs.appendChild(b); });
   go('all');
 }
@@ -400,7 +400,7 @@ function browserApp(el) {
   const url = () => { let u = inp.value.trim(); if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u; return u; };
   go.onclick = () => { const u = url(); if (u) fr.src = u; };
   out.onclick = () => { const u = url(); if (u) window.open(u, '_blank', 'noopener'); };
-  inp.onkeydown = e => e.key === 'Enter' && go.onclick();
+  inp.onkeydown = e => { if (e.key === 'Enter') go.onclick(); };
 }
 
 /* ---- App: Cài đặt ---- */
