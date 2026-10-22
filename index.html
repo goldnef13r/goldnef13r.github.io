@@ -1,435 +1,266 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GNwebOS</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial,sans-serif}
-html,body{height:100%;overflow:hidden}
-body{background:linear-gradient(135deg,#00a8ec,#4b3ac8);color:#1a1a1a}
-[hidden]{display:none!important}
-button{cursor:pointer;font-weight:700}
-.btn{background:#4b3ac8;color:#fff;border:0;border-radius:10px;padding:11px 16px;width:100%;margin-top:10px}
-.btn.alt{background:#e8e8f4;color:#31219b}
-input,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;margin-top:6px}
-label{font-size:.9rem;font-weight:700}
-#auth{height:100%;display:flex;align-items:center;justify-content:center;padding:15px}
-.card{background:#fff;border-radius:20px;padding:28px;width:100%;max-width:400px;box-shadow:0 8px 25px rgba(0,0,0,.25)}
-.card h2{color:#4b3ac8;margin-bottom:14px;text-align:center}
-.tabs{display:flex;gap:8px;margin-bottom:14px}
-.tabs button{flex:1;padding:9px;border:2px solid #4b3ac8;border-radius:10px;background:#fff;color:#4b3ac8}
-.tabs button.on{background:#4b3ac8;color:#fff}
-.row{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.9rem}
-.row input{width:auto;margin:0}
-#msg{margin-top:10px;font-size:.9rem;min-height:1.2em;color:#c0392b}
-#msg.ok{color:#1e8449}
-/* OS */
-#os{height:100%;position:relative}
-#desk{position:absolute;inset:0 0 48px 0}
-.ico{position:absolute;touch-action:none;user-select:none;width:84px;background:none;border:0;color:#fff;font-size:.8rem;text-align:center;padding:8px 4px;border-radius:10px}
-.ico:hover{background:rgba(255,255,255,.18)}
-.ico b{display:block;font-size:2.2rem;line-height:1.2}
-#bar{z-index:9998;position:absolute;left:0;right:0;bottom:0;height:48px;background:#31219b;color:#fff;display:flex;align-items:center;gap:6px;padding:0 10px}
-#tasks{flex:1;display:flex;gap:6px;overflow:auto}
-#tasks button{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;width:42px;height:34px;font-size:1.25rem;white-space:nowrap;flex:none}
-#tasks button.on{background:rgba(255,255,255,.35)}
-#clock{font-size:.85rem;white-space:nowrap}
-.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:460px;max-width:96vw;height:420px;max-height:calc(100% - 48px)}
-.win header{background:#4b3ac8;color:#fff;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;cursor:move;touch-action:none;user-select:none}
-.win header div{display:flex;gap:6px}.win header button{background:rgba(255,255,255,.25);color:#fff;border:0;border-radius:6px;width:30px;height:28px;font-size:1rem}.win header .x{background:#e74c3c}
-.win .body{padding:14px;overflow:auto;flex:1}
-.win.max{left:0!important;top:0!important;width:100%!important;height:calc(100% - 48px)!important;max-height:none;max-width:none;border-radius:0}
-.bar{height:12px;background:#e4e6eb;border-radius:6px;overflow:hidden;margin:6px 0}
-.bar i{display:block;height:100%;background:#4b3ac8}
-.file{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #eee;font-size:.9rem}
-.file span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.file button{border:0;background:#eef;color:#31219b;border-radius:6px;padding:5px 9px}
-.file button.del{background:#fdecea;color:#c0392b}
-.small{font-size:.85rem;color:#666}
-select{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;margin-top:6px}
-#tasks button.mn{opacity:.55}
-#start{background:#4b3ac8;color:#fff;border:0;border-radius:8px;width:40px;height:34px;font-size:1.2rem}
-#menu{position:absolute;left:8px;bottom:56px;z-index:9999;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.4);padding:6px;width:220px;max-height:70%;overflow:auto}
-#menu button{display:block;width:100%;text-align:left;background:none;border:0;padding:11px 12px;border-radius:8px;font-size:1rem;font-weight:400}
-#menu button:hover{background:#eef}
-.msgs{height:250px;overflow:auto;background:#f4f5f9;border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px}
-.msg{align-self:flex-start;background:#e4e6eb;border-radius:12px;padding:6px 10px;max-width:80%;font-size:.95rem}
-.msg.me{align-self:flex-end;background:#4b3ac8;color:#fff}
-.msg small{display:block;opacity:.7;font-size:.72rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-.prod{border:1px solid #e0e0e0;border-radius:12px;padding:8px;font-size:.9rem}
-.prod img{width:100%;height:110px;object-fit:cover;border-radius:8px;background:#eee}
-.pr{color:#27ae60;font-weight:700}
-.prod .del{margin-top:6px;border:0;background:#fdecea;color:#c0392b;border-radius:6px;padding:5px 9px}
-canvas{display:block;margin:0 auto;max-width:100%}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNwebOS</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom scrollbar and animations */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .window-shadow {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dock-glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+    </style>
 </head>
-<body>
+<body class="h-screen w-screen overflow-hidden select-none bg-cover bg-center font-sans text-slate-100" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920&auto=format&fit=crop');">
 
-<!-- ĐĂNG NHẬP / ĐĂNG KÝ -->
-<div id="auth">
- <div class="card">
-  <h2>GNwebOS</h2>
-  <div class="tabs">
-   <button id="tLogin" class="on" onclick="tab('login')">Đăng nhập</button>
-   <button id="tReg" onclick="tab('reg')">Đăng ký</button>
-  </div>
+    <!-- Desktop Area -->
+    <div id="desktop" class="relative h-[calc(100vh-4rem)] w-full p-4 grid grid-cols-12 gap-4">
+        
+        <!-- Desktop Shortcuts -->
+        <div class="col-span-1 flex flex-col gap-6 items-center">
+            <button onclick="openApp('settings')" class="group flex flex-col items-center gap-1 w-20 p-2 rounded-xl hover:bg-white/10 transition">
+                <div class="w-12 h-12 rounded-2xl bg-slate-700/80 flex items-center justify-center text-slate-200 group-hover:scale-105 transition shadow-lg">
+                    <i data-lucide="settings" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xs text-center font-medium drop-shadow-md">Cài đặt</span>
+            </button>
 
-  <div id="fLogin">
-   <label>Gmail</label><input id="lEmail" type="email" autocomplete="email" placeholder="ten@gmail.com">
-   <label style="display:block;margin-top:10px">Mật khẩu</label><input id="lPass" type="password" autocomplete="current-password">
-   <button class="btn" onclick="doLogin()">Đăng nhập</button>
-  </div>
+            <button onclick="openApp('notes')" class="group flex flex-col items-center gap-1 w-20 p-2 rounded-xl hover:bg-white/10 transition">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/80 flex items-center justify-center text-white group-hover:scale-105 transition shadow-lg">
+                    <i data-lucide="file-text" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xs text-center font-medium drop-shadow-md">Ghi chú</span>
+            </button>
 
-  <div id="fReg" hidden>
-   <label>Gmail</label><input id="rEmail" type="email" autocomplete="email" placeholder="ten@gmail.com">
-   <button class="btn alt" onclick="sendCode()">Gửi mã xác nhận về Gmail</button>
-   <div id="rStep2" hidden>
-    <label style="display:block;margin-top:12px">Mã xác nhận (từ Gmail)</label><input id="rCode" inputmode="numeric" placeholder="Nhập mã">
-    <label style="display:block;margin-top:10px">Tạo mật khẩu (tối thiểu 6 ký tự)</label><input id="rPass" type="password" autocomplete="new-password">
-    <button class="btn" onclick="doRegister()">Hoàn tất đăng ký</button>
-   </div>
-  </div>
+            <button onclick="openApp('browser')" class="group flex flex-col items-center gap-1 w-20 p-2 rounded-xl hover:bg-white/10 transition">
+                <div class="w-12 h-12 rounded-2xl bg-blue-500/80 flex items-center justify-center text-white group-hover:scale-105 transition shadow-lg">
+                    <i data-lucide="globe" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xs text-center font-medium drop-shadow-md">Trình duyệt</span>
+            </button>
+        </div>
 
-  <div class="row"><input type="checkbox" id="remember" checked><label for="remember" style="font-weight:400">Luôn đăng nhập trên thiết bị này</label></div>
-  <div id="msg"></div>
- </div>
-</div>
+        <!-- Windows Container -->
+        <div id="windows-container" class="absolute inset-0 pointer-events-none">
+            
+            <!-- Window: Settings -->
+            <div id="win-settings" class="pointer-events-auto absolute top-20 left-20 w-[450px] h-[350px] glass rounded-2xl window-shadow flex flex-col hidden overflow-hidden transition-all duration-150">
+                <!-- Header -->
+                <div class="h-10 bg-slate-800/50 px-4 flex items-center justify-between cursor-move select-none border-b border-white/5">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="settings" class="w-4 h-4 text-slate-400"></i>
+                        <span class="text-xs font-semibold text-slate-300">Cài đặt hệ thống</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="closeApp('settings')" class="w-3 h-3 rounded-full bg-rose-500 hover:bg-rose-600 transition"></button>
+                    </div>
+                </div>
+                <!-- Body -->
+                <div class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-2">Hình nền Desktop (URL)</label>
+                        <input type="text" id="bg-url-input" placeholder="Dán URL hình ảnh..." class="w-full px-3 py-2 bg-slate-900/60 border border-slate-700 rounded-lg focus:outline-none focus:border-blue-500 text-xs">
+                        <button onclick="changeWallpaper()" class="mt-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-xs font-medium transition">Áp dụng hình nền</button>
+                    </div>
+                    <hr class="border-slate-700/50">
+                    <div>
+                        <span class="block text-xs font-medium text-slate-400 mb-1">Thông tin hệ thống</span>
+                        <p class="text-xs text-slate-300">Hệ điều hành: <span class="font-semibold text-blue-400">GNwebOS v1.0</span></p>
+                        <p class="text-xs text-slate-300">Trạng thái: <span class="font-semibold text-emerald-400">Hoạt động bình thường</span></p>
+                    </div>
+                </div>
+            </div>
 
-<!-- HỆ ĐIỀU HÀNH -->
-<div id="os" hidden>
- <div id="desk"></div>
- <div id="menu" hidden></div><div id="bar"><button id="start" onclick="toggleMenu()" aria-label="Menu">⊞</button><div id="tasks"></div><span id="clock"></span></div>
-</div>
+            <!-- Window: Notes -->
+            <div id="win-notes" class="pointer-events-auto absolute top-28 left-40 w-[500px] h-[380px] glass rounded-2xl window-shadow flex flex-col hidden overflow-hidden transition-all duration-150">
+                <!-- Header -->
+                <div class="h-10 bg-slate-800/50 px-4 flex items-center justify-between cursor-move select-none border-b border-white/5">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-4 h-4 text-amber-400"></i>
+                        <span class="text-xs font-semibold text-slate-300">Ghi chú nhanh</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="closeApp('notes')" class="w-3 h-3 rounded-full bg-rose-500 hover:bg-rose-600 transition"></button>
+                    </div>
+                </div>
+                <!-- Body -->
+                <div class="flex-1 p-3 flex flex-col">
+                    <textarea id="notes-content" class="w-full flex-1 bg-slate-900/40 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-amber-500/50 resize-none" placeholder="Nhập ghi chú của bạn ở đây..."></textarea>
+                    <div class="flex justify-between items-center mt-2 text-xs text-slate-400">
+                        <span id="notes-status">Tự động lưu...</span>
+                        <button onclick="saveNotes()" class="px-3 py-1 bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition">Lưu ngay</button>
+                    </div>
+                </div>
+            </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script>
-/* ====== ĐIỀN 2 DÒNG NÀY (xem HUONG-DAN.md) ====== */
-const SUPABASE_URL = 'https://ayadjteeqqfynfrttvda.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_0L2PzSIuDt39cAaJ8xO5DA_HaeC9IPE';
-/* ================================================ */
+            <!-- Window: Browser -->
+            <div id="win-browser" class="pointer-events-auto absolute top-16 left-32 w-[700px] h-[450px] glass rounded-2xl window-shadow flex flex-col hidden overflow-hidden transition-all duration-150">
+                <!-- Header -->
+                <div class="h-10 bg-slate-800/50 px-4 flex items-center justify-between cursor-move select-none border-b border-white/5">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="globe" class="w-4 h-4 text-blue-400"></i>
+                        <span class="text-xs font-semibold text-slate-300">Trình duyệt Web</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="closeApp('browser')" class="w-3 h-3 rounded-full bg-rose-500 hover:bg-rose-600 transition"></button>
+                    </div>
+                </div>
+                <!-- Search Bar -->
+                <div class="p-2 bg-slate-900/40 flex items-center gap-2 border-b border-white/5">
+                    <input type="text" id="browser-url" value="https://wikipedia.org" class="flex-1 px-3 py-1 bg-slate-800/80 border border-slate-700 rounded-lg text-xs focus:outline-none focus:border-blue-500">
+                    <button onclick="loadBrowserUrl()" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-xs rounded-lg transition">Mở</button>
+                </div>
+                <!-- Body -->
+                <div class="flex-1 bg-white">
+                    <iframe id="browser-frame" src="https://wikipedia.org" class="w-full h-full border-none"></iframe>
+                </div>
+            </div>
 
-const PLANS = { free: 5, pro: 15, promax: 50 }; // GB
-const GB = 1024 ** 3;
-const $ = id => document.getElementById(id);
-let sb, user;
-const mk = st => supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storage: st, persistSession: true, autoRefreshToken: true } });
-const store = () => $('remember').checked ? localStorage : sessionStorage;
-const say = (t, ok) => { $('msg').textContent = t; $('msg').className = ok ? 'ok' : ''; };
-const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        </div>
+    </div>
 
-function tab(t) {
-  $('fLogin').hidden = t !== 'login'; $('fReg').hidden = t !== 'reg';
-  $('tLogin').className = t === 'login' ? 'on' : ''; $('tReg').className = t === 'reg' ? 'on' : '';
-  say('');
-}
+    <!-- Dock / Taskbar -->
+    <div class="fixed bottom-4 left-1/2 -translate-x-1/2 dock-glass px-4 py-2.5 rounded-2xl flex items-center gap-4 shadow-2xl z-50">
+        <button onclick="openApp('settings')" class="p-2 hover:bg-white/10 rounded-xl transition group relative">
+            <i data-lucide="settings" class="w-6 h-6 text-slate-200 group-hover:scale-110 transition"></i>
+            <span class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-xs px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">Cài đặt</span>
+        </button>
+        <button onclick="openApp('notes')" class="p-2 hover:bg-white/10 rounded-xl transition group relative">
+            <i data-lucide="file-text" class="w-6 h-6 text-amber-400 group-hover:scale-110 transition"></i>
+            <span class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-xs px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">Ghi chú</span>
+        </button>
+        <button onclick="openApp('browser')" class="p-2 hover:bg-white/10 rounded-xl transition group relative">
+            <i data-lucide="globe" class="w-6 h-6 text-blue-400 group-hover:scale-110 transition"></i>
+            <span class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-xs px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">Trình duyệt</span>
+        </button>
 
-/* ---- Đăng ký: gửi mã OTP thật về Gmail ---- */
-async function sendCode() {
-  const email = $('rEmail').value.trim();
-  if (!email) return say('Nhập Gmail trước.');
-  sb = mk(store());
-  say('Đang gửi mã...', true);
-  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
-  if (error) return say('Không gửi được mã: ' + error.message);
-  $('rStep2').hidden = false;
-  say('Đã gửi mã. Kiểm tra Gmail (cả mục Spam).', true);
-}
-async function doRegister() {
-  const email = $('rEmail').value.trim(), token = $('rCode').value.trim(), pw = $('rPass').value;
-  if (pw.length < 6) return say('Mật khẩu cần ít nhất 6 ký tự.');
-  const v = await sb.auth.verifyOtp({ email, token, type: 'email' });
-  if (v.error) return say('Mã sai hoặc đã hết hạn.');
-  const u = await sb.auth.updateUser({ password: pw });
-  if (u.error) return say('Không lưu được mật khẩu: ' + u.error.message);
-  enter(v.data.session);
-}
+        <div class="h-6 w-px bg-slate-700"></div>
 
-/* ---- Đăng nhập bằng mật khẩu ---- */
-async function doLogin() {
-  sb = mk(store());
-  const { data, error } = await sb.auth.signInWithPassword({ email: $('lEmail').value.trim(), password: $('lPass').value });
-  if (error) return say('Sai Gmail hoặc mật khẩu.');
-  enter(data.session);
-}
-async function logout() { await sb.auth.signOut(); location.reload(); }
+        <!-- Clock Widget -->
+        <div class="text-right px-2">
+            <div id="clock-time" class="text-xs font-bold text-slate-200">00:00:00</div>
+            <div id="clock-date" class="text-[10px] text-slate-400">01/01/2026</div>
+        </div>
+    </div>
 
-/* ---- Vào hệ thống ---- */
-async function enter(session) {
-  user = session.user;
-  $('auth').hidden = true; $('os').hidden = false;
-  await loadProfile();
-  buildDesktop();
-  tick(); setInterval(tick, 30000);
-  if (!me) openApp('settings');
-}
-(async () => {
-  try {
-    sb = mk(localStorage);
-    const { data } = await sb.auth.getSession();
-    if (data.session) enter(data.session);
-  } catch (e) { say('Chưa cấu hình Supabase (xem HUONG-DAN.md).'); }
-})();
-const tick = () => $('clock').textContent = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+    <!-- Application Script -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
 
-/* ---- Cửa sổ ---- */
-const APPS = { files: ['📁', 'Tệp', filesApp], chat: ['💬', 'Tin nhắn', chatApp], market: ['🛒', 'Chợ đồ cũ', marketApp], people: ['📋', 'Danh sách lớp', peopleApp], browser: ['🌐', 'Trình duyệt', browserApp], wheel: ['🎡', 'Vòng quay', wheelApp], settings: ['⚙️', 'Cài đặt', settingsApp] };
-const wins = {}; let z = 10, me = null;
-const safe = n => n.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^\w.\-]+/g, '_');
-async function loadProfile() { const { data } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle(); me = data; }
+        // Clock Functionality
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
 
-function buildDesktop() {
-  const pos = JSON.parse(localStorage.getItem('ipos') || '{}');
-  $('desk').innerHTML = '';
-  Object.entries(APPS).forEach(([k, a], i) => {
-    const b = document.createElement('button'); b.className = 'ico'; b.innerHTML = `<b>${a[0]}</b>${a[1]}`;
-    const p = pos[k] || [12 + (i % 3) * 92, 12 + Math.floor(i / 3) * 100];
-    b.style.left = p[0] + 'px'; b.style.top = p[1] + 'px';
-    b.addEventListener('pointerdown', e => {
-      const sx = e.clientX, sy = e.clientY, ox = b.offsetLeft, oy = b.offsetTop; let moved = false;
-      const mv = ev => {
-        if (Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) > 8) moved = true;
-        if (moved) { b.style.left = Math.max(0, Math.min(innerWidth - 84, ox + ev.clientX - sx)) + 'px'; b.style.top = Math.max(0, Math.min(innerHeight - 150, oy + ev.clientY - sy)) + 'px'; }
-      };
-      const up = ev => {
-        removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
-        if (moved) { pos[k] = [b.offsetLeft, b.offsetTop]; localStorage.setItem('ipos', JSON.stringify(pos)); } else if (ev.type === 'pointerup') openApp(k);
-      };
-      addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
-    });
-    $('desk').appendChild(b);
-  });
-}
+            document.getElementById('clock-time').textContent = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('clock-date').textContent = `${day}/${month}/${year}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-function openApp(k) {
-  closeMenu();
-  if (wins[k]) return show(k);
-  const a = APPS[k], w = document.createElement('div'), n = Object.keys(wins).length;
-  w.className = 'win';
-  w.innerHTML = `<header><span>${a[0]} ${a[1]}</span><div><button class="mn" aria-label="Thu nhỏ">–</button><button class="mx" aria-label="Phóng to">□</button><button class="x" aria-label="Đóng">×</button></div></header><div class="body"></div>`;
-  $('os').appendChild(w);
-  w.style.left = Math.max(0, Math.min(40 + n * 28, innerWidth - w.offsetWidth)) + 'px';
-  w.style.top = Math.max(0, Math.min(24 + n * 28, innerHeight - 48 - w.offsetHeight)) + 'px';
-  const t = document.createElement('button'); t.textContent = a[0]; t.title = t.ariaLabel = a[1]; $('tasks').appendChild(t);
-  const o = wins[k] = { w, t, min: false };
-  t.onclick = () => (o.min || !t.classList.contains('on')) ? show(k) : hide(k);
-  w.querySelector('.mn').onclick = () => hide(k);
-  w.querySelector('.mx').onclick = () => w.classList.toggle('max');
-  w.querySelector('.x').onclick = () => { o.off && o.off(); w.remove(); t.remove(); delete wins[k]; };
-  w.addEventListener('pointerdown', () => show(k));
-  w.querySelector('header').addEventListener('dblclick', () => w.classList.toggle('max'));
-  drag(w, w.querySelector('header'));
-  show(k);
-  a[2](w.querySelector('.body'));
-}
-function show(k) { const o = wins[k]; o.min = false; o.w.style.display = 'flex'; Object.values(wins).forEach(x => x.t.classList.remove('on')); o.w.style.zIndex = ++z; o.t.classList.add('on'); o.t.classList.remove('mn'); }
-function hide(k) { const o = wins[k]; o.min = true; o.w.style.display = 'none'; o.t.classList.remove('on'); o.t.classList.add('mn'); }
-function drag(w, h) {
-  h.addEventListener('pointerdown', e => {
-    if (e.target.closest('button') || w.classList.contains('max')) return;
-    const dx = e.clientX - w.offsetLeft, dy = e.clientY - w.offsetTop;
-    const mv = ev => { w.style.left = Math.max(0, Math.min(innerWidth - 60, ev.clientX - dx)) + 'px'; w.style.top = Math.max(0, Math.min(innerHeight - 100, ev.clientY - dy)) + 'px'; };
-    const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up); };
-    addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
-  });
-}
+        // Window Management
+        function openApp(id) {
+            const win = document.getElementById(`win-${id}`);
+            if (win) {
+                win.classList.remove('hidden');
+                bringToFront(win);
+            }
+        }
 
-/* ---- Menu Start ---- */
-function toggleMenu() { $('menu').hidden ? openMenu() : closeMenu(); }
-function openMenu() {
-  const m = $('menu');
-  m.innerHTML = Object.entries(APPS).map(([k, a]) => `<button onclick="openApp('${k}')">${a[0]} ${a[1]}</button>`).join('') + '<button onclick="logout()">🚪 Đăng xuất</button>';
-  m.hidden = false;
-}
-function closeMenu() { $('menu').hidden = true; }
-addEventListener('pointerdown', e => { if (!e.target.closest('#menu,#start')) closeMenu(); });
+        function closeApp(id) {
+            const win = document.getElementById(`win-${id}`);
+            if (win) {
+                win.classList.add('hidden');
+            }
+        }
 
-/* ---- App: Tệp (lưu trữ đám mây) ---- */
-const planGB = () => PLANS[(user.app_metadata || {}).plan] || PLANS.free;
-const fmt = b => b > GB ? (b / GB).toFixed(2) + ' GB' : b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.ceil(b / 1024) + ' KB';
-function filesApp(el) {
-  el.innerHTML = `<div id="q"></div><div class="bar"><i id="qb"></i></div>
-   <input type="file" id="up" multiple><div id="fl" style="margin-top:8px"></div>`;
-  const q = el.querySelector('#q'), qb = el.querySelector('#qb'), fl = el.querySelector('#fl'), up = el.querySelector('#up');
-  const bucket = () => sb.storage.from('files');
-  let used = 0;
-  async function load() {
-    const { data, error } = await bucket().list(user.id, { limit: 1000, sortBy: { column: 'created_at', order: 'desc' } });
-    if (error) { fl.textContent = 'Lỗi tải danh sách: ' + error.message; return; }
-    used = data.reduce((s, f) => s + ((f.metadata && f.metadata.size) || 0), 0);
-    q.innerHTML = `Đã dùng <b>${fmt(used)}</b> / ${planGB()} GB`;
-    qb.style.width = Math.min(100, used / (planGB() * GB) * 100) + '%';
-    fl.innerHTML = data.length ? '' : '<p class="small">Chưa có tệp nào. Chọn tệp ở trên để tải lên.</p>';
-    data.forEach(f => {
-      const r = document.createElement('div'); r.className = 'file';
-      r.innerHTML = `<span title="${esc(f.name)}">${esc(f.name)}</span><small>${fmt(f.metadata.size)}</small><button>Tải</button><button class="del">Xóa</button>`;
-      const [dl, del] = r.querySelectorAll('button');
-      dl.onclick = async () => { const s = await bucket().createSignedUrl(user.id + '/' + f.name, 60, { download: f.name }); if (s.data) location.href = s.data.signedUrl; };
-      del.onclick = async () => { if (confirm('Xóa "' + f.name + '"?')) { await bucket().remove([user.id + '/' + f.name]); load(); } };
-      fl.appendChild(r);
-    });
-  }
-  up.onchange = async () => {
-    for (const f of up.files) {
-      if (used + f.size > planGB() * GB) { alert('Hết dung lượng gói ' + planGB() + ' GB. Xóa bớt tệp hoặc nâng cấp gói.'); break; }
-      const name = f.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^\w.\-]+/g, '_');
-      const { error } = await bucket().upload(user.id + '/' + name, f, { upsert: true });
-      if (error) alert('Không tải lên được "' + f.name + '": ' + error.message); else used += f.size;
-    }
-    up.value = ''; load();
-  };
-  load();
-}
+        let zIndexCounter = 10;
+        function bringToFront(win) {
+            zIndexCounter++;
+            win.style.zIndex = zIndexCounter;
+        }
 
-/* ---- App: Vòng quay ---- */
-function wheelApp(el) {
-  el.innerHTML = `<canvas width="280" height="280"></canvas>
-   <textarea rows="4" style="margin-top:10px">Bạn A\nBạn B\nBạn C\nBạn D</textarea>
-   <button class="btn">Quay</button><p class="small" style="text-align:center;margin-top:8px"></p>`;
-  const c = el.querySelector('canvas'), x = c.getContext('2d'), ta = el.querySelector('textarea'), out = el.querySelector('p');
-  let rot = 0, busy = false;
-  const items = () => ta.value.split('\n').map(s => s.trim()).filter(Boolean);
-  function draw() {
-    const l = items(), n = l.length || 1, a = 2 * Math.PI / n;
-    x.clearRect(0, 0, 280, 280);
-    l.forEach((s, i) => {
-      x.beginPath(); x.moveTo(140, 140); x.arc(140, 140, 128, rot + i * a, rot + (i + 1) * a); x.fillStyle = `hsl(${i * 360 / n},70%,60%)`; x.fill();
-      x.save(); x.translate(140, 140); x.rotate(rot + (i + .5) * a); x.fillStyle = '#111'; x.font = '14px system-ui'; x.textAlign = 'right'; x.fillText(s.slice(0, 14), 118, 5); x.restore();
-    });
-    x.fillStyle = '#e74c3c'; x.beginPath(); x.moveTo(140, 18); x.lineTo(130, 0); x.lineTo(150, 0); x.fill();
-  }
-  ta.oninput = draw;
-  el.querySelector('.btn').onclick = () => {
-    const l = items(); if (busy || l.length < 2) return;
-    busy = true; out.textContent = '';
-    const start = rot, total = 2 * Math.PI * (5 + Math.random() * 3) + Math.random() * 2 * Math.PI, t0 = performance.now(), D = 4000;
-    (function step(t) {
-      const p = Math.min(1, (t - t0) / D); rot = start + total * (1 - Math.pow(1 - p, 3)); draw();
-      if (p < 1) return requestAnimationFrame(step);
-      const a = 2 * Math.PI / l.length, ang = ((1.5 * Math.PI - rot) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
-      out.innerHTML = 'Kết quả: <b>' + esc(l[Math.floor(ang / a)]) + '</b>'; busy = false;
-    })(t0);
-  };
-  draw();
-}
+        // Add focus listener on click for windows
+        ['settings', 'notes', 'browser'].forEach(id => {
+            const win = document.getElementById(`win-${id}`);
+            if (win) {
+                win.addEventListener('mousedown', () => bringToFront(win));
+            }
+        });
 
-/* ---- App: Tin nhắn (Cả lớp + tổ) ---- */
-function chatApp(el) {
-  if (!me) return el.innerHTML = '<p class="small">Vào Cài đặt, đặt tên và chọn tổ trước.</p>';
-  const rooms = [['all', 'Cả lớp']]; if (me.team) rooms.push(['t' + me.team, 'Tổ ' + me.team]);
-  el.innerHTML = '<div class="tabs"></div><div class="msgs"></div><div style="display:flex;gap:6px;margin-top:8px"><input placeholder="Nhập tin nhắn..." style="margin:0"><button class="btn" style="width:auto;margin:0">Gửi</button></div>';
-  const rs = el.querySelector('.tabs'), ms = el.querySelector('.msgs'), mi = el.querySelector('input'); let room, ch;
-  const add = m => {
-    const d = document.createElement('div'); d.className = 'msg' + (m.user_id === user.id ? ' me' : '');
-    const s = document.createElement('small'); s.textContent = m.name; const t = document.createElement('div'); t.textContent = m.body;
-    d.append(s, t); ms.appendChild(d); ms.scrollTop = ms.scrollHeight;
-  };
-  async function go(r) {
-    room = r; ms.innerHTML = ''; ch && sb.removeChannel(ch);
-    [...rs.children].forEach(b => b.className = b.dataset.r === r ? 'on' : '');
-    const { data, error } = await sb.from('messages').select('*').eq('room', r).order('created_at', { ascending: false }).limit(100);
-    if (error) { ms.textContent = 'Chưa cài đặt tin nhắn (xem hướng dẫn SQL).'; return; }
-    data.reverse().forEach(add);
-    ch = sb.channel('room-' + r).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'room=eq.' + r }, p => add(p.new)).subscribe();
-    wins.chat.off = () => sb.removeChannel(ch);
-  }
-  const send = async () => {
-    const b = mi.value.trim(); if (!b) return; mi.value = '';
-    const { error } = await sb.from('messages').insert({ room, name: me.name, body: b.slice(0, 500) });
-    if (error) alert('Không gửi được: ' + error.message);
-  };
-  el.querySelector('.btn').onclick = send; mi.onkeydown = e => { if (e.key === 'Enter') send(); };
-  rooms.forEach(([r, n]) => { const b = document.createElement('button'); b.textContent = n; b.dataset.r = r; b.onclick = () => go(r); rs.appendChild(b); });
-  go('all');
-}
+        // Wallpaper Changer
+        function changeWallpaper() {
+            const url = document.getElementById('bg-url-input').value.trim();
+            if (url) {
+                document.body.style.backgroundImage = `url('${url}')`;
+            }
+        }
 
-/* ---- App: Chợ đồ cũ ---- */
-function marketApp(el) {
-  el.innerHTML = `<button class="btn" id="nb" style="margin:0 0 10px">➕ Đăng bài bán đồ</button>
-   <div id="fm" hidden style="margin-bottom:12px"><input id="t" placeholder="Tên món đồ"><input id="p" type="number" placeholder="Giá (VNĐ)">
-   <select id="s"><option>Mới 100%</option><option>Đã dùng (còn tốt)</option><option>Đã dùng (có lỗi nhẹ)</option></select>
-   <textarea id="d" rows="2" placeholder="Mô tả" style="margin-top:6px"></textarea><input type="file" id="i" accept="image/*">
-   <button class="btn" id="g">Đăng lên chợ</button></div><div class="grid" id="pl"></div>`;
-  const q = x => el.querySelector(x), pl = q('#pl');
-  q('#nb').onclick = () => q('#fm').hidden = !q('#fm').hidden;
-  async function load() {
-    const { data, error } = await sb.from('products').select('*').order('created_at', { ascending: false }).limit(60);
-    pl.innerHTML = error ? 'Chưa cài đặt chợ (xem hướng dẫn SQL).' : data.length ? '' : '<p class="small">Chưa có bài nào.</p>';
-    (data || []).forEach(p => {
-      const d = document.createElement('div'); d.className = 'prod';
-      d.innerHTML = `${p.image ? `<img src="${esc(p.image)}" alt="">` : ''}<b>${esc(p.title)}</b><div class="pr">${Number(p.price).toLocaleString('vi-VN')} đ</div><small>${esc(p.status || '')} - ${esc(p.seller)}</small><p>${esc(p.descr || '')}</p>${p.user_id === user.id ? '<button class="del">Xóa bài</button>' : ''}`;
-      const x = d.querySelector('.del');
-      if (x) x.onclick = async () => { if (confirm('Xóa bài này?')) { await sb.from('products').delete().eq('id', p.id); load(); } };
-      pl.appendChild(d);
-    });
-  }
-  q('#g').onclick = async () => {
-    if (!me) return alert('Vào Cài đặt đặt tên trước.');
-    const title = q('#t').value.trim(), price = q('#p').value, f = q('#i').files[0];
-    if (!title || price === '') return alert('Nhập tên món đồ và giá.');
-    let image = null;
-    if (f) {
-      const path = user.id + '/' + Date.now() + '_' + safe(f.name), u = await sb.storage.from('market').upload(path, f);
-      if (u.error) return alert('Lỗi tải ảnh: ' + u.error.message);
-      image = sb.storage.from('market').getPublicUrl(path).data.publicUrl;
-    }
-    const { error } = await sb.from('products').insert({ seller: me.name, title, price: +price, status: q('#s').value, descr: q('#d').value.trim(), image });
-    if (error) return alert('Không đăng được: ' + error.message);
-    ['#t', '#p', '#d', '#i'].forEach(x => q(x).value = ''); q('#fm').hidden = true; load();
-  };
-  load();
-}
+        // Browser URL loader
+        function loadBrowserUrl() {
+            let url = document.getElementById('browser-url').value.trim();
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            document.getElementById('browser-frame').src = url;
+        }
 
-/* ---- App: Danh sách lớp ---- */
-async function peopleApp(el) {
-  el.textContent = 'Đang tải...';
-  const { data, error } = await sb.from('profiles').select('name,team').order('name');
-  if (error) return el.textContent = 'Chưa cài đặt danh sách (xem hướng dẫn SQL).';
-  el.innerHTML = `<p class="small">${data.length} thành viên đã đăng ký</p>` + [1, 2, 3, 4, 0].map(t => {
-    const l = data.filter(p => p.team === t);
-    return l.length ? `<h4 style="margin:12px 0 4px">${t ? 'Tổ ' + t : 'Chưa chọn tổ'} (${l.length})</h4>` + l.map(p => `<div class="file">${esc(p.name)}</div>`).join('') : '';
-  }).join('');
-}
+        // Local Notes Storage
+        const notesTextarea = document.getElementById('notes-content');
+        const notesStatus = document.getElementById('notes-status');
 
-/* ---- App: Trình duyệt ---- */
-function browserApp(el) {
-  el.style.cssText = 'padding:0;display:flex;flex-direction:column';
-  el.innerHTML = '<div style="display:flex;gap:6px;padding:8px"><input placeholder="Địa chỉ web, ví dụ vi.wikipedia.org" style="margin:0"><button class="btn" style="width:auto;margin:0">Đi</button><button class="btn alt" style="width:auto;margin:0" aria-label="Mở tab mới">↗</button></div><iframe sandbox="allow-scripts allow-same-origin allow-forms allow-popups" style="flex:1;min-height:240px;border:0;width:100%"></iframe><p class="small" style="padding:6px 10px">Khung trống nghĩa là trang đó không cho nhúng. Bấm ↗ để mở ở tab mới.</p>';
-  const inp = el.querySelector('input'), [go, out] = el.querySelectorAll('button'), fr = el.querySelector('iframe');
-  const url = () => { let u = inp.value.trim(); if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u; return u; };
-  go.onclick = () => { const u = url(); if (u) fr.src = u; };
-  out.onclick = () => { const u = url(); if (u) window.open(u, '_blank', 'noopener'); };
-  inp.onkeydown = e => { if (e.key === 'Enter') go.onclick(); };
-}
+        // Load saved note
+        notesTextarea.value = localStorage.getItem('gnwebos_notes') || '';
 
-/* ---- App: Cài đặt ---- */
-function settingsApp(el) {
-  const plan = (user.app_metadata || {}).plan || 'free';
-  el.innerHTML = `<p><b>${esc(user.email)}</b></p>
-   <p class="small" style="margin:4px 0 12px">Gói: <b>${esc(plan)}</b> (${planGB()} GB)</p>
-   <label>Tên hiển thị</label><input id="pn" maxlength="30" value="${esc(me ? me.name : '')}" placeholder="Tên của bạn">
-   <label style="display:block;margin-top:10px">Tổ</label>
-   <select id="pt"><option value="0">Chưa chọn</option>${[1, 2, 3, 4].map(i => `<option value="${i}"${me && me.team == i ? ' selected' : ''}>Tổ ${i}</option>`).join('')}</select>
-   <button class="btn" id="sv">Lưu hồ sơ</button><p class="small" id="sm" style="margin-top:6px"></p>
-   <hr style="margin:12px 0;border:0;border-top:1px solid #eee">
-   <label>Đổi mật khẩu</label><input type="password" id="np" placeholder="Mật khẩu mới (từ 6 ký tự)">
-   <button class="btn alt" id="sp">Lưu mật khẩu</button>
-   <button class="btn alt" id="lo" style="margin-top:16px">Đăng xuất</button>`;
-  const sm = el.querySelector('#sm');
-  el.querySelector('#sv').onclick = async () => {
-    const name = el.querySelector('#pn').value.trim(); if (!name) return sm.textContent = 'Nhập tên trước.';
-    const row = { id: user.id, name, team: +el.querySelector('#pt').value };
-    const { error } = await sb.from('profiles').upsert(row);
-    if (error) return sm.textContent = 'Lỗi: ' + error.message;
-    me = row; sm.textContent = 'Đã lưu. Đóng và mở lại Tin nhắn để cập nhật nhóm tổ.';
-  };
-  el.querySelector('#sp').onclick = async () => {
-    const { error } = await sb.auth.updateUser({ password: el.querySelector('#np').value });
-    sm.textContent = error ? 'Lỗi: ' + error.message : 'Đã đổi mật khẩu.';
-  };
-  el.querySelector('#lo').onclick = logout;
-}
-</script>
+        function saveNotes() {
+            localStorage.setItem('gnwebos_notes', notesTextarea.value);
+            notesStatus.textContent = 'Đã lưu!';
+            setTimeout(() => {
+                notesStatus.textContent = 'Tự động lưu...';
+            }, 2000);
+        }
+
+        notesTextarea.addEventListener('input', () => {
+            localStorage.setItem('gnwebos_notes', notesTextarea.value);
+        });
+    </script>
 </body>
 </html>
+
