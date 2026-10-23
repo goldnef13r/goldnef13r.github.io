@@ -80,7 +80,17 @@ label{font-size:.9rem;font-weight:700}
 #menu .sd .lk:hover{background:linear-gradient(#e0555a,#a21f25)}
 
 /* Win */
-.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:480px;max-width:96vw;height:440px;max-height:calc(100% - 48px);min-width:300px;min-height:220px;resize:both}
+.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:480px;max-width:100%;height:440px;max-height:calc(100% - 48px);min-width:300px;min-height:220px}
+.rz{position:absolute;z-index:6;touch-action:none}
+.rz[data-d=n]{top:0;left:12px;right:12px;height:5px;cursor:ns-resize}
+.rz[data-d=s]{bottom:0;left:12px;right:12px;height:6px;cursor:ns-resize}
+.rz[data-d=e]{right:0;top:12px;bottom:12px;width:6px;cursor:ew-resize}
+.rz[data-d=w]{left:0;top:12px;bottom:12px;width:5px;cursor:ew-resize}
+.rz[data-d=ne]{top:0;right:0;width:12px;height:12px;cursor:nesw-resize}
+.rz[data-d=nw]{top:0;left:0;width:12px;height:12px;cursor:nwse-resize}
+.rz[data-d=se]{bottom:0;right:0;width:16px;height:16px;cursor:nwse-resize}
+.rz[data-d=sw]{bottom:0;left:0;width:12px;height:12px;cursor:nesw-resize}
+.win.max .rz{display:none}
 .win header{background:#4b3ac8;color:#fff;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;cursor:move;touch-action:none;user-select:none}
 .win header div{display:flex;gap:6px}
 .win header button{background:rgba(255,255,255,.25);color:#fff;border:0;border-radius:6px;width:30px;height:28px;font-size:1rem}
@@ -108,6 +118,64 @@ label{font-size:.9rem;font-weight:700}
 .pr{color:#27ae60;font-weight:700}
 canvas{display:block;margin:0 auto;max-width:100%}
 pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;font:13px/1.4 ui-monospace,Consolas,monospace}
+
+/* Trình quản lý tệp kiểu Windows Explorer */
+.fx{display:flex;flex-direction:column;flex:1;min-height:0;container:fxw / inline-size;outline:none;background:#fff;color:#1a1a1a;font-size:.9rem}
+.fx-nav{display:flex;gap:6px;align-items:center;padding:6px 8px;background:linear-gradient(#f9fbfe,#e6eef8);border-bottom:1px solid #c5d3e4}
+.fxb{border:1px solid #b7c6da;background:linear-gradient(#fff,#e3ecf7);border-radius:4px;width:30px;height:28px;color:#244;font-size:.8rem;font-weight:400;flex:none}
+.fxb:hover:not(:disabled){border-color:#6f9bd1;background:linear-gradient(#fff,#cfe3fa)}
+.fxb:disabled{opacity:.4}
+.fx-addr{flex:1;min-width:0;display:flex;align-items:center;gap:2px;overflow:auto;white-space:nowrap;background:#fff;border:1px solid #b7c6da;border-radius:4px;height:28px;padding:0 6px}
+.fx-addr .ab{padding:2px 6px;border-radius:3px;cursor:pointer;flex:none}
+.fx-addr .ab:hover{background:#dbeafc}
+.fx-addr i{color:#888;font-style:normal;flex:none}
+.fx-search{width:170px;margin:0;padding:4px 8px;height:28px;font-size:.85rem;flex:none}
+.fx-cmd{display:flex;gap:2px;align-items:center;padding:4px 8px;background:#f3f6fb;border-bottom:1px solid #d7e0ec;flex-wrap:wrap}
+.fxc{background:none;border:1px solid transparent;border-radius:4px;padding:5px 9px;font-weight:400;font-size:.85rem;color:#1a1a1a}
+.fxc:hover:not(:disabled){background:linear-gradient(#f4f9ff,#d9e8fa);border-color:#9bbbe3}
+.fxc:disabled{opacity:.4;cursor:default}
+.fx-sep{width:1px;height:20px;background:#ccd6e3;margin:0 4px}
+.fx-body{flex:1;display:flex;min-height:0}
+.fx-side{width:170px;flex:none;overflow:auto;background:#f6f9fd;border-right:1px solid #d7e0ec;padding:6px;display:flex;flex-direction:column;gap:1px}
+.fx-sn{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:4px;padding:5px 8px;font-weight:400;font-size:.85rem;color:#1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fx-sn:hover{background:#e3effc;border-color:#c9dcf3}
+.fx-sn.on{background:#d3e5fa;border-color:#9bbbe3}
+.fx-sn.sub{padding-left:22px}
+.fx-sh{font-size:.75rem;color:#667;font-weight:700;padding:8px 8px 3px}
+.fx-drive{margin-top:auto;padding:8px;font-size:.78rem;color:#445}
+.fx-main{flex:1;min-width:0;overflow:auto;position:relative;container:fxm / inline-size}
+.fx-th,.fx-row{display:grid;grid-template-columns:minmax(120px,1fr) 130px 110px 80px;align-items:center}
+.fx-th{position:sticky;top:0;background:#fff;border-bottom:1px solid #e0e6ef;color:#556;font-size:.8rem;z-index:1}
+.fx-th span{padding:5px 8px;cursor:pointer;border-right:1px solid #eef1f6;user-select:none}
+.fx-th span:hover{background:#eaf3fd}
+.fx-row{border:1px solid transparent;border-radius:3px;cursor:default;margin:0 2px;user-select:none}
+.fx-row>span{padding:4px 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fx-row .n{display:flex;align-items:center;gap:6px}
+.fx-row .n .ic{font-style:normal;font-size:1.15rem}
+.fx-row .s{text-align:right}
+.fx-row:hover,.fx-tile:hover{background:#eaf3fd}
+.fx-row.sel,.fx-tile.sel{background:#cfe3fa;border-color:#8fb6e6}
+.fx-tile.dz,.fx-row.dz,.fx-sn.dz,.ab.dz{background:#b9d6f7!important;outline:1px dashed #3a78c9}
+.fx-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;padding:8px}
+.fx-tile{border:1px solid transparent;border-radius:4px;padding:6px 4px;text-align:center;cursor:default;user-select:none}
+.fx-tile .th{height:64px;display:flex;align-items:center;justify-content:center;font-size:2.4rem;background-size:cover;background-position:center;border-radius:4px}
+.fx-tile .nm{font-size:.78rem;margin-top:4px;word-break:break-all;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fx-empty{text-align:center;color:#778;padding:40px 10px;font-size:.95rem;line-height:1.7}
+.fx-status{display:flex;justify-content:space-between;gap:10px;padding:4px 10px;background:#eef3fa;border-top:1px solid #d3dcea;font-size:.78rem;color:#445;flex-wrap:wrap}
+@container fxm (max-width:520px){.fx-th,.fx-row{grid-template-columns:1fr 80px}.fx-th span:nth-child(2),.fx-th span:nth-child(3),.fx-row span:nth-child(2),.fx-row span:nth-child(3){display:none}}
+@container fxw (max-width:560px){.fx-side{display:none}.fx-search{width:110px}}
+.fx-cm{position:fixed;z-index:25000;background:#fff;border:1px solid #b9c4d4;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.35);padding:3px;min-width:170px}
+.fx-cm button{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:3px;padding:6px 12px;font-weight:400;font-size:.88rem;color:#1a1a1a}
+.fx-cm button:hover{background:#d9e9fb;border-color:#a9c6ea}
+.fx-cm button.dg:hover{background:#fbd9d9;border-color:#e3a3a3}
+.fx-cm hr{border:0;border-top:1px solid #e0e0e0;margin:3px 0}
+.fx-view{background:#fff;border-radius:10px;width:900px;max-width:96vw;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.5);color:#1a1a1a}
+.fx-vh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 12px;background:linear-gradient(#f9fbfe,#e1ebf7);border-bottom:1px solid #c5d3e4}
+.fx-vh b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fx-vh button{border:1px solid #b7c6da;background:#fff;border-radius:5px;padding:5px 10px;font-weight:400;margin-left:4px;color:#1a1a1a}
+.fx-vb{padding:10px;overflow:auto;text-align:center;flex:1;min-height:0;background:#f3f5f8}
+.fx-vb img,.fx-vb video{max-width:100%;max-height:70vh;border-radius:4px}
+.fx-vb iframe{width:100%;height:70vh;border:0;background:#fff}
 
 /* Modal + toast */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20000;display:flex;align-items:center;justify-content:center;padding:15px}
@@ -320,7 +388,7 @@ function openApp(k) {
   if (wins[k]) return show(k);
   const a = APPS[k], w = document.createElement('div'), n = Object.keys(wins).length;
   w.className = 'win';
-  w.innerHTML = `<header><span>${a[0]} ${a[1]}</span><div><button class="mn" aria-label="Thu nhỏ">–</button><button class="mx" aria-label="Phóng to">□</button><button class="x" aria-label="Đóng">×</button></div></header><div class="body"></div>`;
+  w.innerHTML = `<header><span>${a[0]} ${a[1]}</span><div><button class="mn" aria-label="Thu nhỏ">–</button><button class="mx" aria-label="Phóng to">□</button><button class="x" aria-label="Đóng">×</button></div></header><div class="body"></div>${['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'].map(d => `<i class="rz" data-d="${d}"></i>`).join('')}`;
   $('os').appendChild(w);
   if (innerWidth < 640) w.classList.add('max');
   w.style.left = Math.max(0, Math.min(40 + n * 28, innerWidth - w.offsetWidth)) + 'px';
@@ -334,6 +402,7 @@ function openApp(k) {
   w.addEventListener('pointerdown', () => show(k));
   w.querySelector('header').addEventListener('dblclick', e => { if (!e.target.closest('button')) w.classList.toggle('max'); });
   drag(w, w.querySelector('header'));
+  resizer(w);
   show(k);
   mount(k);
 }
@@ -350,6 +419,36 @@ function drag(w, h) {
     addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
   });
 }
+
+/* Kéo giãn cửa sổ từ 4 cạnh và 4 góc, luôn giữ trong màn hình và phía trên taskbar */
+function resizer(w) {
+  const MINW = 300, MINH = 200;
+  w.querySelectorAll('.rz').forEach(h => h.addEventListener('pointerdown', e => {
+    if (w.classList.contains('max')) return;
+    e.preventDefault(); e.stopPropagation();
+    const d = h.dataset.d, sx = e.clientX, sy = e.clientY;
+    const r = { l: w.offsetLeft, t: w.offsetTop, w: w.offsetWidth, h: w.offsetHeight };
+    const mv = ev => {
+      const dx = ev.clientX - sx, dy = ev.clientY - sy;
+      let l = r.l, t = r.t, wd = r.w, ht = r.h;
+      if (d.includes('e')) wd = Math.min(Math.max(MINW, r.w + dx), innerWidth - r.l);
+      if (d.includes('s')) ht = Math.min(Math.max(MINH, r.h + dy), innerHeight - 48 - r.t);
+      if (d.includes('w')) { wd = Math.max(MINW, r.w - dx); l = r.l + r.w - wd; if (l < 0) { l = 0; wd = r.l + r.w; } }
+      if (d.includes('n')) { ht = Math.max(MINH, r.h - dy); t = r.t + r.h - ht; if (t < 0) { t = 0; ht = r.t + r.h; } }
+      Object.assign(w.style, { left: l + 'px', top: t + 'px', width: wd + 'px', height: ht + 'px' });
+    };
+    const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up); };
+    addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
+  }));
+}
+/* Khi đổi cỡ cửa sổ trình duyệt, co các cửa sổ lại cho vừa màn hình */
+addEventListener('resize', () => Object.values(wins).forEach(o => {
+  const w = o.w; if (o.min || w.classList.contains('max')) return;
+  const mw = Math.min(w.offsetWidth, innerWidth), mh = Math.min(w.offsetHeight, innerHeight - 48);
+  w.style.width = mw + 'px'; w.style.height = mh + 'px';
+  w.style.left = Math.max(0, Math.min(w.offsetLeft, innerWidth - mw)) + 'px';
+  w.style.top = Math.max(0, Math.min(w.offsetTop, innerHeight - 48 - mh)) + 'px';
+}));
 
 function toggleMenu() { $('menu').hidden ? openMenu() : closeMenu(); }
 function openMenu() {
@@ -380,29 +479,76 @@ function closeMenu() { $('menu').hidden = true; $('start').classList.remove('ope
 addEventListener('pointerdown', e => { if (!e.target.closest('#menu,#start')) closeMenu(); });
 addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
-/* ---- APP 1: TỆP ---- */
+/* ---- APP 1: TỆP (giao diện giống Windows Explorer) ---- */
 const planGB = () => PLANS[(user.app_metadata || {}).plan] || PLANS.free;
 const fmt = b => b > GB ? (b / GB).toFixed(2) + ' GB' : b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.ceil(b / 1024) + ' KB';
+const extOf = n => (n.includes('.') ? n.split('.').pop().toLowerCase() : '');
+const FTYPES = [
+  [/^(png|jpe?g|gif|webp|bmp|svg)$/, '🖼️', 'Ảnh'],
+  [/^(mp4|webm|mov|mkv|avi|ogg)$/, '🎬', 'Video'],
+  [/^(mp3|wav|m4a|aac|flac)$/, '🎵', 'Âm thanh'],
+  [/^pdf$/, '📕', 'PDF'],
+  [/^(docx?|rtf|odt)$/, '📘', 'Tài liệu Word'],
+  [/^(xlsx?|csv)$/, '📗', 'Bảng tính'],
+  [/^pptx?$/, '📙', 'Bản trình chiếu'],
+  [/^(txt|md|log)$/, '📝', 'Văn bản'],
+  [/^(zip|rar|7z|tar|gz)$/, '🗜️', 'Tệp nén'],
+  [/^(js|ts|html?|css|json|py|java|c|cpp|php)$/, '🧩', 'Mã nguồn']
+];
+const ftype = n => {
+  const e = extOf(n), t = FTYPES.find(x => x[0].test(e));
+  return t ? { ic: t[1], lb: t[2] + (e ? ' (' + e.toUpperCase() + ')' : '') } : { ic: '📄', lb: e ? 'Tệp ' + e.toUpperCase() : 'Tệp' };
+};
+const fdate = s => s ? new Date(s).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+const IMG_RE = /^(png|jpe?g|gif|webp|bmp|svg)$/, VID_RE = /^(mp4|webm|mov|ogg)$/, AUD_RE = /^(mp3|wav|m4a|aac|flac)$/, TXT_RE = /^(txt|md|csv|json|log)$/;
+const previewable = n => { const e = extOf(n); return IMG_RE.test(e) || VID_RE.test(e) || AUD_RE.test(e) || e === 'pdf' || TXT_RE.test(e); };
 
 function filesApp(el) {
-  el.innerHTML = `<div id="q"></div><div class="bar"><i id="qb"></i></div>
-   <div style="display:flex;gap:6px;margin-top:8px">
-     <button class="btn alt" style="margin:0" id="mkFolder">+ Tạo thư mục</button>
-     <input type="file" id="up" multiple style="display:none">
-     <button class="btn" style="margin:0" id="btnUp">+ Tải tệp lên</button>
-   </div>
-   <div id="breadcrumb" class="small" style="margin:8px 0;font-weight:bold"></div>
-   <div id="fl"></div>
-   <div id="viewer" hidden style="margin-top:10px;padding:8px;background:#f0f0f5;border-radius:8px;text-align:center"></div>`;
+  const win = el.closest('.win');
+  el.style.cssText += ';padding:0;overflow:hidden;display:flex;flex-direction:column';
+  if (win && !win.classList.contains('max')) {
+    win.style.width = Math.min(860, innerWidth - 16) + 'px';
+    win.style.height = Math.min(540, innerHeight - 60) + 'px';
+    win.style.left = Math.max(0, Math.min(win.offsetLeft, innerWidth - win.offsetWidth)) + 'px';
+    win.style.top = Math.max(0, Math.min(win.offsetTop, innerHeight - 48 - win.offsetHeight)) + 'px';
+  }
+  el.innerHTML = `<div class="fx" tabindex="0">
+    <div class="fx-nav">
+      <button class="fxb" id="bk" title="Quay lại">◀</button><button class="fxb" id="fw" title="Tiến tới">▶</button><button class="fxb" id="upd" title="Lên thư mục cha">▲</button>
+      <div class="fx-addr" id="addr"></div>
+      <input class="fx-search" id="srch" placeholder="🔍 Tìm trong thư mục">
+    </div>
+    <div class="fx-cmd">
+      <button class="fxc" id="cNew">📁 Thư mục mới</button>
+      <button class="fxc" id="cUp">⬆️ Tải lên</button>
+      <span class="fx-sep"></span>
+      <button class="fxc" id="cOpen">📂 Mở</button>
+      <button class="fxc" id="cDl">⬇️ Tải xuống</button>
+      <button class="fxc" id="cRen">✏️ Đổi tên</button>
+      <button class="fxc" id="cDel">🗑️ Xóa</button>
+      <span style="flex:1"></span>
+      <button class="fxc" id="cView" title="Đổi kiểu xem"></button>
+    </div>
+    <div class="fx-body">
+      <div class="fx-side" id="side"></div>
+      <div class="fx-main" id="main" data-drop=""></div>
+    </div>
+    <div class="fx-status" id="stat"></div>
+    <input type="file" id="up" multiple hidden>
+  </div>`;
 
-  let cur = '';   // đường dẫn thư mục hiện tại, ví dụ "bai-tap/toan/"
-  const q = el.querySelector('#q'), qb = el.querySelector('#qb'), fl = el.querySelector('#fl'), up = el.querySelector('#up'),
-        bc = el.querySelector('#breadcrumb'), viewer = el.querySelector('#viewer'), btnUp = el.querySelector('#btnUp');
+  const root = el.querySelector('.fx'), qs = s => el.querySelector(s);
+  const main = qs('#main'), side = qs('#side'), addr = qs('#addr'), stat = qs('#stat'), srch = qs('#srch'), upInput = qs('#up');
+  const bk = qs('#bk'), fw = qs('#fw'), upb = qs('#upd'), bView = qs('#cView');
   const bucket = () => sb.storage.from('files');
+  const coarse = matchMedia('(pointer:coarse)').matches;
+  let cur = '', items = [], sel = new Set(), anchor = null, hist = [''], hi = 0, q = '', tok = 0, used = 0, folders = [], cm = null;
+  let view = localStorage.getItem('fxview') === 'tiles' ? 'tiles' : 'details', sortK = 'name', sortD = 1;
   const base = () => user.id + '/' + cur;
-  let used = 0;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const parent = () => { const p = cur.split('/').filter(Boolean); p.pop(); return p.length ? p.join('/') + '/' : ''; };
 
-  // Duyệt đệ quy một thư mục, trả về danh sách {path,size} của mọi tệp bên trong
+  /* ---- thao tác với kho lưu trữ ---- */
   async function walk(prefix, out = [], depth = 0) {
     if (depth > 8) return out;
     const { data, error } = await bucket().list(prefix, { limit: 1000 });
@@ -413,17 +559,18 @@ function filesApp(el) {
     }
     return out;
   }
-  async function updateQuota() {
-    try { used = (await walk(user.id)).reduce((s, f) => s + f.size, 0); } catch (e) {}
-    q.innerHTML = `Đã dùng <b>${fmt(used)}</b> / ${planGB()} GB`;
-    qb.style.width = Math.min(100, used / (planGB() * GB) * 100) + '%';
+  async function removeAll(paths) {
+    for (let i = 0; i < paths.length; i += 100) {
+      const { error } = await bucket().remove(paths.slice(i, i + 100));
+      if (error) throw error;
+    }
   }
-  function crumbs() {
-    bc.innerHTML = '';
-    const link = (label, path) => { const s = document.createElement('span'); s.textContent = label; s.style.cursor = 'pointer'; s.onclick = () => { cur = path; load(); }; return s; };
-    bc.append(link('📁 Gốc', ''));
-    let acc = '';
-    cur.split('/').filter(Boolean).forEach(p => { acc += p + '/'; bc.append(' / ', link(p, acc)); });
+  async function moveTree(src, dst) {   // src, dst không có dấu / ở cuối
+    const all = await walk(src);
+    for (const f of all) {
+      const { error } = await bucket().move(f.path, dst + f.path.slice(src.length));
+      if (error) throw error;
+    }
   }
   async function download(path, name) {
     const s = await bucket().createSignedUrl(path, 60, { download: name });
@@ -431,104 +578,329 @@ function filesApp(el) {
     const a = document.createElement('a'); a.href = s.data.signedUrl; a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
   }
-  async function view(path, name) {
-    const s = await bucket().createSignedUrl(path, 120);
-    if (!s.data) return toast('Không mở được tệp.', true);
-    const url = s.data.signedUrl;
-    viewer.hidden = false;
-    if (/\.(png|jpe?g|gif|webp|svg)$/i.test(name)) {
-      viewer.innerHTML = `<img src="${url}" style="max-width:100%;max-height:220px;border-radius:6px"><br><a href="${url}" target="_blank" rel="noopener" class="small">Mở ảnh lớn</a>`;
-    } else if (/\.(mp4|webm|ogg|mov)$/i.test(name)) {
-      viewer.innerHTML = `<video src="${url}" controls style="max-width:100%;max-height:220px;border-radius:6px"></video>`;
-    } else if (/\.(mp3|wav|m4a|aac)$/i.test(name)) {
-      viewer.innerHTML = `<audio src="${url}" controls style="width:100%"></audio>`;
-    } else if (/\.pdf$/i.test(name)) {
-      viewer.innerHTML = `<iframe src="${url}" style="width:100%;height:260px;border:0"></iframe><br><a href="${url}" target="_blank" rel="noopener" class="small">Mở toàn màn hình PDF</a>`;
-    } else if (/\.(txt|md|csv|json|log)$/i.test(name)) {
-      try {
-        const t = await (await fetch(url)).text();
-        viewer.innerHTML = `<pre class="txt">${esc(t.slice(0, 20000))}${t.length > 20000 ? '\n… (đã cắt bớt)' : ''}</pre>`;
-      } catch (e) { viewer.hidden = true; download(path, name); }
-    } else {
-      viewer.hidden = true; download(path, name);
-    }
+
+  /* ---- hiển thị ---- */
+  const visible = () => {
+    const k = q.toLowerCase();
+    const cmp = {
+      name: (a, b) => a.name.localeCompare(b.name, 'vi', { numeric: true }),
+      date: (a, b) => String(a.date || '').localeCompare(String(b.date || '')),
+      type: (a, b) => a.lb.localeCompare(b.lb, 'vi'),
+      size: (a, b) => a.size - b.size
+    }[sortK];
+    return items.filter(i => !k || i.name.toLowerCase().includes(k))
+      .sort((a, b) => a.folder === b.folder ? sortD * cmp(a, b) : (a.folder ? -1 : 1));
+  };
+  function renderAddr() {
+    let h = '<span class="ab" data-p="" data-drop="">🖥️ Tệp của tôi</span>', acc = '';
+    cur.split('/').filter(Boolean).forEach(p => { acc += p + '/'; h += `<i>›</i><span class="ab" data-p="${esc(acc)}" data-drop="${esc(acc)}">${esc(p)}</span>`; });
+    addr.innerHTML = h;
   }
-  const removeAll = async paths => { for (let i = 0; i < paths.length; i += 100) await bucket().remove(paths.slice(i, i + 100)); };
-
-  async function load() {
-    viewer.hidden = true; viewer.innerHTML = '';
-    crumbs();
-    fl.innerHTML = '<p class="small">Đang tải...</p>';
-    const { data, error } = await bucket().list(base().replace(/\/$/, ''), { limit: 1000, sortBy: { column: 'name', order: 'asc' } });
-    if (error) { fl.textContent = 'Lỗi tải tệp: ' + error.message; return; }
-    updateQuota();
-    const items = (data || []).filter(f => f.name !== '.emptyFolderPlaceholder')
-      .sort((a, b) => (a.id === null ? 0 : 1) - (b.id === null ? 0 : 1));
-    fl.innerHTML = items.length ? '' : '<p class="small">Thư mục trống.</p>';
-
-    items.forEach(f => {
-      const name = f.name, isFolder = f.id === null;
-      const r = document.createElement('div'); r.className = 'file';
-      if (isFolder) {
-        r.innerHTML = `<span style="cursor:pointer">📁 <b>${esc(name)}</b></span><button class="del">Xóa</button>`;
-        r.querySelector('span').onclick = () => { cur += name + '/'; load(); };
-        r.querySelector('.del').onclick = async () => {
-          if (!confirm(`Xóa thư mục "${name}" và toàn bộ nội dung bên trong?`)) return;
-          try {
-            const all = await walk(base() + name);
-            await removeAll(all.map(x => x.path));
-            toast('Đã xóa thư mục.');
-          } catch (e) { toast('Lỗi xóa: ' + e.message, true); }
-          load();
-        };
-      } else {
-        const path = base() + name;
-        r.innerHTML = `<span title="${esc(name)}">${esc(name)}</span><small>${fmt(f.metadata?.size || 0)}</small><button class="vw">Xem</button><button class="dl">Tải</button><button class="ren">Đổi tên</button><button class="del">Xóa</button>`;
-        r.querySelector('.vw').onclick = () => view(path, name);
-        r.querySelector('.dl').onclick = () => download(path, name);
-        r.querySelector('.ren').onclick = async () => {
-          const v = await ask('Đổi tên tệp', [{ name: 'n', label: 'Tên mới', value: name, req: 1 }]);
-          if (!v) return;
-          const nn = cleanName(v.n.trim());
-          if (!nn || nn === name) return;
-          const { error: e } = await bucket().move(path, base() + nn);
-          if (e) toast('Lỗi đổi tên: ' + e.message, true); else toast('Đã đổi tên.');
-          load();
-        };
-        r.querySelector('.del').onclick = async () => {
-          if (!confirm(`Xóa tệp "${name}"?`)) return;
-          const { error: e } = await bucket().remove([path]);
-          if (e) toast('Lỗi xóa: ' + e.message, true);
-          load();
-        };
-      }
-      fl.appendChild(r);
+  function nav() { bk.disabled = hi <= 0; fw.disabled = hi >= hist.length - 1; upb.disabled = !cur; }
+  function paintDrive() {
+    const d = qs('#drive');
+    if (d) d.innerHTML = `💾 Dung lượng<div class="bar"><i style="width:${Math.min(100, used / (planGB() * GB) * 100)}%"></i></div>Đã dùng ${fmt(used)} / ${planGB()} GB`;
+    paintStatus();
+  }
+  function paintSide() {
+    side.innerHTML = `<div class="fx-sh">Truy cập nhanh</div>
+      <button class="fx-sn ${cur === '' ? 'on' : ''}" data-p="" data-drop="">🖥️ Tệp của tôi</button>
+      ${folders.map(n => `<button class="fx-sn sub ${cur.startsWith(n + '/') ? 'on' : ''}" data-p="${esc(n + '/')}" data-drop="${esc(n + '/')}">📁 ${esc(n)}</button>`).join('')}
+      <div class="fx-drive" id="drive"></div>`;
+    paintDrive();
+  }
+  function paintStatus() {
+    const vis = visible(), chosen = items.filter(i => sel.has(i.name));
+    const sz = chosen.filter(i => !i.folder).reduce((s, i) => s + i.size, 0);
+    stat.innerHTML = `<span>${vis.length} mục${chosen.length ? ' · Đã chọn ' + chosen.length + ' mục' + (sz ? ' (' + fmt(sz) + ')' : '') : ''}</span><span>Đã dùng ${fmt(used)} / ${planGB()} GB</span>`;
+  }
+  function paintSel() {
+    main.querySelectorAll('[data-n]').forEach(x => x.classList.toggle('sel', sel.has(x.dataset.n)));
+    const n = sel.size;
+    qs('#cOpen').disabled = n !== 1; qs('#cRen').disabled = n !== 1; qs('#cDl').disabled = !n; qs('#cDel').disabled = !n;
+    paintStatus();
+  }
+  async function thumbs(list, t) {
+    const imgs = list.filter(i => !i.folder && /^(png|jpe?g|gif|webp|bmp)$/.test(extOf(i.name))).slice(0, 60);
+    if (!imgs.length) return;
+    const { data } = await bucket().createSignedUrls(imgs.map(i => base() + i.name), 600);
+    if (t !== tok || !data) return;
+    const tiles = [...main.querySelectorAll('.fx-tile')];
+    data.forEach(d => {
+      if (!d.signedUrl) return;
+      const n = d.path.split('/').pop(), tile = tiles.find(x => x.dataset.n === n);
+      const th = tile && tile.querySelector('.th');
+      if (th) { th.style.backgroundImage = `url("${d.signedUrl}")`; th.textContent = ''; }
     });
   }
+  function render() {
+    const vis = visible(), t = ++tok;
+    nav(); renderAddr();
+    bView.textContent = view === 'details' ? '☰ Chi tiết' : '▦ Biểu tượng';
+    if (!vis.length) {
+      main.innerHTML = `<div class="fx-empty">📂<br>${q ? 'Không tìm thấy mục nào.' : 'Thư mục này trống.'}<br><small>${q ? '' : 'Kéo thả tệp vào đây hoặc bấm “Tải lên”.'}</small></div>`;
+      paintSel(); return;
+    }
+    const arrow = k => sortK === k ? (sortD > 0 ? ' ▲' : ' ▼') : '';
+    const drop = i => i.folder ? ` data-drop="${esc(cur + i.name + '/')}"` : '';
+    if (view === 'details') {
+      main.innerHTML = `<div class="fx-th"><span data-s="name">Tên${arrow('name')}</span><span data-s="date">Ngày sửa đổi${arrow('date')}</span><span data-s="type">Loại${arrow('type')}</span><span data-s="size" style="text-align:right">Kích thước${arrow('size')}</span></div>` +
+        vis.map(i => `<div class="fx-row" draggable="true" data-n="${esc(i.name)}"${drop(i)}><span class="n"><i class="ic">${i.ic}</i>${esc(i.name)}</span><span>${esc(fdate(i.date))}</span><span>${esc(i.lb)}</span><span class="s">${i.folder ? '' : fmt(i.size)}</span></div>`).join('');
+    } else {
+      main.innerHTML = '<div class="fx-tiles">' + vis.map(i => `<div class="fx-tile" draggable="true" data-n="${esc(i.name)}"${drop(i)} title="${esc(i.name)}"><div class="th">${i.ic}</div><div class="nm">${esc(i.name)}</div></div>`).join('') + '</div>';
+      thumbs(vis, t);
+    }
+    paintSel();
+  }
+  async function updateQuota() {
+    try { used = (await walk(user.id)).reduce((s, f) => s + f.size, 0); } catch (e) {}
+    paintDrive();
+  }
+  async function loadSide() {
+    const { data } = await bucket().list(user.id, { limit: 1000 });
+    folders = (data || []).filter(f => f.id === null).map(f => f.name).sort((a, b) => a.localeCompare(b, 'vi'));
+    paintSide();
+  }
+  async function load(full) {
+    nav(); renderAddr();
+    main.innerHTML = '<p class="small" style="padding:14px">Đang tải...</p>';
+    const { data, error } = await bucket().list(base().replace(/\/$/, ''), { limit: 1000 });
+    if (error) { main.innerHTML = `<p class="small" style="padding:14px">Lỗi tải tệp: ${esc(error.message)}</p>`; return; }
+    items = (data || []).filter(f => f.name !== '.emptyFolderPlaceholder').map(f => {
+      const folder = f.id === null;
+      return { name: f.name, folder, size: f.metadata?.size || 0, date: f.updated_at || f.created_at || '', ...(folder ? { ic: '📁', lb: 'Thư mục' } : ftype(f.name)) };
+    });
+    render(); paintSide();
+    if (full) { loadSide(); updateQuota(); }
+  }
+  function go(path, push = true) {
+    if (push) { hist = hist.slice(0, hi + 1); hist.push(path); hi = hist.length - 1; }
+    cur = path; sel.clear(); anchor = null; q = ''; srch.value = '';
+    load();
+  }
 
-  el.querySelector('#btnUp').onclick = () => up.click();
-  el.querySelector('#mkFolder').onclick = async () => {
-    const v = await ask('Tạo thư mục', [{ name: 'n', label: 'Tên thư mục', req: 1 }], 'Tạo');
+  /* ---- xem trước tệp ---- */
+  async function openViewer(n) {
+    const list = visible().filter(i => !i.folder && previewable(i.name)).map(i => i.name);
+    let idx = list.indexOf(n);
+    if (idx < 0) return download(base() + n, n);
+    const ov = document.createElement('div'); ov.className = 'modal';
+    ov.innerHTML = `<div class="fx-view"><div class="fx-vh"><b></b><span><button data-a="prev">◀</button><button data-a="next">▶</button><button data-a="dl">⬇ Tải xuống</button><button data-a="x">✕</button></span></div><div class="fx-vb"></div></div>`;
+    const title = ov.querySelector('b'), body = ov.querySelector('.fx-vb');
+    const onKey = e => { if (e.key === 'Escape') close(); else if (e.key === 'ArrowLeft') step(-1); else if (e.key === 'ArrowRight') step(1); };
+    const close = () => { ov.remove(); removeEventListener('keydown', onKey); };
+    async function show() {
+      const name = list[idx]; title.textContent = name; body.innerHTML = '<p class="small">Đang tải...</p>';
+      const s = await bucket().createSignedUrl(base() + name, 300);
+      if (list[idx] !== name) return;
+      if (!s.data) { body.textContent = 'Không mở được tệp.'; return; }
+      const url = s.data.signedUrl, e = extOf(name);
+      if (IMG_RE.test(e)) body.innerHTML = `<img src="${url}" alt="">`;
+      else if (VID_RE.test(e)) body.innerHTML = `<video src="${url}" controls autoplay></video>`;
+      else if (AUD_RE.test(e)) body.innerHTML = `<audio src="${url}" controls autoplay style="width:100%"></audio>`;
+      else if (e === 'pdf') body.innerHTML = `<iframe src="${url}"></iframe>`;
+      else {
+        try {
+          const t = await (await fetch(url)).text();
+          if (list[idx] !== name) return;
+          body.innerHTML = `<pre class="txt" style="max-height:70vh;background:#fff;padding:10px;border-radius:4px">${esc(t.slice(0, 50000))}${t.length > 50000 ? '\n… (đã cắt bớt)' : ''}</pre>`;
+        } catch (err) { body.textContent = 'Không đọc được nội dung tệp.'; }
+      }
+    }
+    const step = d => { idx = (idx + d + list.length) % list.length; show(); };
+    ov.addEventListener('click', e => {
+      if (e.target === ov) return close();
+      const b = e.target.closest('[data-a]'); if (!b) return;
+      const a = b.dataset.a;
+      if (a === 'x') close(); else if (a === 'dl') download(base() + list[idx], list[idx]); else step(a === 'prev' ? -1 : 1);
+    });
+    addEventListener('keydown', onKey);
+    document.body.appendChild(ov); show();
+  }
+  function openItem(n) {
+    const it = items.find(i => i.name === n); if (!it) return;
+    if (it.folder) go(cur + n + '/');
+    else if (previewable(n)) openViewer(n);
+    else download(base() + n, n);
+  }
+
+  /* ---- các lệnh: tạo, đổi tên, xóa, tải lên, di chuyển ---- */
+  async function newFolder() {
+    const v = await ask('Thư mục mới', [{ name: 'n', label: 'Tên thư mục', req: 1 }], 'Tạo');
     if (!v) return;
     const n = cleanName(v.n.trim()).replace(/^\.+/, '');
     if (!n) return toast('Tên thư mục không hợp lệ.', true);
+    if (items.some(i => i.name === n)) return toast('Đã có mục trùng tên.', true);
     const { error } = await bucket().upload(base() + n + '/.emptyFolderPlaceholder', new Blob(['']), { upsert: true });
     if (error) toast('Lỗi tạo thư mục: ' + error.message, true);
-    load();
-  };
-  up.onchange = async () => {
-    const files = [...up.files]; up.value = ''; let ok = 0;
+    load(true);
+  }
+  async function rename(n) {
+    const it = items.find(i => i.name === n); if (!it) return;
+    const v = await ask(it.folder ? 'Đổi tên thư mục' : 'Đổi tên tệp', [{ name: 'n', label: 'Tên mới', value: n, req: 1 }]);
+    if (!v) return;
+    const nn = cleanName(v.n.trim()).replace(/^\.+/, '');
+    if (!nn || nn === n) return;
+    if (items.some(i => i.name === nn)) return toast('Đã có mục trùng tên.', true);
+    stat.textContent = 'Đang đổi tên...';
+    try {
+      if (it.folder) await moveTree(base() + n, base() + nn);
+      else { const { error } = await bucket().move(base() + n, base() + nn); if (error) throw error; }
+      toast('Đã đổi tên.');
+    } catch (e) { toast('Lỗi đổi tên: ' + e.message, true); }
+    sel.clear(); load(true);
+  }
+  async function removeSel(names) {
+    const lbl = names.length === 1 ? `"${names[0]}"` : names.length + ' mục đã chọn';
+    if (!confirm(`Xóa ${lbl}? Hành động này không thể hoàn tác.`)) return;
+    stat.textContent = 'Đang xóa...';
+    try {
+      const paths = [];
+      for (const n of names) {
+        const it = items.find(i => i.name === n); if (!it) continue;
+        if (it.folder) (await walk(base() + n)).forEach(f => paths.push(f.path)); else paths.push(base() + n);
+      }
+      await removeAll(paths); toast('Đã xóa.');
+    } catch (e) { toast('Lỗi xóa: ' + e.message, true); }
+    sel.clear(); load(true);
+  }
+  async function uploadFiles(files, dir = base()) {
+    let ok = 0;
     for (const f of files) {
       if (used + f.size > planGB() * GB) { toast('Hết dung lượng!', true); break; }
-      btnUp.disabled = true; btnUp.textContent = 'Đang tải ' + f.name.slice(0, 14) + '...';
-      const { error } = await bucket().upload(base() + cleanName(f.name), f, { upsert: true });
+      stat.textContent = `Đang tải lên: ${f.name} (${ok + 1}/${files.length})`;
+      const { error } = await bucket().upload(dir + cleanName(f.name), f, { upsert: true });
       if (error) toast('Lỗi tải ' + f.name + ': ' + error.message, true); else { used += f.size; ok++; }
     }
-    btnUp.disabled = false; btnUp.textContent = '+ Tải tệp lên';
     if (ok) toast('Đã tải lên ' + ok + ' tệp.');
-    load();
-  };
-  load();
+    load(true);
+  }
+  async function moveItems(names, destDir) {
+    if (destDir === cur) return;
+    stat.textContent = 'Đang di chuyển...';
+    try {
+      for (const n of names) {
+        const it = items.find(i => i.name === n); if (!it) continue;
+        if (it.folder) {
+          if (destDir === cur + n + '/' || destDir.startsWith(cur + n + '/')) { toast('Không thể di chuyển thư mục vào chính nó.', true); continue; }
+          await moveTree(base() + n, user.id + '/' + destDir + n);
+        } else {
+          const { error } = await bucket().move(base() + n, user.id + '/' + destDir + n);
+          if (error) throw error;
+        }
+      }
+      toast('Đã di chuyển.');
+    } catch (e) { toast('Lỗi di chuyển: ' + e.message, true); }
+    sel.clear(); load(true);
+  }
+  async function act(id) {
+    if (id === 'newf') return newFolder();
+    if (id === 'upl') return upInput.click();
+    if (id === 'refresh') return load(true);
+    const names = [...sel]; if (!names.length) return;
+    if (id === 'open') return openItem(names[0]);
+    if (id === 'ren') return rename(names[0]);
+    if (id === 'del') return removeSel(names);
+    if (id === 'dl') {
+      const files = names.filter(n => items.find(i => i.name === n && !i.folder));
+      if (!files.length) return toast('Chỉ tải xuống được tệp, không tải được thư mục.', true);
+      for (const n of files) { await download(base() + n, n); if (files.length > 1) await sleep(500); }
+    }
+  }
+
+  /* ---- menu chuột phải ---- */
+  function closeCm() { if (cm) { cm.remove(); cm = null; } }
+  function menu(x, y, entries) {
+    closeCm();
+    cm = document.createElement('div'); cm.className = 'fx-cm';
+    cm.innerHTML = entries.map(([id, l, dg]) => id === '-' ? '<hr>' : `<button data-id="${id}"${dg ? ' class="dg"' : ''}>${l}</button>`).join('');
+    document.body.appendChild(cm);
+    cm.style.left = Math.max(0, Math.min(x, innerWidth - cm.offsetWidth - 4)) + 'px';
+    cm.style.top = Math.max(0, Math.min(y, innerHeight - cm.offsetHeight - 4)) + 'px';
+    cm.onclick = e => { const b = e.target.closest('button'); if (!b) return; closeCm(); act(b.dataset.id); };
+    const off = e => { if (!cm || !cm.contains(e.target)) { closeCm(); removeEventListener('pointerdown', off, true); } };
+    addEventListener('pointerdown', off, true);
+  }
+
+  /* ---- sự kiện ---- */
+  main.addEventListener('click', e => {
+    root.focus({ preventScroll: true });
+    const th = e.target.closest('[data-s]');
+    if (th) { const k = th.dataset.s; if (sortK === k) sortD = -sortD; else { sortK = k; sortD = 1; } render(); return; }
+    const r = e.target.closest('[data-n]');
+    if (!r) { sel.clear(); anchor = null; paintSel(); return; }
+    const n = r.dataset.n, list = visible().map(i => i.name);
+    if (e.shiftKey && anchor && list.includes(anchor)) {
+      const a = list.indexOf(anchor), b = list.indexOf(n);
+      sel = new Set(list.slice(Math.min(a, b), Math.max(a, b) + 1));
+    } else if (e.ctrlKey || e.metaKey) { if (sel.has(n)) sel.delete(n); else sel.add(n); anchor = n; }
+    else { sel = new Set([n]); anchor = n; }
+    paintSel();
+    if (coarse && !e.shiftKey && !e.ctrlKey) { const it = items.find(i => i.name === n); if (it && it.folder) openItem(n); }
+  });
+  main.addEventListener('dblclick', e => { const r = e.target.closest('[data-n]'); if (r) openItem(r.dataset.n); });
+  main.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    const r = e.target.closest('[data-n]');
+    if (r) {
+      const n = r.dataset.n;
+      if (!sel.has(n)) { sel = new Set([n]); anchor = n; paintSel(); }
+      const it = items.find(i => i.name === n);
+      menu(e.clientX, e.clientY, [['open', '📂 Mở'], ...(it && !it.folder ? [['dl', '⬇️ Tải xuống']] : []), ['ren', '✏️ Đổi tên'], ['-'], ['del', '🗑️ Xóa', 1]]);
+    } else {
+      sel.clear(); paintSel();
+      menu(e.clientX, e.clientY, [['newf', '📁 Thư mục mới'], ['upl', '⬆️ Tải tệp lên'], ['-'], ['refresh', '🔄 Làm mới']]);
+    }
+  });
+  root.addEventListener('click', e => { const p = e.target.closest('[data-p]'); if (p) go(p.dataset.p); });
+  bk.onclick = () => { if (hi > 0) { hi--; go(hist[hi], false); } };
+  fw.onclick = () => { if (hi < hist.length - 1) { hi++; go(hist[hi], false); } };
+  upb.onclick = () => { if (cur) go(parent()); };
+  qs('#cNew').onclick = newFolder;
+  qs('#cUp').onclick = () => upInput.click();
+  qs('#cOpen').onclick = () => act('open');
+  qs('#cDl').onclick = () => act('dl');
+  qs('#cRen').onclick = () => act('ren');
+  qs('#cDel').onclick = () => act('del');
+  bView.onclick = () => { view = view === 'details' ? 'tiles' : 'details'; localStorage.setItem('fxview', view); render(); };
+  upInput.onchange = () => { const f = [...upInput.files]; upInput.value = ''; uploadFiles(f); };
+  srch.oninput = () => { q = srch.value.trim(); sel.clear(); render(); };
+  root.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT') { if (e.key === 'Escape') { srch.value = ''; q = ''; render(); root.focus(); } return; }
+    if (e.key === 'Delete' && sel.size) act('del');
+    else if (e.key === 'F2' && sel.size === 1) { e.preventDefault(); act('ren'); }
+    else if (e.key === 'Enter' && sel.size === 1) act('open');
+    else if (e.key === 'Backspace') { e.preventDefault(); if (cur) go(parent()); }
+    else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') { e.preventDefault(); sel = new Set(visible().map(i => i.name)); paintSel(); }
+    else if (e.key === 'Escape') { sel.clear(); paintSel(); }
+  });
+
+  /* ---- kéo thả: tải lên từ máy và di chuyển giữa các thư mục ---- */
+  let dz = null;
+  const clearDz = () => { if (dz) { dz.classList.remove('dz'); dz = null; } };
+  root.addEventListener('dragstart', e => {
+    const r = e.target.closest('[data-n]'); if (!r) return;
+    if (!sel.has(r.dataset.n)) { sel = new Set([r.dataset.n]); paintSel(); }
+    e.dataTransfer.setData('text/gn', JSON.stringify([...sel])); e.dataTransfer.effectAllowed = 'move';
+  });
+  root.addEventListener('dragover', e => {
+    const t = e.target.closest('[data-drop]'), types = [...e.dataTransfer.types];
+    if (!t || !(types.includes('Files') || types.includes('text/gn'))) return;
+    e.preventDefault(); e.dataTransfer.dropEffect = types.includes('text/gn') ? 'move' : 'copy';
+    const hl = t === main ? null : t;
+    if (dz !== hl) { clearDz(); if (hl) { hl.classList.add('dz'); dz = hl; } }
+  });
+  root.addEventListener('dragleave', e => { if (!root.contains(e.relatedTarget)) clearDz(); });
+  root.addEventListener('dragend', clearDz);
+  root.addEventListener('drop', e => {
+    const t = e.target.closest('[data-drop]'); if (!t) return;
+    e.preventDefault(); clearDz();
+    const dest = t === main ? cur : t.dataset.drop, internal = e.dataTransfer.getData('text/gn');
+    if (internal) moveItems(JSON.parse(internal), dest);
+    else if (e.dataTransfer.files.length) uploadFiles([...e.dataTransfer.files], user.id + '/' + dest);
+  });
+
+  load(true);
 }
 
 /* ---- APP 2: BẢNG TIN LỚP ---- */
