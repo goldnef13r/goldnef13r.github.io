@@ -35,16 +35,49 @@ label{font-size:.9rem;font-weight:700}
 .ico{position:absolute;touch-action:none;user-select:none;width:84px;background:none;border:0;color:#fff;font-size:.8rem;text-align:center;padding:8px 4px;border-radius:10px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .ico:hover{background:rgba(255,255,255,.18)}
 .ico b{display:block;font-size:2.2rem;line-height:1.2}
-#bar{z-index:9998;position:absolute;left:0;right:0;bottom:0;height:48px;background:#31219b;color:#fff;display:flex;align-items:center;gap:6px;padding:0 10px}
-#tasks{flex:1;display:flex;gap:6px;overflow:auto}
-#tasks button{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;width:42px;height:34px;font-size:1.25rem;white-space:nowrap;flex:none}
-#tasks button.on{background:rgba(255,255,255,.35)}
-#tasks button.mn{opacity:.55}
-#clock{font-size:.85rem;white-space:nowrap}
-#start{background:#4b3ac8;color:#fff;border:0;border-radius:8px;width:40px;height:34px;font-size:1.2rem}
-#menu{position:absolute;left:8px;bottom:56px;z-index:9999;background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.4);padding:6px;width:220px;max-height:70%;overflow:auto}
-#menu button{display:block;width:100%;text-align:left;background:none;border:0;padding:11px 12px;border-radius:8px;font-size:1rem;font-weight:400}
-#menu button:hover{background:#eef}
+/* Taskbar kiểu Windows 7 (Aero) */
+#bar{z-index:9998;position:absolute;left:0;right:0;bottom:0;height:48px;color:#fff;display:flex;align-items:center;gap:8px;padding:0 8px 0 4px;
+  background:linear-gradient(to bottom,rgba(150,195,235,.55) 0,rgba(55,100,160,.72) 48%,rgba(20,45,95,.82) 52%,rgba(25,55,105,.88) 100%);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.55);box-shadow:0 -1px 0 rgba(0,0,0,.35)}
+#tasks{flex:1;display:flex;gap:4px;overflow:auto;align-items:center}
+#tasks button{background:linear-gradient(rgba(255,255,255,.22),rgba(255,255,255,.05));color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:4px;width:48px;height:38px;font-size:1.3rem;white-space:nowrap;flex:none}
+#tasks button:hover{background:linear-gradient(rgba(255,255,255,.4),rgba(255,255,255,.12));border-color:rgba(255,255,255,.6)}
+#tasks button.on{background:linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.18));border-color:rgba(255,255,255,.7);box-shadow:inset 0 0 8px rgba(255,255,255,.35)}
+#tasks button.mn{opacity:.6}
+#clock{font-size:.75rem;white-space:nowrap;text-align:center;line-height:1.25;text-shadow:0 1px 2px rgba(0,0,0,.6);padding:0 4px}
+
+/* Nút Start hình cầu + cờ Windows */
+#start{width:46px;height:46px;flex:none;border-radius:50%;border:0;padding:0;display:grid;place-items:center;position:relative;
+  background:radial-gradient(circle at 50% 20%,#d6f0ff 0,#5db4f0 30%,#1c6fc2 62%,#0a3d85 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.55),0 0 0 2px rgba(0,30,80,.55),0 0 10px rgba(90,180,255,.7)}
+#start:hover{filter:brightness(1.15);box-shadow:0 0 0 1px rgba(255,255,255,.7),0 0 0 2px rgba(0,30,80,.55),0 0 16px rgba(120,200,255,.95)}
+#start.open{filter:brightness(.92);box-shadow:0 0 0 1px rgba(255,255,255,.5),0 0 0 2px rgba(0,30,80,.6),inset 0 2px 8px rgba(0,20,60,.7),0 0 14px rgba(120,200,255,.9)}
+#start .flag{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:22px;height:22px;transform:skewY(-5deg) rotateY(-12deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+#start .flag i{display:block;border-radius:2px 6px 2px 6px}
+#start .flag i:nth-child(1){background:#f4511e}
+#start .flag i:nth-child(2){background:#7cc700}
+#start .flag i:nth-child(3){background:#1ea1f2}
+#start .flag i:nth-child(4){background:#ffc107}
+
+/* Menu Start kiểu Windows 7 */
+#menu{position:absolute;left:4px;bottom:50px;z-index:9999;width:420px;max-width:calc(100% - 8px);height:470px;max-height:calc(100% - 56px);display:flex;gap:6px;padding:6px;color:#fff;
+  background:linear-gradient(rgba(120,175,230,.75),rgba(35,80,145,.85));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.6);border-radius:8px 8px 0 0;box-shadow:0 0 0 1px rgba(0,0,0,.55),0 10px 32px rgba(0,0,0,.55)}
+#menu .l{flex:1.45;min-width:0;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(0,0,0,.35);border-radius:5px;padding:4px;color:#222}
+#menu .list{flex:1;overflow:auto}
+#menu .it{display:flex;align-items:center;gap:10px;width:100%;background:none;border:1px solid transparent;border-radius:4px;padding:7px 8px;font-size:.92rem;font-weight:400;text-align:left;color:#222}
+#menu .it:hover{background:linear-gradient(#f1f8fe,#cfe4f9);border-color:#9fc4ea}
+#menu .it .ic{font-size:1.5rem;width:32px;text-align:center;flex:none}
+#menu .srch{margin:4px 0 0;padding:7px 12px;border-radius:14px;border:1px solid #a9b7c6;font-size:.9rem;background:#f4f8fc}
+#menu .r{flex:1;min-width:0;display:flex;flex-direction:column;padding:2px}
+#menu .usr{display:flex;align-items:center;gap:8px;padding:4px 4px 10px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.5);overflow:hidden}
+#menu .usr span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#menu .av{flex:none;width:40px;height:40px;border-radius:6px;border:2px solid rgba(255,255,255,.85);background:linear-gradient(#7fc3f7,#2a74c6);display:grid;place-items:center;font-size:1.3rem;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+#menu .lk{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:4px;padding:8px;font-size:.92rem;font-weight:400;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45)}
+#menu .lk:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.45)}
+#menu .sp{flex:1}
+#menu .sd .lk{text-align:center;font-weight:700;background:linear-gradient(#6d7b8f,#2c3747);border:1px solid rgba(0,0,0,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+#menu .sd .lk:hover{background:linear-gradient(#e0555a,#a21f25)}
 
 /* Win */
 .win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:480px;max-width:96vw;height:440px;max-height:calc(100% - 48px);min-width:300px;min-height:220px;resize:both}
@@ -115,7 +148,7 @@ pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:22
 <div id="os" hidden>
  <div id="desk"></div>
  <div id="menu" hidden></div>
- <div id="bar"><button id="start" onclick="toggleMenu()" aria-label="Menu">⊞</button><div id="tasks"></div><span id="clock"></span></div>
+ <div id="bar"><button id="start" onclick="toggleMenu()" aria-label="Start" title="Start"><span class="flag"><i></i><i></i><i></i><i></i></span></button><div id="tasks"></div><span id="clock"></span></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -222,7 +255,7 @@ async function enter(session) {
 }
 const tick = () => {
   const d = new Date();
-  $('clock').textContent = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+  $('clock').innerHTML = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + '<br>' + d.toLocaleDateString('vi-VN');
   $('clock').title = d.toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
 };
 
@@ -321,10 +354,29 @@ function drag(w, h) {
 function toggleMenu() { $('menu').hidden ? openMenu() : closeMenu(); }
 function openMenu() {
   const m = $('menu');
-  m.innerHTML = Object.entries(APPS).map(([k, a]) => `<button onclick="openApp('${k}')">${a[0]} ${a[1]}</button>`).join('') + '<button onclick="logout()">🚪 Đăng xuất</button>';
-  m.hidden = false;
+  const nm = me?.name || (user.email || '').split('@')[0];
+  const links = [['files', '📁', 'Tài liệu'], ['board', '📢', 'Bảng tin'], ['chat', '💬', 'Tin nhắn'], ['people', '📋', 'Danh sách lớp'], ['settings', '⚙️', 'Bảng điều khiển']];
+  m.innerHTML = `<div class="l"><div class="list"></div><input class="srch" placeholder="Tìm chương trình" autocomplete="off"></div>
+   <div class="r"><div class="usr"><span class="av">${esc(nm.charAt(0).toUpperCase())}</span><span>${esc(nm)}</span></div>
+   ${links.map(([k, i, t]) => `<button class="lk" data-k="${k}">${i} ${t}</button>`).join('')}
+   <div class="sp"></div><div class="sd"><button class="lk" data-out="1">⏻ Đăng xuất</button></div></div>`;
+  const list = m.querySelector('.list'), s = m.querySelector('.srch');
+  const render = () => {
+    const f = s.value.trim().toLowerCase();
+    list.innerHTML = Object.entries(APPS).filter(([k, a]) => !f || a[1].toLowerCase().includes(f))
+      .map(([k, a]) => `<button class="it" data-k="${k}"><span class="ic">${a[0]}</span>${esc(a[1])}</button>`).join('') || '<p class="small" style="padding:8px">Không tìm thấy chương trình.</p>';
+  };
+  m.onclick = e => {
+    const b = e.target.closest('[data-k]'); if (b) return openApp(b.dataset.k);
+    if (e.target.closest('[data-out]')) logout();
+  };
+  s.oninput = render;
+  s.onkeydown = e => { if (e.key === 'Enter') { const b = list.querySelector('[data-k]'); if (b) openApp(b.dataset.k); } };
+  render();
+  m.hidden = false; $('start').classList.add('open');
+  if (innerWidth >= 640) s.focus();
 }
-function closeMenu() { $('menu').hidden = true; }
+function closeMenu() { $('menu').hidden = true; $('start').classList.remove('open'); }
 addEventListener('pointerdown', e => { if (!e.target.closest('#menu,#start')) closeMenu(); });
 addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
