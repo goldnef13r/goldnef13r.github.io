@@ -3,22 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#31219b">
 <title>GNwebOS</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🖥️%3C/text%3E%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial,sans-serif}
 html,body{height:100%;overflow:hidden}
-body{background:linear-gradient(135deg,#00a8ec,#4b3ac8);color:#1a1a1a;background-size:cover;background-position:center}
+body{background:linear-gradient(135deg,#00a8ec,#4b3ac8);color:#1a1a1a;background-size:cover;background-position:center;background-repeat:no-repeat}
 [hidden]{display:none!important}
 button{cursor:pointer;font-weight:700}
+button:disabled{opacity:.6;cursor:not-allowed}
+a{color:#4b3ac8}
 .btn{background:#4b3ac8;color:#fff;border:0;border-radius:10px;padding:11px 16px;width:100%;margin-top:10px}
 .btn.alt{background:#e8e8f4;color:#31219b}
-input,textarea,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;margin-top:6px}
+input,textarea,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;margin-top:6px;background:#fff;color:#1a1a1a}
 label{font-size:.9rem;font-weight:700}
 #auth{height:100%;display:flex;align-items:center;justify-content:center;padding:15px}
 .card{background:#fff;border-radius:20px;padding:28px;width:100%;max-width:400px;box-shadow:0 8px 25px rgba(0,0,0,.25)}
 .card h2{color:#4b3ac8;margin-bottom:14px;text-align:center}
-.tabs{display:flex;gap:8px;margin-bottom:14px}
-.tabs button{flex:1;padding:9px;border:2px solid #4b3ac8;border-radius:10px;background:#fff;color:#4b3ac8}
+.tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tabs button{flex:1;padding:9px;border:2px solid #4b3ac8;border-radius:10px;background:#fff;color:#4b3ac8;white-space:nowrap}
 .tabs button.on{background:#4b3ac8;color:#fff}
 .row{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:.9rem}
 .row input{width:auto;margin:0}
@@ -28,7 +32,7 @@ label{font-size:.9rem;font-weight:700}
 /* OS */
 #os{height:100%;position:relative}
 #desk{position:absolute;inset:0 0 48px 0}
-.ico{position:absolute;touch-action:none;user-select:none;width:84px;background:none;border:0;color:#fff;font-size:.8rem;text-align:center;padding:8px 4px;border-radius:10px}
+.ico{position:absolute;touch-action:none;user-select:none;width:84px;background:none;border:0;color:#fff;font-size:.8rem;text-align:center;padding:8px 4px;border-radius:10px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .ico:hover{background:rgba(255,255,255,.18)}
 .ico b{display:block;font-size:2.2rem;line-height:1.2}
 #bar{z-index:9998;position:absolute;left:0;right:0;bottom:0;height:48px;background:#31219b;color:#fff;display:flex;align-items:center;gap:6px;padding:0 10px}
@@ -43,31 +47,39 @@ label{font-size:.9rem;font-weight:700}
 #menu button:hover{background:#eef}
 
 /* Win */
-.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:480px;max-width:96vw;height:440px;max-height:calc(100% - 48px)}
+.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:480px;max-width:96vw;height:440px;max-height:calc(100% - 48px);min-width:300px;min-height:220px;resize:both}
 .win header{background:#4b3ac8;color:#fff;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;cursor:move;touch-action:none;user-select:none}
 .win header div{display:flex;gap:6px}
 .win header button{background:rgba(255,255,255,.25);color:#fff;border:0;border-radius:6px;width:30px;height:28px;font-size:1rem}
 .win header .x{background:#e74c3c}
 .win .body{padding:14px;overflow:auto;flex:1}
-.win.max{left:0!important;top:0!important;width:100%!important;height:calc(100% - 48px)!important;max-height:none;max-width:none;border-radius:0}
+.win.max{left:0!important;top:0!important;width:100%!important;height:calc(100% - 48px)!important;max-height:none;max-width:none;border-radius:0;resize:none}
 
 /* Component */
 .bar{height:12px;background:#e4e6eb;border-radius:6px;overflow:hidden;margin:6px 0}
-.bar i{display:block;height:100%;background:#4b3ac8}
-.file{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #eee;font-size:.9rem}
-.file span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.file button{border:0;background:#eef;color:#31219b;border-radius:6px;padding:5px 9px}
-.file button.del{background:#fdecea;color:#c0392b}
+.bar i{display:block;height:100%;background:#4b3ac8;width:0;transition:width .3s}
+.file{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #eee;font-size:.9rem;flex-wrap:wrap}
+.file>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1 1 140px;min-width:0}
+.file button,.del{border:0;background:#eef;color:#31219b;border-radius:6px;padding:5px 9px}
+.file button.del,.del{background:#fdecea;color:#c0392b}
+.prod .del{margin-top:6px}
 .small{font-size:.85rem;color:#666}
 .msgs{height:250px;overflow:auto;background:#f4f5f9;border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px}
-.msg{align-self:flex-start;background:#e4e6eb;border-radius:12px;padding:6px 10px;max-width:80%;font-size:.95rem}
+.msg{align-self:flex-start;background:#e4e6eb;border-radius:12px;padding:6px 10px;max-width:80%;font-size:.95rem;word-break:break-word}
 .msg.me{align-self:flex-end;background:#4b3ac8;color:#fff}
 .msg small{display:block;opacity:.7;font-size:.72rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
 .prod{border:1px solid #e0e0e0;border-radius:12px;padding:8px;font-size:.9rem}
-.prod img{width:100%;height:100px;object-fit:cover;border-radius:8px;background:#eee}
+.prod img,.noimg{width:100%;height:100px;object-fit:cover;border-radius:8px;background:#eee}
+.noimg{display:flex;align-items:center;justify-content:center;font-size:2rem}
 .pr{color:#27ae60;font-weight:700}
 canvas{display:block;margin:0 auto;max-width:100%}
+pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;font:13px/1.4 ui-monospace,Consolas,monospace}
+
+/* Modal + toast */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20000;display:flex;align-items:center;justify-content:center;padding:15px}
+.toast{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);background:#1e8449;color:#fff;padding:10px 16px;border-radius:10px;z-index:30000;max-width:90vw;box-shadow:0 4px 14px rgba(0,0,0,.3);font-size:.95rem}
+.toast.bad{background:#c0392b}
 </style>
 </head>
 <body>
@@ -82,15 +94,17 @@ canvas{display:block;margin:0 auto;max-width:100%}
   <div id="fLogin">
    <label>Gmail</label><input id="lEmail" type="email" autocomplete="email" placeholder="ten@gmail.com">
    <label style="display:block;margin-top:10px">Mật khẩu</label><input id="lPass" type="password" autocomplete="current-password">
-   <button class="btn" onclick="doLogin()">Đăng nhập</button>
+   <button class="btn" id="bLogin" onclick="doLogin()">Đăng nhập</button>
+   <p class="small" style="text-align:center;margin-top:10px"><a href="#" onclick="tab('reg');return false">Quên mật khẩu? Lấy lại bằng mã gửi về Gmail</a></p>
   </div>
   <div id="fReg" hidden>
+   <p class="small" style="margin-bottom:8px">Đã có tài khoản mà quên mật khẩu? Nhập lại Gmail, nhận mã và đặt mật khẩu mới.</p>
    <label>Gmail</label><input id="rEmail" type="email" autocomplete="email" placeholder="ten@gmail.com">
-   <button class="btn alt" onclick="sendCode()">Gửi mã xác nhận về Gmail</button>
+   <button class="btn alt" id="bSend" onclick="sendCode()">Gửi mã xác nhận về Gmail</button>
    <div id="rStep2" hidden>
-    <label style="display:block;margin-top:12px">Mã xác nhận</label><input id="rCode" inputmode="numeric" placeholder="Nhập mã">
+    <label style="display:block;margin-top:12px">Mã xác nhận</label><input id="rCode" inputmode="numeric" autocomplete="one-time-code" placeholder="Nhập mã">
     <label style="display:block;margin-top:10px">Mật khẩu (tối thiểu 6 ký tự)</label><input id="rPass" type="password" autocomplete="new-password">
-    <button class="btn" onclick="doRegister()">Hoàn tất đăng ký</button>
+    <button class="btn" id="bReg" onclick="doRegister()">Hoàn tất</button>
    </div>
   </div>
   <div class="row"><input type="checkbox" id="remember" checked><label for="remember" style="font-weight:400">Luôn đăng nhập</label></div>
@@ -115,42 +129,89 @@ let sb, user;
 const mk = st => supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { storage: st, persistSession: true, autoRefreshToken: true } });
 const store = () => $('remember').checked ? localStorage : sessionStorage;
 const say = (t, ok) => { $('msg').textContent = t; $('msg').className = ok ? 'ok' : ''; };
-const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const cleanName = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').replace(/[^\w.\-]+/g, '_');
 
-function tab(t) {
-  $('fLogin').hidden = t !== 'login';$('fReg').hidden = t !== 'reg';
-  $('tLogin').className = t === 'login' ? 'on' : '';$('tReg').className = t === 'reg' ? 'on' : '';
-  say('');
+/* ---- Thông báo & hộp thoại nhập liệu ---- */
+function toast(t, bad) {
+  document.querySelectorAll('.toast').forEach(x => x.remove());
+  const d = document.createElement('div'); d.className = 'toast' + (bad ? ' bad' : ''); d.textContent = t;
+  document.body.appendChild(d); setTimeout(() => d.remove(), 3200);
+}
+function ask(title, fields, okText = 'Lưu') {
+  return new Promise(res => {
+    const ov = document.createElement('div'); ov.className = 'modal';
+    ov.innerHTML = `<form class="card" style="max-width:360px"><h2 style="font-size:1.1rem">${esc(title)}</h2>${fields.map(f => {
+      const at = `name="${f.name}" ${f.req ? 'required' : ''} placeholder="${esc(f.ph || '')}"`;
+      return `<label style="display:block;margin-top:10px">${esc(f.label)}</label>` + (f.type === 'textarea'
+        ? `<textarea ${at} rows="4">${esc(f.value || '')}</textarea>`
+        : `<input ${at} type="${f.type || 'text'}" value="${esc(f.value || '')}" ${f.min != null ? 'min="' + f.min + '"' : ''}>`);
+    }).join('')}<button class="btn">${esc(okText)}</button><button type="button" class="btn alt">Hủy</button></form>`;
+    const onKey = e => { if (e.key === 'Escape') done(null); };
+    const done = v => { ov.remove(); removeEventListener('keydown', onKey); res(v); };
+    ov.querySelector('form').onsubmit = e => { e.preventDefault(); done(Object.fromEntries(new FormData(e.target))); };
+    ov.querySelector('.alt').onclick = () => done(null);
+    ov.addEventListener('pointerdown', e => { if (e.target === ov) done(null); });
+    addEventListener('keydown', onKey);
+    document.body.appendChild(ov);
+    const f = ov.querySelector('input,textarea'); if (f) f.focus();
+  });
 }
 
+/* ---- Đăng nhập / đăng ký ---- */
+function tab(t) {
+  $('fLogin').hidden = t !== 'login'; $('fReg').hidden = t !== 'reg';
+  $('tLogin').className = t === 'login' ? 'on' : ''; $('tReg').className = t === 'reg' ? 'on' : '';
+  say('');
+}
+function cooldown(btn, sec = 30) {
+  const base = btn.dataset.t || (btn.dataset.t = btn.textContent);
+  let n = sec; btn.disabled = true;
+  const iv = setInterval(() => {
+    if (--n <= 0) { clearInterval(iv); btn.disabled = false; btn.textContent = base; }
+    else btn.textContent = base + ' (' + n + 's)';
+  }, 1000);
+}
 async function sendCode() {
-  const email = $('rEmail').value.trim();
+  const email = $('rEmail').value.trim().toLowerCase();
   if (!email) return say('Nhập Gmail trước.');
   sb = mk(store());
   say('Đang gửi mã...', true);
   const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
   if (error) return say('Không gửi được mã: ' + error.message);
   $('rStep2').hidden = false;
-  say('Đã gửi mã. Kiểm tra Gmail.', true);
+  cooldown($('bSend'));
+  say('Đã gửi mã. Kiểm tra Gmail (cả mục Spam).', true);
 }
 async function doRegister() {
-  const email = $('rEmail').value.trim(), token = $('rCode').value.trim(), pw =$('rPass').value;
+  const email = $('rEmail').value.trim().toLowerCase(), token = $('rCode').value.trim(), pw = $('rPass').value;
+  if (!sb) return say('Hãy bấm "Gửi mã xác nhận" trước.');
+  if (!token) return say('Nhập mã xác nhận.');
   if (pw.length < 6) return say('Mật khẩu tối thiểu 6 ký tự.');
+  $('bReg').disabled = true;
   const v = await sb.auth.verifyOtp({ email, token, type: 'email' });
-  if (v.error) return say('Mã sai hoặc hết hạn.');
+  if (v.error) { $('bReg').disabled = false; return say('Mã sai hoặc hết hạn.'); }
   const u = await sb.auth.updateUser({ password: pw });
+  $('bReg').disabled = false;
   if (u.error) return say('Lỗi lưu mật khẩu: ' + u.error.message);
   enter(v.data.session);
 }
 async function doLogin() {
   sb = mk(store());
-  const { data, error } = await sb.auth.signInWithPassword({ email: $('lEmail').value.trim(), password:$('lPass').value });
+  $('bLogin').disabled = true; say('Đang đăng nhập...', true);
+  const { data, error } = await sb.auth.signInWithPassword({ email: $('lEmail').value.trim().toLowerCase(), password: $('lPass').value });
+  $('bLogin').disabled = false;
   if (error) return say('Sai Gmail hoặc mật khẩu.');
+  say('');
   enter(data.session);
 }
-async function logout() { await sb.auth.signOut(); location.reload(); }
+async function logout() { try { await sb.auth.signOut(); } catch (e) {} location.reload(); }
+[['lEmail', () => $('lPass').focus()], ['lPass', doLogin], ['rEmail', sendCode], ['rCode', () => $('rPass').focus()], ['rPass', doRegister]]
+  .forEach(([id, fn]) => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') fn(); }));
 
+let entered = false;
 async function enter(session) {
+  if (entered) return; entered = true;
   user = session.user;
   $('auth').hidden = true; $('os').hidden = false;
   await loadProfile();
@@ -159,33 +220,32 @@ async function enter(session) {
   tick(); setInterval(tick, 30000);
   if (!me) openApp('settings');
 }
-(async () => {
-  try {
-    sb = mk(localStorage);
-    const { data } = await sb.auth.getSession();
-    if (data.session) enter(data.session);
-  } catch (e) { say('Chưa cấu hình Supabase.'); }
-})();
-const tick = () => $('clock').textContent = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+const tick = () => {
+  const d = new Date();
+  $('clock').textContent = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+  $('clock').title = d.toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+};
 
-const APPS = { 
-  files: ['📁', 'Tệp', filesApp], 
-  board: ['📢', 'Bảng tin', boardApp], 
-  chat: ['💬', 'Tin nhắn', chatApp], 
-  market: ['🛒', 'Chợ đồ cũ', marketApp], 
-  people: ['📋', 'Danh sách lớp', peopleApp], 
-  browser: ['🌐', 'Trình duyệt', browserApp], 
-  wheel: ['🎡', 'Vòng quay', wheelApp], 
-  settings: ['⚙️', 'Cài đặt', settingsApp] 
+/* ---- Hệ thống cửa sổ ---- */
+const APPS = {
+  files: ['📁', 'Tệp', filesApp],
+  board: ['📢', 'Bảng tin', boardApp],
+  chat: ['💬', 'Tin nhắn', chatApp],
+  market: ['🛒', 'Chợ đồ cũ', marketApp],
+  people: ['📋', 'Danh sách lớp', peopleApp],
+  browser: ['🌐', 'Trình duyệt', browserApp],
+  wheel: ['🎡', 'Vòng quay', wheelApp],
+  settings: ['⚙️', 'Cài đặt', settingsApp]
 };
 const wins = {}; let z = 10, me = null;
 
-async function loadProfile() { 
-  const { data } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle(); 
-  me = data; 
+async function loadProfile() {
+  const { data } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
+  me = data;
 }
 function applyWallpaper() {
-  if (me?.wallpaper) document.body.style.backgroundImage = `url('${me.wallpaper}')`;
+  const w = me?.wallpaper;
+  document.body.style.backgroundImage = (w && /^https?:\/\//i.test(w)) ? `url(${JSON.stringify(w)})` : '';
 }
 
 function buildDesktop() {
@@ -211,6 +271,17 @@ function buildDesktop() {
   });
 }
 
+/* Dựng nội dung ứng dụng; app có thể trả về { off } để dọn dẹp khi đóng */
+function mount(k) {
+  const o = wins[k]; if (!o) return;
+  if (o.off) { try { o.off(); } catch (e) {} o.off = null; }
+  const body = o.w.querySelector('.body'); body.innerHTML = '';
+  Promise.resolve().then(() => APPS[k][2](body)).then(r => {
+    if (r && r.off) { if (wins[k] === o) o.off = r.off; else r.off(); }
+  }).catch(e => { body.textContent = 'Lỗi: ' + e.message; });
+}
+function refreshApps() { ['chat', 'market', 'board'].forEach(k => wins[k] && mount(k)); }
+
 function openApp(k) {
   closeMenu();
   if (wins[k]) return show(k);
@@ -218,19 +289,20 @@ function openApp(k) {
   w.className = 'win';
   w.innerHTML = `<header><span>${a[0]} ${a[1]}</span><div><button class="mn" aria-label="Thu nhỏ">–</button><button class="mx" aria-label="Phóng to">□</button><button class="x" aria-label="Đóng">×</button></div></header><div class="body"></div>`;
   $('os').appendChild(w);
+  if (innerWidth < 640) w.classList.add('max');
   w.style.left = Math.max(0, Math.min(40 + n * 28, innerWidth - w.offsetWidth)) + 'px';
   w.style.top = Math.max(0, Math.min(24 + n * 28, innerHeight - 48 - w.offsetHeight)) + 'px';
-  const t = document.createElement('button'); t.textContent = a[0]; t.title = t.ariaLabel = a[1]; $('tasks').appendChild(t);
-  const o = wins[k] = { w, t, min: false };
+  const t = document.createElement('button'); t.textContent = a[0]; t.title = a[1]; t.setAttribute('aria-label', a[1]); $('tasks').appendChild(t);
+  const o = wins[k] = { w, t, min: false, off: null };
   t.onclick = () => (o.min || !t.classList.contains('on')) ? show(k) : hide(k);
   w.querySelector('.mn').onclick = () => hide(k);
   w.querySelector('.mx').onclick = () => w.classList.toggle('max');
-  w.querySelector('.x').onclick = () => { o.off && o.off(); w.remove(); t.remove(); delete wins[k]; };
+  w.querySelector('.x').onclick = () => { if (o.off) { try { o.off(); } catch (e) {} } w.remove(); t.remove(); delete wins[k]; };
   w.addEventListener('pointerdown', () => show(k));
-  w.querySelector('header').addEventListener('dblclick', () => w.classList.toggle('max'));
+  w.querySelector('header').addEventListener('dblclick', e => { if (!e.target.closest('button')) w.classList.toggle('max'); });
   drag(w, w.querySelector('header'));
   show(k);
-  a[2](w.querySelector('.body'));
+  mount(k);
 }
 
 function show(k) { const o = wins[k]; o.min = false; o.w.style.display = 'flex'; Object.values(wins).forEach(x => x.t.classList.remove('on')); o.w.style.zIndex = ++z; o.t.classList.add('on'); o.t.classList.remove('mn'); }
@@ -254,8 +326,9 @@ function openMenu() {
 }
 function closeMenu() { $('menu').hidden = true; }
 addEventListener('pointerdown', e => { if (!e.target.closest('#menu,#start')) closeMenu(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
-/* ---- APP 1: TỆP NÂNG CAO ---- */
+/* ---- APP 1: TỆP ---- */
 const planGB = () => PLANS[(user.app_metadata || {}).plan] || PLANS.free;
 const fmt = b => b > GB ? (b / GB).toFixed(2) + ' GB' : b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.ceil(b / 1024) + ' KB';
 
@@ -263,124 +336,180 @@ function filesApp(el) {
   el.innerHTML = `<div id="q"></div><div class="bar"><i id="qb"></i></div>
    <div style="display:flex;gap:6px;margin-top:8px">
      <button class="btn alt" style="margin:0" id="mkFolder">+ Tạo thư mục</button>
-     <input type="file" id="up" style="display:none">
+     <input type="file" id="up" multiple style="display:none">
      <button class="btn" style="margin:0" id="btnUp">+ Tải tệp lên</button>
    </div>
-   <div id="breadcrumb" class="small" style="margin:8px 0;font-weight:bold;cursor:pointer">📁 Gốc</div>
+   <div id="breadcrumb" class="small" style="margin:8px 0;font-weight:bold"></div>
    <div id="fl"></div>
    <div id="viewer" hidden style="margin-top:10px;padding:8px;background:#f0f0f5;border-radius:8px;text-align:center"></div>`;
-  
-  let currentPath = '';
-  const q = el.querySelector('#q'), qb = el.querySelector('#qb'), fl = el.querySelector('#fl'), up = el.querySelector('#up'), bc = el.querySelector('#breadcrumb'), viewer = el.querySelector('#viewer');
+
+  let cur = '';   // đường dẫn thư mục hiện tại, ví dụ "bai-tap/toan/"
+  const q = el.querySelector('#q'), qb = el.querySelector('#qb'), fl = el.querySelector('#fl'), up = el.querySelector('#up'),
+        bc = el.querySelector('#breadcrumb'), viewer = el.querySelector('#viewer'), btnUp = el.querySelector('#btnUp');
   const bucket = () => sb.storage.from('files');
+  const base = () => user.id + '/' + cur;
   let used = 0;
 
-  el.querySelector('#btnUp').onclick = () => up.click();
+  // Duyệt đệ quy một thư mục, trả về danh sách {path,size} của mọi tệp bên trong
+  async function walk(prefix, out = [], depth = 0) {
+    if (depth > 8) return out;
+    const { data, error } = await bucket().list(prefix, { limit: 1000 });
+    if (error) throw error;
+    for (const f of data || []) {
+      if (f.id === null) await walk(prefix + '/' + f.name, out, depth + 1);
+      else out.push({ path: prefix + '/' + f.name, size: f.metadata?.size || 0 });
+    }
+    return out;
+  }
+  async function updateQuota() {
+    try { used = (await walk(user.id)).reduce((s, f) => s + f.size, 0); } catch (e) {}
+    q.innerHTML = `Đã dùng <b>${fmt(used)}</b> / ${planGB()} GB`;
+    qb.style.width = Math.min(100, used / (planGB() * GB) * 100) + '%';
+  }
+  function crumbs() {
+    bc.innerHTML = '';
+    const link = (label, path) => { const s = document.createElement('span'); s.textContent = label; s.style.cursor = 'pointer'; s.onclick = () => { cur = path; load(); }; return s; };
+    bc.append(link('📁 Gốc', ''));
+    let acc = '';
+    cur.split('/').filter(Boolean).forEach(p => { acc += p + '/'; bc.append(' / ', link(p, acc)); });
+  }
+  async function download(path, name) {
+    const s = await bucket().createSignedUrl(path, 60, { download: name });
+    if (!s.data) return toast('Không tải được tệp.', true);
+    const a = document.createElement('a'); a.href = s.data.signedUrl; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  async function view(path, name) {
+    const s = await bucket().createSignedUrl(path, 120);
+    if (!s.data) return toast('Không mở được tệp.', true);
+    const url = s.data.signedUrl;
+    viewer.hidden = false;
+    if (/\.(png|jpe?g|gif|webp|svg)$/i.test(name)) {
+      viewer.innerHTML = `<img src="${url}" style="max-width:100%;max-height:220px;border-radius:6px"><br><a href="${url}" target="_blank" rel="noopener" class="small">Mở ảnh lớn</a>`;
+    } else if (/\.(mp4|webm|ogg|mov)$/i.test(name)) {
+      viewer.innerHTML = `<video src="${url}" controls style="max-width:100%;max-height:220px;border-radius:6px"></video>`;
+    } else if (/\.(mp3|wav|m4a|aac)$/i.test(name)) {
+      viewer.innerHTML = `<audio src="${url}" controls style="width:100%"></audio>`;
+    } else if (/\.pdf$/i.test(name)) {
+      viewer.innerHTML = `<iframe src="${url}" style="width:100%;height:260px;border:0"></iframe><br><a href="${url}" target="_blank" rel="noopener" class="small">Mở toàn màn hình PDF</a>`;
+    } else if (/\.(txt|md|csv|json|log)$/i.test(name)) {
+      try {
+        const t = await (await fetch(url)).text();
+        viewer.innerHTML = `<pre class="txt">${esc(t.slice(0, 20000))}${t.length > 20000 ? '\n… (đã cắt bớt)' : ''}</pre>`;
+      } catch (e) { viewer.hidden = true; download(path, name); }
+    } else {
+      viewer.hidden = true; download(path, name);
+    }
+  }
+  const removeAll = async paths => { for (let i = 0; i < paths.length; i += 100) await bucket().remove(paths.slice(i, i + 100)); };
 
   async function load() {
     viewer.hidden = true; viewer.innerHTML = '';
-    bc.textContent = '📁 Gốc' + (currentPath ? ' / ' + currentPath.slice(0, -1) : '');
-    bc.onclick = () => { currentPath = ''; load(); };
-
-    const { data, error } = await bucket().list(user.id + '/' + currentPath, { limit: 1000, sortBy: { column: 'name', order: 'asc' } });
+    crumbs();
+    fl.innerHTML = '<p class="small">Đang tải...</p>';
+    const { data, error } = await bucket().list(base().replace(/\/$/, ''), { limit: 1000, sortBy: { column: 'name', order: 'asc' } });
     if (error) { fl.textContent = 'Lỗi tải tệp: ' + error.message; return; }
+    updateQuota();
+    const items = (data || []).filter(f => f.name !== '.emptyFolderPlaceholder')
+      .sort((a, b) => (a.id === null ? 0 : 1) - (b.id === null ? 0 : 1));
+    fl.innerHTML = items.length ? '' : '<p class="small">Thư mục trống.</p>';
 
-    const { data: allData } = await bucket().list(user.id, { limit: 10000 });
-    used = (allData || []).reduce((s, f) => s + (f.metadata?.size || 0), 0);
-    q.innerHTML = `Đã dùng <b>${fmt(used)}</b> / ${planGB()} GB`;
-    qb.style.width = Math.min(100, used / (planGB() * GB) * 100) + '%';
-
-    fl.innerHTML = data.length ? '' : '<p class="small">Thư mục trống.</p>';
-
-    data.forEach(f => {
-      if (f.name === '.emptyFolderPlaceholder') return;
-      const isFolder = !f.id;
+    items.forEach(f => {
+      const name = f.name, isFolder = f.id === null;
       const r = document.createElement('div'); r.className = 'file';
-      const displayName = f.name;
-
-      if (isFolder || f.id === null) {
-        r.innerHTML = `<span>📁 <b>${esc(displayName)}</b></span><button class="del">Xóa</button>`;
-        r.querySelector('span').onclick = () => { currentPath += displayName + '/'; load(); };
-      } else {
-        r.innerHTML = `<span title="${esc(displayName)}">${esc(displayName)}</span><small>${fmt(f.metadata?.size || 0)}</small><button class="vw">Xem</button><button class="ren">Đổi tên</button><button class="del">Xóa</button>`;
-        
-        const fullPath = user.id + '/' + currentPath + displayName;
-        r.querySelector('.vw').onclick = async () => {
-          const s = await bucket().createSignedUrl(fullPath, 60);
-          if (!s.data) return alert('Không mở được tệp.');
-          const url = s.data.signedUrl;
-          viewer.hidden = false;
-          if (/\.(png|jpg|jpeg|gif|webp)$/i.test(displayName)) {
-            viewer.innerHTML = `<img src="${url}" style="max-width:100%;max-height:200px;border-radius:6px"><br><a href="${url}" target="_blank" class="small">Mở ảnh lớn</a>`;
-          } else if (/\.(mp4|webm|ogg)$/i.test(displayName)) {
-            viewer.innerHTML = `<video src="${url}" controls style="max-width:100%;max-height:200px;border-radius:6px"></video>`;
-          } else if (/\.pdf$/i.test(displayName)) {
-            viewer.innerHTML = `<iframe src="${url}" style="width:100%;height:250px;border:0"></iframe><br><a href="${url}" target="_blank" class="small">Mở toàn màn hình PDF</a>`;
-          } else {
-            location.href = url;
-          }
+      if (isFolder) {
+        r.innerHTML = `<span style="cursor:pointer">📁 <b>${esc(name)}</b></span><button class="del">Xóa</button>`;
+        r.querySelector('span').onclick = () => { cur += name + '/'; load(); };
+        r.querySelector('.del').onclick = async () => {
+          if (!confirm(`Xóa thư mục "${name}" và toàn bộ nội dung bên trong?`)) return;
+          try {
+            const all = await walk(base() + name);
+            await removeAll(all.map(x => x.path));
+            toast('Đã xóa thư mục.');
+          } catch (e) { toast('Lỗi xóa: ' + e.message, true); }
+          load();
         };
-
+      } else {
+        const path = base() + name;
+        r.innerHTML = `<span title="${esc(name)}">${esc(name)}</span><small>${fmt(f.metadata?.size || 0)}</small><button class="vw">Xem</button><button class="dl">Tải</button><button class="ren">Đổi tên</button><button class="del">Xóa</button>`;
+        r.querySelector('.vw').onclick = () => view(path, name);
+        r.querySelector('.dl').onclick = () => download(path, name);
         r.querySelector('.ren').onclick = async () => {
-          const newName = prompt('Nhập tên mới cho tệp:', displayName);
-          if (!newName || newName === displayName) return;
-          const newFullPath = user.id + '/' + currentPath + newName;
-          const { error: moveErr } = await bucket().move(fullPath, newFullPath);
-          if (moveErr) alert('Lỗi đổi tên: ' + moveErr.message);
+          const v = await ask('Đổi tên tệp', [{ name: 'n', label: 'Tên mới', value: name, req: 1 }]);
+          if (!v) return;
+          const nn = cleanName(v.n.trim());
+          if (!nn || nn === name) return;
+          const { error: e } = await bucket().move(path, base() + nn);
+          if (e) toast('Lỗi đổi tên: ' + e.message, true); else toast('Đã đổi tên.');
+          load();
+        };
+        r.querySelector('.del').onclick = async () => {
+          if (!confirm(`Xóa tệp "${name}"?`)) return;
+          const { error: e } = await bucket().remove([path]);
+          if (e) toast('Lỗi xóa: ' + e.message, true);
           load();
         };
       }
-
-      r.querySelector('.del').onclick = async () => {
-        if (confirm('Xóa mục này?')) {
-          await bucket().remove([user.id + '/' + currentPath + displayName]);
-          load();
-        }
-      };
       fl.appendChild(r);
     });
   }
 
+  el.querySelector('#btnUp').onclick = () => up.click();
   el.querySelector('#mkFolder').onclick = async () => {
-    const fName = prompt('Tên thư mục mới:');
-    if (!fName) return;
-    await bucket().upload(user.id + '/' + currentPath + fName + '/.emptyFolderPlaceholder', new Blob(['']));
+    const v = await ask('Tạo thư mục', [{ name: 'n', label: 'Tên thư mục', req: 1 }], 'Tạo');
+    if (!v) return;
+    const n = cleanName(v.n.trim()).replace(/^\.+/, '');
+    if (!n) return toast('Tên thư mục không hợp lệ.', true);
+    const { error } = await bucket().upload(base() + n + '/.emptyFolderPlaceholder', new Blob(['']), { upsert: true });
+    if (error) toast('Lỗi tạo thư mục: ' + error.message, true);
     load();
   };
-
   up.onchange = async () => {
-    for (const f of up.files) {
-      if (used + f.size > planGB() * GB) { alert('Hết dung lượng!'); break; }
-      const cleanName = f.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^\w.\-]+/g, '_');
-      await bucket().upload(user.id + '/' + currentPath + cleanName, f, { upsert: true });
-      used += f.size;
+    const files = [...up.files]; up.value = ''; let ok = 0;
+    for (const f of files) {
+      if (used + f.size > planGB() * GB) { toast('Hết dung lượng!', true); break; }
+      btnUp.disabled = true; btnUp.textContent = 'Đang tải ' + f.name.slice(0, 14) + '...';
+      const { error } = await bucket().upload(base() + cleanName(f.name), f, { upsert: true });
+      if (error) toast('Lỗi tải ' + f.name + ': ' + error.message, true); else { used += f.size; ok++; }
     }
-    up.value = ''; load();
+    btnUp.disabled = false; btnUp.textContent = '+ Tải tệp lên';
+    if (ok) toast('Đã tải lên ' + ok + ' tệp.');
+    load();
   };
   load();
 }
+
 /* ---- APP 2: BẢNG TIN LỚP ---- */
 function boardApp(el) {
-  const isAdmin = me?.role === 'admin' || user.email.includes('goldnef');
+  const isAdmin = me?.role === 'admin' || (user.email || '').includes('goldnef');
   el.innerHTML = `${isAdmin ? '<button class="btn" id="btnPost" style="margin-top:0">+ Đăng thông báo mới</button>' : ''}<div id="bl" style="margin-top:10px"></div>`;
   const bl = el.querySelector('#bl');
 
   async function load() {
-    const { data } = await sb.from('board').select('*').order('created_at', { ascending: false });
+    const { data, error } = await sb.from('board').select('*').order('created_at', { ascending: false });
+    if (error) { bl.innerHTML = '<p class="small">Lỗi tải: ' + esc(error.message) + '</p>'; return; }
     bl.innerHTML = (data || []).map(b => `<div class="prod" style="margin-bottom:8px">
       <b style="color:#4b3ac8">${esc(b.title)}</b>
       <div style="margin:4px 0;white-space:pre-wrap">${esc(b.content)}</div>
       <small class="small">${new Date(b.created_at).toLocaleString('vi-VN')} - Bởi ${esc(b.author)}</small>
+      ${isAdmin ? `<div><button class="del" data-id="${esc(b.id)}">Xóa</button></div>` : ''}
     </div>`).join('') || '<p class="small">Chưa có thông báo nào.</p>';
   }
-
+  bl.onclick = async e => {
+    const b = e.target.closest('.del'); if (!b || !confirm('Xóa thông báo này?')) return;
+    const { error } = await sb.from('board').delete().eq('id', b.dataset.id);
+    if (error) toast('Không xóa được: ' + error.message, true);
+    load();
+  };
   if (isAdmin) {
     el.querySelector('#btnPost').onclick = async () => {
-      const title = prompt('Tiêu đề thông báo:');
-      const content = prompt('Nội dung thông báo / thời khóa biểu:');
-      if (!title || !content) return;
-      await sb.from('board').insert({ title, content, author: me?.name || user.email });
-      load();
+      const v = await ask('Đăng thông báo', [
+        { name: 'title', label: 'Tiêu đề', req: 1 },
+        { name: 'content', label: 'Nội dung / thời khóa biểu', type: 'textarea', req: 1 }], 'Đăng');
+      if (!v) return;
+      const { error } = await sb.from('board').insert({ title: v.title.trim(), content: v.content.trim(), author: me?.name || user.email });
+      if (error) return toast('Lỗi: ' + error.message, true);
+      toast('Đã đăng thông báo.'); load();
     };
   }
   load();
@@ -388,56 +517,82 @@ function boardApp(el) {
 
 /* ---- APP 3: TIN NHẮN ---- */
 function chatApp(el) {
-  if (!me) return el.innerHTML = '<p class="small">Vào Cài đặt, đặt tên và chọn tổ trước.</p>';
+  if (!me) { el.innerHTML = '<p class="small">Vào Cài đặt, đặt tên và chọn tổ trước.</p>'; return; }
   const rooms = [['all', 'Cả lớp']]; if (me.team) rooms.push(['t' + me.team, 'Tổ ' + me.team]);
-  el.innerHTML = '<div class="tabs"></div><div class="msgs"></div><div style="display:flex;gap:6px;margin-top:8px"><input placeholder="Nhập tin nhắn..." style="margin:0"><button class="btn" style="width:auto;margin:0">Gửi</button></div>';
-  const rs = el.querySelector('.tabs'), ms = el.querySelector('.msgs'), mi = el.querySelector('input'); let room, ch;
+  el.innerHTML = '<div class="tabs"></div><div class="msgs"></div><div style="display:flex;gap:6px;margin-top:8px"><input placeholder="Nhập tin nhắn..." maxlength="500" style="margin:0"><button class="btn" style="width:auto;margin:0">Gửi</button></div>';
+  const rs = el.querySelector('.tabs'), ms = el.querySelector('.msgs'), mi = el.querySelector('input');
+  let room, ch, seen = new Set();
   const add = m => {
+    if (m.id != null) { if (seen.has(m.id)) return; seen.add(m.id); }
     const d = document.createElement('div'); d.className = 'msg' + (m.user_id === user.id ? ' me' : '');
     const s = document.createElement('small'); s.textContent = m.name; const t = document.createElement('div'); t.textContent = m.body;
     d.append(s, t); ms.appendChild(d); ms.scrollTop = ms.scrollHeight;
   };
   async function go(r) {
-    room = r; ms.innerHTML = ''; ch && sb.removeChannel(ch);
+    room = r; ms.innerHTML = ''; seen = new Set();
+    if (ch) { sb.removeChannel(ch); ch = null; }
     [...rs.children].forEach(b => b.className = b.dataset.r === r ? 'on' : '');
     const { data } = await sb.from('messages').select('*').eq('room', r).order('created_at', { ascending: false }).limit(100);
+    if (room !== r) return;   // người dùng đã đổi phòng trong lúc chờ
     if (data) data.reverse().forEach(add);
     ch = sb.channel('chat:' + r).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'room=eq.' + r }, p => add(p.new)).subscribe();
   }
-  rs.innerHTML = rooms.map(([k, n]) => `<button data-r="${k}">${n}</button>`).join('');
+  rs.innerHTML = rooms.map(([k, n]) => `<button data-r="${k}">${esc(n)}</button>`).join('');
   rs.querySelectorAll('button').forEach(b => b.onclick = () => go(b.dataset.r));
   const send = async () => {
     const body = mi.value.trim(); if (!body) return; mi.value = '';
-    await sb.from('messages').insert({ room, user_id: user.id, name: me.name || user.email, body });
+    const { error } = await sb.from('messages').insert({ room, user_id: user.id, name: me.name || user.email, body });
+    if (error) { mi.value = body; toast('Không gửi được: ' + error.message, true); }
   };
   el.querySelector('button.btn').onclick = send;
   mi.onkeydown = e => { if (e.key === 'Enter') send(); };
   go(rooms[0][0]);
-  return { off: () => ch && sb.removeChannel(ch) };
+  return { off: () => { if (ch) sb.removeChannel(ch); } };
 }
 
 /* ---- APP 4: CHỢ ĐỒ CŨ ---- */
 function marketApp(el) {
-  if (!me) return el.innerHTML = '<p class="small">Vào Cài đặt, đặt tên trước.</p>';
-  el.innerHTML = `<button class="btn" style="margin-top:0">Đăng món đồ</button><div class="grid" style="margin-top:10px"></div>`;
-  const grid = el.querySelector('.grid');
-  async function load() {
-    const { data } = await sb.from('market').select('*').order('created_at', { ascending: false });
-    grid.innerHTML = (data || []).map(p => `<div class="prod">
-      <img src="${esc(p.image || '')}" alt="">
+  if (!me) { el.innerHTML = '<p class="small">Vào Cài đặt, đặt tên trước.</p>'; return; }
+  el.innerHTML = `<div style="display:flex;gap:6px"><input id="ms" placeholder="Tìm món đồ..." style="margin:0"><button class="btn" id="mAdd" style="width:auto;margin:0;white-space:nowrap">+ Đăng</button></div><div class="grid" style="margin-top:10px"></div>`;
+  const grid = el.querySelector('.grid'), ms = el.querySelector('#ms');
+  let all = [];
+  function render() {
+    const k = ms.value.trim().toLowerCase();
+    const l = all.filter(p => !k || String(p.title).toLowerCase().includes(k));
+    grid.innerHTML = l.map(p => `<div class="prod">
+      ${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : '<div class="noimg">🛍️</div>'}
       <b>${esc(p.title)}</b>
-      <div class="pr">${Number(p.price).toLocaleString()} đ</div>
+      <div class="pr">${Number(p.price).toLocaleString('vi-VN')} đ</div>
       <div class="small">${esc(p.seller)}</div>
-      ${p.user_id === user.id ? '<button class="del" onclick="delProd(\'' + p.id + '\')">Xóa</button>' : ''}
-    </div>`).join('') || '<p class="small">Chưa có món đồ nào.</p>';
+      ${p.user_id === user.id ? `<button class="del" data-id="${esc(p.id)}">Xóa</button>` : ''}
+    </div>`).join('') || '<p class="small">Không có món đồ nào.</p>';
+    grid.querySelectorAll('img').forEach(i => i.onerror = () => { const d = document.createElement('div'); d.className = 'noimg'; d.textContent = '🛍️'; i.replaceWith(d); });
   }
-  el.querySelector('button').onclick = async () => {
-    const title = prompt('Tên món đồ:'), price = prompt('Giá (VNĐ):'), image = prompt('Link ảnh (hoặc để trống):');
-    if (!title || !price) return;
-    await sb.from('market').insert({ user_id: user.id, title, price: Number(price), image, seller: me.name || user.email });
+  async function load() {
+    const { data, error } = await sb.from('market').select('*').order('created_at', { ascending: false });
+    if (error) { grid.innerHTML = '<p class="small">Lỗi tải: ' + esc(error.message) + '</p>'; return; }
+    all = data || []; render();
+  }
+  ms.oninput = render;
+  grid.onclick = async e => {
+    const b = e.target.closest('.del'); if (!b || !confirm('Xóa món này?')) return;
+    const { error } = await sb.from('market').delete().eq('id', b.dataset.id);
+    if (error) toast('Không xóa được: ' + error.message, true);
     load();
   };
-  window.delProd = async id => { if (confirm('Xóa món này?')) { await sb.from('market').delete().eq('id', id); load(); } };
+  el.querySelector('#mAdd').onclick = async () => {
+    const v = await ask('Đăng món đồ', [
+      { name: 'title', label: 'Tên món đồ', req: 1 },
+      { name: 'price', label: 'Giá (VNĐ)', type: 'number', min: 0, req: 1 },
+      { name: 'image', label: 'Link ảnh (không bắt buộc)', type: 'url', ph: 'https://...' }], 'Đăng');
+    if (!v) return;
+    const price = Number(v.price), image = (v.image || '').trim();
+    if (!isFinite(price) || price < 0) return toast('Giá không hợp lệ.', true);
+    if (image && !/^https?:\/\//i.test(image)) return toast('Link ảnh phải bắt đầu bằng http(s)://', true);
+    const { error } = await sb.from('market').insert({ user_id: user.id, title: v.title.trim(), price, image, seller: me.name || user.email });
+    if (error) return toast('Lỗi: ' + error.message, true);
+    toast('Đã đăng món đồ.'); load();
+  };
   load();
 }
 
@@ -447,10 +602,12 @@ function peopleApp(el) {
   const pl = el.querySelector('#pl'), tabs = el.querySelectorAll('.tabs button');
   let team = null;
   async function load() {
-    let q = sb.from('profiles').select('*');
+    let q = sb.from('profiles').select('*').order('name', { ascending: true });
     if (team) q = q.eq('team', team);
-    const { data } = await q;
-    pl.innerHTML = (data || []).map(p => `<div class="file"><span><b>${esc(p.name || 'Chưa đặt tên')}</b><br><small>${esc(p.email)}</small></span><span>Tổ ${p.team || '?'}</span></div>`).join('') || '<p class="small">Chưa có thành viên.</p>';
+    const { data, error } = await q;
+    if (error) { pl.innerHTML = '<p class="small">Lỗi tải: ' + esc(error.message) + '</p>'; return; }
+    pl.innerHTML = (data && data.length ? `<p class="small">${data.length} thành viên</p>` : '') +
+      ((data || []).map(p => `<div class="file"><span><b>${esc(p.name || 'Chưa đặt tên')}</b><br><small>${esc(p.email)}</small></span><span style="flex:none">Tổ ${esc(p.team || '?')}</span></div>`).join('') || '<p class="small">Chưa có thành viên.</p>');
   }
   tabs.forEach((b, i) => b.onclick = () => {
     tabs.forEach(x => x.className = ''); b.className = 'on';
@@ -461,18 +618,31 @@ function peopleApp(el) {
 
 /* ---- APP 6: TRÌNH DUYỆT WEB ---- */
 function browserApp(el) {
-  el.innerHTML = `<div style="display:flex;gap:6px"><input value="https://vi.wikipedia.org" style="margin:0"><button class="btn" style="width:auto;margin:0">Đi</button></div>
-   <iframe style="width:100%;height:320px;border:1px solid #ccc;border-radius:8px;margin-top:8px;background:#fff" sandbox="allow-scripts allow-same-origin"></iframe>`;
+  el.innerHTML = `<div style="display:flex;gap:6px"><input placeholder="Nhập địa chỉ hoặc từ khóa" style="margin:0"><button class="btn" style="width:auto;margin:0">Đi</button><button class="btn alt" id="nt" style="width:auto;margin:0;white-space:nowrap" title="Mở trong tab mới">↗</button></div>
+   <iframe style="width:100%;height:320px;border:1px solid #ccc;border-radius:8px;margin-top:8px;background:#fff" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+   <p class="small" style="margin-top:6px">Một số trang (Google, YouTube, Facebook, Wikipedia…) không cho hiển thị trong khung. Nếu trang bị trống, bấm ↗ để mở tab mới.</p>`;
   const inp = el.querySelector('input'), frm = el.querySelector('iframe');
-  const go = () => { let u = inp.value.trim(); if (!u.startsWith('http')) u = 'https://' + u; frm.src = u; };
-  el.querySelector('button').onclick = go; inp.onkeydown = e => { if (e.key === 'Enter') go(); };
-  go();
+  let curUrl = '';
+  frm.srcdoc = '<body style="font-family:system-ui;padding:24px;color:#333"><h3>🌐 Trình duyệt</h3><p style="margin-top:8px">Nhập địa chỉ website rồi bấm <b>Đi</b>.</p></body>';
+  const go = () => {
+    let u = inp.value.trim(); if (!u) return;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(u) && !/^https?:/i.test(u)) return toast('Chỉ hỗ trợ địa chỉ http/https.', true);
+    if (!/^https?:\/\//i.test(u)) {
+      if (/\s/.test(u) || !u.includes('.')) { window.open('https://duckduckgo.com/?q=' + encodeURIComponent(u), '_blank', 'noopener'); return; }
+      u = 'https://' + u;
+    }
+    curUrl = u; frm.removeAttribute('srcdoc'); frm.src = u;
+  };
+  el.querySelectorAll('button')[0].onclick = go; inp.onkeydown = e => { if (e.key === 'Enter') go(); };
+  el.querySelector('#nt').onclick = () => { if (curUrl) window.open(curUrl, '_blank', 'noopener'); else toast('Hãy nhập địa chỉ trước.', true); };
 }
 
 /* ---- APP 7: VÒNG QUAY ---- */
 function wheelApp(el) {
-  el.innerHTML = `<canvas width="280" height="280"></canvas><textarea rows="4" style="margin-top:10px">Bạn A\nBạn B\nBạn C\nBạn D</textarea><button class="btn">Quay</button><p class="small" style="text-align:center;margin-top:8px"></p>`;
-  const c = el.querySelector('canvas'), x = c.getContext('2d'), ta = el.querySelector('textarea'), out = el.querySelector('p');
+  el.innerHTML = `<canvas width="280" height="280"></canvas><textarea rows="4" style="margin-top:10px">Bạn A\nBạn B\nBạn C\nBạn D</textarea>
+   <div class="row"><input type="checkbox" id="rm"><label for="rm" style="font-weight:400">Loại bỏ người đã trúng khỏi danh sách</label></div>
+   <button class="btn">Quay</button><p class="small" style="text-align:center;margin-top:8px"></p>`;
+  const c = el.querySelector('canvas'), x = c.getContext('2d'), ta = el.querySelector('textarea'), out = el.querySelector('p'), rm = el.querySelector('#rm');
   let rot = 0, busy = false;
   const items = () => ta.value.split('\n').map(s => s.trim()).filter(Boolean);
   function draw() {
@@ -484,49 +654,70 @@ function wheelApp(el) {
     });
     x.fillStyle = '#e74c3c'; x.beginPath(); x.moveTo(140, 18); x.lineTo(130, 0); x.lineTo(150, 0); x.fill();
   }
-  ta.oninput = draw;
+  ta.oninput = () => { if (!busy) draw(); };
   el.querySelector('.btn').onclick = () => {
-    const l = items(); if (busy || l.length < 2) return;
-    busy = true; out.textContent = '';
+    const l = items();
+    if (busy) return;
+    if (l.length < 2) { out.textContent = 'Cần ít nhất 2 mục để quay.'; return; }
+    busy = true; ta.disabled = true; out.textContent = '';
     const start = rot, total = 2 * Math.PI * (5 + Math.random() * 3) + Math.random() * 2 * Math.PI, t0 = performance.now(), D = 4000;
     (function step(t) {
       const p = Math.min(1, (t - t0) / D); rot = start + total * (1 - Math.pow(1 - p, 3)); draw();
       if (p < 1) return requestAnimationFrame(step);
       const a = 2 * Math.PI / l.length, ang = ((1.5 * Math.PI - rot) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
-      out.innerHTML = 'Kết quả: <b>' + esc(l[Math.floor(ang / a)]) + '</b>'; busy = false;
+      const idx = Math.min(l.length - 1, Math.floor(ang / a));
+      out.innerHTML = '🎉 Kết quả: <b>' + esc(l[idx]) + '</b>';
+      if (rm.checked) { ta.value = l.filter((_, i) => i !== idx).join('\n'); draw(); }
+      busy = false; ta.disabled = false;
     })(t0);
   };
   draw();
 }
 
 /* ---- APP 8: CÀI ĐẶT & CÁ NHÂN HÓA ---- */
-async function settingsApp(el) {
-  el.innerHTML = `<label>Tên hiển thị</label><input id="pn" value="${esc(me?.name || '')}">
-   <label style="display:block;margin-top:10px">Tổ (1 - 4)</label><input id="pt" type="number" min="1" max="4" value="${esc(me?.team || '')}">
+function settingsApp(el) {
+  el.innerHTML = `<p class="small">Tài khoản: <b>${esc(user.email)}</b> · Gói: <b>${esc((user.app_metadata || {}).plan || 'free')}</b> (${planGB()} GB)</p>
+   <label style="display:block;margin-top:10px">Tên hiển thị</label><input id="pn" maxlength="40" value="${esc(me?.name || '')}">
+   <label style="display:block;margin-top:10px">Tổ</label><select id="pt"><option value="0">Chưa chọn</option>${[1, 2, 3, 4].map(i => `<option value="${i}" ${Number(me?.team) === i ? 'selected' : ''}>Tổ ${i}</option>`).join('')}</select>
    <label style="display:block;margin-top:10px">Link ảnh nền máy tính</label><input id="pw" value="${esc(me?.wallpaper || '')}" placeholder="https://example.com/anh.jpg">
    <button class="btn" id="sv">Lưu thông tin & Hình nền</button>
-   <label style="display:block;margin-top:14px">Đổi mật khẩu mới</label><input type="password" id="np" placeholder="Mật khẩu mới (từ 6 ký tự)">
+   <button class="btn alt" id="cw">Xóa hình nền (về màu mặc định)</button>
+   <label style="display:block;margin-top:14px">Đổi mật khẩu mới</label><input type="password" id="np" autocomplete="new-password" placeholder="Mật khẩu mới (từ 6 ký tự)">
    <button class="btn alt" id="sp">Lưu mật khẩu</button>
-   <button class="btn alt" id="lo" style="margin-top:16px">Đăng xuất</button>
-   <div id="sm" style="margin-top:8px;font-size:0.9rem;color:#c0392b"></div>`;
-  const sm = el.querySelector('#sm');
-  el.querySelector('#sv').onclick = async () => {
-    const name = el.querySelector('#pn').value.trim(); if (!name) return sm.textContent = 'Nhập tên trước.';
-    const wallpaper = el.querySelector('#pw').value.trim();
+   <button class="btn alt" id="lo" style="margin-top:16px">Đăng xuất</button>`;
+  async function save(wallpaperOverride) {
+    const name = el.querySelector('#pn').value.trim(); if (!name) return toast('Nhập tên trước.', true);
+    const wallpaper = wallpaperOverride !== undefined ? wallpaperOverride : el.querySelector('#pw').value.trim();
+    if (wallpaper && !/^https?:\/\//i.test(wallpaper)) return toast('Link ảnh nền phải bắt đầu bằng http(s)://', true);
     const row = { id: user.id, email: user.email, name, team: +el.querySelector('#pt').value, wallpaper };
     const { error } = await sb.from('profiles').upsert(row);
-    if (error) return sm.textContent = 'Lỗi: ' + error.message;
-    me = row; 
-    applyWallpaper();
-    sm.textContent = 'Đã lưu thông tin!';
-  };
+    if (error) return toast('Lỗi: ' + error.message, true);
+    me = { ...(me || {}), ...row };   // giữ lại các trường khác như role
+    applyWallpaper(); refreshApps();
+    toast('Đã lưu thông tin!');
+  }
+  el.querySelector('#sv').onclick = () => save();
+  el.querySelector('#cw').onclick = () => { el.querySelector('#pw').value = ''; save(''); };
   el.querySelector('#sp').onclick = async () => {
-    const { error } = await sb.auth.updateUser({ password: el.querySelector('#np').value });
-    sm.textContent = error ? 'Lỗi: ' + error.message : 'Đã đổi mật khẩu.';
+    const pw = el.querySelector('#np').value;
+    if (pw.length < 6) return toast('Mật khẩu tối thiểu 6 ký tự.', true);
+    const { error } = await sb.auth.updateUser({ password: pw });
+    if (error) toast('Lỗi: ' + error.message, true); else { toast('Đã đổi mật khẩu.'); el.querySelector('#np').value = ''; }
   };
   el.querySelector('#lo').onclick = logout;
 }
+
+/* ---- Khởi động: khôi phục phiên đăng nhập nếu có ---- */
+(async () => {
+  try {
+    const KEY = 'sb-' + new URL(SUPABASE_URL).hostname.split('.')[0] + '-auth-token';
+    const st = localStorage.getItem(KEY) ? localStorage : sessionStorage.getItem(KEY) ? sessionStorage : localStorage;
+    $('remember').checked = st === localStorage;
+    sb = mk(st);
+    const { data } = await sb.auth.getSession();
+    if (data.session) enter(data.session);
+  } catch (e) { say('Không tải được Supabase. Kiểm tra mạng hoặc cấu hình.'); }
+})();
 </script>
 </body>
 </html>
-
