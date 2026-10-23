@@ -178,7 +178,7 @@ function ask(title, fields, okText = 'Lưu') {
       const at = `name="${f.name}" ${f.req ? 'required' : ''} placeholder="${esc(f.ph || '')}"`;
       return `<label style="display:block;margin-top:10px">${esc(f.label)}</label>` + (f.type === 'textarea'
         ? `<textarea ${at} rows="4">${esc(f.value || '')}</textarea>`
-        : `<input ${at} type="${f.type || 'text'}" value="${esc(f.value || '')}" ${f.min != null ? 'min="' + f.min + '"' : ''}>`);
+        : `<input ${at} type="${f.type || 'text'}" value="${esc(f.value || '')}" ${f.min != null ? 'min="' + f.min + '"' : ''} ${f.accept ? 'accept="' + f.accept + '"' : ''}>`);
     }).join('')}<button class="btn">${esc(okText)}</button><button type="button" class="btn alt">Hủy</button></form>`;
     const onKey = e => { if (e.key === 'Escape') done(null); };
     const done = v => { ov.remove(); removeEventListener('keydown', onKey); res(v); };
@@ -602,6 +602,23 @@ function chatApp(el) {
   return { off: () => { if (ch) sb.removeChannel(ch); } };
 }
 
+/* Thu nhỏ ảnh trước khi tải lên (tối đa 800px, JPEG) để tiết kiệm dung lượng */
+function shrinkImage(file, max = 800) {
+  return new Promise(res => {
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return res(file);
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(u);
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(b => res(b || file), 'image/jpeg', .82);
+    };
+    img.onerror = () => { URL.revokeObjectURL(u); res(file); };
+    img.src = u;
+  });
+}
+
 /* ---- APP 4: CHỢ ĐỒ CŨ ---- */
 function marketApp(el) {
   if (!me) { el.innerHTML = '<p class="small">Vào Cài đặt, đặt tên trước.</p>'; return; }
@@ -628,19 +645,35 @@ function marketApp(el) {
   ms.oninput = render;
   grid.onclick = async e => {
     const b = e.target.closest('.del'); if (!b || !confirm('Xóa món này?')) return;
+    const item = all.find(p => String(p.id) === b.dataset.id);
     const { error } = await sb.from('market').delete().eq('id', b.dataset.id);
     if (error) toast('Không xóa được: ' + error.message, true);
+    else if (item?.image && item.image.includes('/object/public/market/')) {
+      // xóa luôn ảnh đã tải lên để khỏi tốn dung lượng
+      try { await sb.storage.from('market').remove([decodeURIComponent(item.image.split('/object/public/market/')[1])]); } catch (e) {}
+    }
     load();
   };
   el.querySelector('#mAdd').onclick = async () => {
     const v = await ask('Đăng món đồ', [
       { name: 'title', label: 'Tên món đồ', req: 1 },
       { name: 'price', label: 'Giá (VNĐ)', type: 'number', min: 0, req: 1 },
-      { name: 'image', label: 'Link ảnh (không bắt buộc)', type: 'url', ph: 'https://...' }], 'Đăng');
+      { name: 'image', label: 'Ảnh món đồ (không bắt buộc)', type: 'file', accept: 'image/*' }], 'Đăng');
     if (!v) return;
-    const price = Number(v.price), image = (v.image || '').trim();
+    const price = Number(v.price);
     if (!isFinite(price) || price < 0) return toast('Giá không hợp lệ.', true);
-    if (image && !/^https?:\/\//i.test(image)) return toast('Link ảnh phải bắt đầu bằng http(s)://', true);
+    let image = '';
+    const file = v.image;
+    if (file && file.size > 0) {
+      if (!file.type.startsWith('image/')) return toast('Hãy chọn một tệp ảnh.', true);
+      toast('Đang tải ảnh lên...');
+      const blob = await shrinkImage(file);
+      const name = blob === file ? cleanName(file.name) : 'anh.jpg';
+      const path = user.id + '/' + Date.now() + '_' + name;
+      const up = await sb.storage.from('market').upload(path, blob, { contentType: blob.type || file.type });
+      if (up.error) return toast('Không tải được ảnh: ' + up.error.message, true);
+      image = sb.storage.from('market').getPublicUrl(path).data.publicUrl;
+    }
     const { error } = await sb.from('market').insert({ user_id: user.id, title: v.title.trim(), price, image, seller: me.name || user.email });
     if (error) return toast('Lỗi: ' + error.message, true);
     toast('Đã đăng món đồ.'); load();
