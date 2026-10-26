@@ -4,12 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#31219b">
+<meta name="color-scheme" content="light only">
 <title>GNwebOS</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🖥️%3C/text%3E%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,Arial,sans-serif}
+:root{color-scheme:light only}
 html,body{height:100%;overflow:hidden}
-body{background:linear-gradient(135deg,#00a8ec,#4b3ac8);color:#1a1a1a;background-size:cover;background-position:center;background-repeat:no-repeat}
+body{background:radial-gradient(120% 90% at 85% 15%,#7a14d6 0,transparent 55%),radial-gradient(90% 80% at 15% 90%,#00c6f2 0,transparent 60%),radial-gradient(80% 60% at 40% 25%,#ffd7c2 0,transparent 55%),linear-gradient(135deg,#f58a3a,#b142d8 50%,#4a1fc6);color:#1a1a1a;background-size:cover;background-position:center;background-repeat:no-repeat}
 [hidden]{display:none!important}
 button{cursor:pointer;font-weight:700}
 button:disabled{opacity:.6;cursor:not-allowed}
@@ -30,57 +32,51 @@ label{font-size:.9rem;font-weight:700}
 #msg.ok{color:#1e8449}
 
 /* OS */
-#os{height:100%;position:relative}
-#desk{position:absolute;inset:0 0 48px 0}
-.ico{position:absolute;touch-action:none;user-select:none;width:84px;background:none;border:0;color:#fff;font-size:.8rem;text-align:center;padding:8px 4px;border-radius:10px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
-.ico:hover{background:rgba(255,255,255,.18)}
-.ico b{display:block;font-size:2.2rem;line-height:1.2}
-/* Taskbar kiểu Windows 7 (Aero) */
-#bar{z-index:9998;position:absolute;left:0;right:0;bottom:0;height:48px;color:#fff;display:flex;align-items:center;gap:8px;padding:0 8px 0 4px;
-  background:linear-gradient(to bottom,rgba(150,195,235,.55) 0,rgba(55,100,160,.72) 48%,rgba(20,45,95,.82) 52%,rgba(25,55,105,.88) 100%);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.55);box-shadow:0 -1px 0 rgba(0,0,0,.35)}
-#tasks{flex:1;display:flex;gap:4px;overflow:auto;align-items:center}
-#tasks button{background:linear-gradient(rgba(255,255,255,.22),rgba(255,255,255,.05));color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:4px;width:48px;height:38px;font-size:1.3rem;white-space:nowrap;flex:none}
-#tasks button:hover{background:linear-gradient(rgba(255,255,255,.4),rgba(255,255,255,.12));border-color:rgba(255,255,255,.6)}
-#tasks button.on{background:linear-gradient(rgba(255,255,255,.45),rgba(255,255,255,.18));border-color:rgba(255,255,255,.7);box-shadow:inset 0 0 8px rgba(255,255,255,.35)}
-#tasks button.mn{opacity:.6}
-#clock{font-size:.75rem;white-space:nowrap;text-align:center;line-height:1.25;text-shadow:0 1px 2px rgba(0,0,0,.6);padding:0 4px}
+#os{height:100%;position:relative;--rsv:78px}
+#os.dockhide{--rsv:0px}
+#desk{position:absolute;inset:0}
+.ico{position:absolute;touch-action:none;user-select:none;width:84px;background:none;border:0;color:#fff;font-size:.78rem;text-align:center;padding:6px 2px;border-radius:14px;text-shadow:0 1px 3px rgba(0,0,0,.65);display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:500}
+.ico:hover{background:rgba(255,255,255,.14)}
+.ico:active{background:rgba(255,255,255,.22)}
+.aic{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;color:#fff;flex:none;box-shadow:0 4px 12px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.4)}
+.ico .nm{line-height:1.15;max-width:80px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
-/* Nút Start hình cầu + cờ Windows */
-#start{width:46px;height:46px;flex:none;border-radius:50%;border:0;padding:0;display:grid;place-items:center;position:relative;
-  background:radial-gradient(circle at 50% 20%,#d6f0ff 0,#5db4f0 30%,#1c6fc2 62%,#0a3d85 100%);
-  box-shadow:0 0 0 1px rgba(255,255,255,.55),0 0 0 2px rgba(0,30,80,.55),0 0 10px rgba(90,180,255,.7)}
-#start:hover{filter:brightness(1.15);box-shadow:0 0 0 1px rgba(255,255,255,.7),0 0 0 2px rgba(0,30,80,.55),0 0 16px rgba(120,200,255,.95)}
-#start.open{filter:brightness(.92);box-shadow:0 0 0 1px rgba(255,255,255,.5),0 0 0 2px rgba(0,30,80,.6),inset 0 2px 8px rgba(0,20,60,.7),0 0 14px rgba(120,200,255,.9)}
-#start .flag{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:22px;height:22px;transform:skewY(-5deg) rotateY(-12deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
-#start .flag i{display:block;border-radius:2px 6px 2px 6px}
-#start .flag i:nth-child(1){background:#f4511e}
-#start .flag i:nth-child(2){background:#7cc700}
-#start .flag i:nth-child(3){background:#1ea1f2}
-#start .flag i:nth-child(4){background:#ffc107}
+/* Dock nổi */
+#dock{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);z-index:9998;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:24px;background:rgba(24,26,36,.55);-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);border:1px solid rgba(255,255,255,.14);box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:calc(100% - 16px);transition:transform .3s ease}
+#os.dockhide #dock{transform:translate(-50%,calc(100% + 24px))}
+#tasks{display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none;min-width:0;padding:6px 2px}
+#tasks::-webkit-scrollbar{display:none}
+.dk{position:relative;width:46px;height:46px;flex:none;border-radius:14px;border:0;padding:0;display:grid;place-items:center;color:#fff;transition:transform .15s;box-shadow:0 3px 8px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+.dk:hover{transform:translateY(-4px) scale(1.06)}
+.dk.lnch{background:rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.dk.mn{opacity:.55}
+.dk.run::after{content:'';position:absolute;bottom:-6px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#fff;opacity:.8}
+.dk.on::after{width:14px;margin-left:-7px;border-radius:3px;opacity:1}
+.bd{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;border-radius:9px;background:#ef4444;color:#fff;font-size:.66rem;display:grid;place-items:center;padding:0 4px;border:2px solid rgba(24,26,36,.9);font-weight:700;pointer-events:none}
+.ico .bd{top:2px;right:12px}
+#dsep{width:1px;height:28px;background:rgba(255,255,255,.22);flex:none}
+#clock{color:#fff;font-weight:700;font-size:.85rem;white-space:nowrap;padding:0 4px;text-shadow:0 1px 2px rgba(0,0,0,.45);font-variant-numeric:tabular-nums;flex:none}
+#dtog{position:absolute;left:50%;transform:translateX(-50%);bottom:56px;z-index:9999;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(24,26,36,.88);color:#fff;display:grid;place-items:center;padding:0;transition:bottom .3s ease}
+#dtog:hover{background:rgba(60,64,84,.95)}
+#dtog svg{transition:transform .3s}
+#os.dockhide #dtog{bottom:8px}
+#os.dockhide #dtog svg{transform:rotate(180deg)}
 
-/* Menu Start kiểu Windows 7 */
-#menu{position:absolute;left:4px;bottom:50px;z-index:9999;width:420px;max-width:calc(100% - 8px);height:470px;max-height:calc(100% - 56px);display:flex;gap:6px;padding:6px;color:#fff;
-  background:linear-gradient(rgba(120,175,230,.75),rgba(35,80,145,.85));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.6);border-radius:8px 8px 0 0;box-shadow:0 0 0 1px rgba(0,0,0,.55),0 10px 32px rgba(0,0,0,.55)}
-#menu .l{flex:1.45;min-width:0;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(0,0,0,.35);border-radius:5px;padding:4px;color:#222}
-#menu .list{flex:1;overflow:auto}
-#menu .it{display:flex;align-items:center;gap:10px;width:100%;background:none;border:1px solid transparent;border-radius:4px;padding:7px 8px;font-size:.92rem;font-weight:400;text-align:left;color:#222}
-#menu .it:hover{background:linear-gradient(#f1f8fe,#cfe4f9);border-color:#9fc4ea}
-#menu .it .ic{font-size:1.5rem;width:32px;text-align:center;flex:none}
-#menu .srch{margin:4px 0 0;padding:7px 12px;border-radius:14px;border:1px solid #a9b7c6;font-size:.9rem;background:#f4f8fc}
-#menu .r{flex:1;min-width:0;display:flex;flex-direction:column;padding:2px}
-#menu .usr{display:flex;align-items:center;gap:8px;padding:4px 4px 10px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.5);overflow:hidden}
-#menu .usr span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#menu .av{flex:none;width:40px;height:40px;border-radius:6px;border:2px solid rgba(255,255,255,.85);background:linear-gradient(#7fc3f7,#2a74c6);display:grid;place-items:center;font-size:1.3rem;box-shadow:0 1px 4px rgba(0,0,0,.4)}
-#menu .lk{display:block;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:4px;padding:8px;font-size:.92rem;font-weight:400;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45)}
-#menu .lk:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.45)}
-#menu .sp{flex:1}
-#menu .sd .lk{text-align:center;font-weight:700;background:linear-gradient(#6d7b8f,#2c3747);border:1px solid rgba(0,0,0,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
-#menu .sd .lk:hover{background:linear-gradient(#e0555a,#a21f25)}
+/* Bảng ứng dụng (launcher) */
+#menu{position:absolute;left:50%;transform:translateX(-50%);bottom:84px;z-index:9999;width:440px;max-width:calc(100% - 16px);max-height:calc(100% - 110px);display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:22px;background:rgba(24,26,36,.8);-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4);border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 50px rgba(0,0,0,.45);color:#fff}
+#os.dockhide #menu{bottom:20px}
+#menu .srch{margin:0;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:12px}
+#menu .srch::placeholder{color:rgba(255,255,255,.6)}
+#menu .mg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;overflow:auto;min-height:0}
+#menu .mi{position:relative;background:none;border:0;color:#fff;display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 2px;border-radius:12px;font-size:.75rem;font-weight:500;text-align:center}
+#menu .mi:hover{background:rgba(255,255,255,.14)}
+#menu .mf{display:flex;align-items:center;gap:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15)}
+#menu .mf .u{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+#menu .mf button{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:10px;padding:8px 12px;font-size:.85rem}
+#menu .mf button:hover{background:#e0555a}
 
 /* Win */
-.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:480px;max-width:100%;height:440px;max-height:calc(100% - 48px);min-width:300px;min-height:220px}
+.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:480px;max-width:100%;height:440px;max-height:calc(100% - var(--rsv,78px));min-width:300px;min-height:220px}
 .rz{position:absolute;z-index:6;touch-action:none}
 .rz[data-d=n]{top:0;left:12px;right:12px;height:5px;cursor:ns-resize}
 .rz[data-d=s]{bottom:0;left:12px;right:12px;height:6px;cursor:ns-resize}
@@ -96,7 +92,7 @@ label{font-size:.9rem;font-weight:700}
 .win header button{background:rgba(255,255,255,.25);color:#fff;border:0;border-radius:6px;width:30px;height:28px;font-size:1rem}
 .win header .x{background:#e74c3c}
 .win .body{padding:14px;overflow:auto;flex:1}
-.win.max{left:0!important;top:0!important;width:100%!important;height:calc(100% - 48px)!important;max-height:none;max-width:none;border-radius:0;resize:none}
+.win.max{left:0!important;top:0!important;width:100%!important;height:calc(100% - var(--rsv,78px))!important;max-height:none;max-width:none;border-radius:0;resize:none}
 
 /* Component */
 .bar{height:12px;background:#e4e6eb;border-radius:6px;overflow:hidden;margin:6px 0}
@@ -177,6 +173,99 @@ pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:22
 .fx-vb img,.fx-vb video{max-width:100%;max-height:70vh;border-radius:4px}
 .fx-vb iframe{width:100%;height:70vh;border:0;background:#fff}
 
+/* Ứng dụng: dùng chung */
+.av{border-radius:50%;object-fit:cover;background:linear-gradient(135deg,#7f8cff,#4b3ac8);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex:none;overflow:hidden}
+.win header .wt{display:flex;align-items:center;gap:8px}
+.msgs{height:auto;flex:1;min-height:120px}
+.mrow{display:flex;gap:6px;align-items:flex-end;align-self:flex-start;max-width:90%}
+.mrow.me{align-self:flex-end;flex-direction:row-reverse}
+.mrow .msg{align-self:auto;max-width:100%}
+.mimg{display:block;max-width:100%;max-height:200px;border-radius:8px;margin:3px 0;cursor:zoom-in;background:#ddd;min-height:40px}
+.cin{display:flex;gap:6px;margin-top:8px;align-items:center}
+.cin input{margin:0}
+.cin .ib{background:#e8e8f4;border:0;border-radius:10px;width:44px;height:42px;font-size:1.1rem;flex:none}
+.dmr{display:flex;gap:10px;align-items:center;padding:8px;border-radius:10px;cursor:pointer}
+.dmr:hover{background:#f0f2fa}
+.dmr .t{flex:1;min-width:0}
+.dmr .t b,.dmr .t small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dmr>small{color:#888;flex:none}
+.dmh{display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:1px solid #eee;margin-bottom:8px}
+.dmh b{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Bảng tin */
+.bp{margin-bottom:10px;padding:12px}
+.bk{display:inline-block;font-size:.75rem;background:#eef0ff;color:#4b3ac8;border-radius:20px;padding:2px 10px;margin-bottom:6px;font-weight:700}
+.bp .due{color:#c0392b;font-weight:700;font-size:.85rem;margin-top:4px}
+
+/* Ghi chú */
+.nt{flex:1;display:flex;min-height:0;width:100%}
+.nt-l{width:170px;flex:none;border-right:1px solid #e5e7eb;overflow:auto;padding:8px;background:#f8f9fc}
+.nt-l .btn{margin:0 0 8px;padding:8px}
+.nti{padding:8px;border-radius:8px;cursor:pointer;font-size:.88rem;border:1px solid transparent}
+.nti:hover{background:#f0f0f5}
+.nti.on{background:#fff4d6;border-color:#f3d37a}
+.nti b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nti small{color:#777}
+.nt-r{flex:1;display:flex;flex-direction:column;padding:10px;min-width:0;background:#fffdf5}
+.nt-r input{font-weight:700;font-size:1.1rem;margin:0;background:transparent;border:0;border-bottom:1px solid #eee;border-radius:0}
+.nt-r textarea{flex:1;margin-top:8px;resize:none;border:0;background:transparent;font-size:1rem;outline:none}
+.nt-s{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:#888;gap:8px}
+@container ntw (max-width:480px){.nt{flex-direction:column}.nt-l{width:auto;max-height:112px;border-right:0;border-bottom:1px solid #e5e7eb}}
+
+/* Máy tính */
+.calc{max-width:300px;margin:0 auto}
+.cd{background:#1f2430;color:#fff;border-radius:14px;padding:12px 14px;text-align:right;min-height:84px;display:flex;flex-direction:column;justify-content:flex-end}
+.cd small{opacity:.6;min-height:1.2em}
+.cd #cv{font-size:2.2rem;font-weight:600;overflow:hidden;white-space:nowrap}
+.ck{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.ck button{padding:14px 0;border:0;border-radius:12px;background:#eef0f6;font-size:1.15rem;font-weight:600;color:#1a1a1a}
+.ck button:active{filter:brightness(.88)}
+.ck .op{background:#ffb74d;color:#fff}
+.ck .fn{background:#d9dce6}
+.ck .eq{background:#4b3ac8;color:#fff}
+
+/* Trò chơi */
+.gm-top{display:flex;justify-content:space-between;margin-bottom:6px;font-size:.95rem}
+.dpad{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:8px}
+.dpad div{display:flex;gap:4px}
+.dpad button{width:52px;height:40px;border:0;border-radius:10px;background:#e8e8f4;font-size:1rem;color:#31219b}
+.g48{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:#bbada0;padding:8px;border-radius:10px;max-width:320px;margin:0 auto;touch-action:none}
+.g48 div{aspect-ratio:1;border-radius:6px;display:grid;place-items:center;font-weight:800;font-size:1.5rem}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:320px;margin:0 auto}
+.mem button{aspect-ratio:1;border:0;border-radius:12px;background:linear-gradient(135deg,#7f8cff,#4b3ac8);color:#fff;font-size:1.8rem}
+.mem button.up{background:#fff;border:2px solid #7f8cff}
+.mem button.ok{background:#d6f5df;border:2px solid #4cc07a}
+
+/* Google + khung nhúng */
+.emb{display:flex;flex-direction:column;flex:1;min-height:0;width:100%}
+.emb .tb{display:flex;gap:6px;padding:8px;background:#f3f6fb;border-bottom:1px solid #d7e0ec;flex-wrap:wrap;align-items:center}
+.emb .tb .btn{padding:9px 12px;white-space:nowrap}
+.eb{flex:1;min-height:0;display:flex;overflow:auto;background:#fff}
+.eb iframe{flex:1;width:100%;height:100%;border:0;background:#fff}
+.ph{padding:24px;text-align:center;color:#667;line-height:1.6;font-size:.92rem;margin:auto;max-width:420px}
+.chips{display:flex;gap:6px;padding:6px 8px;overflow-x:auto;background:#fafbfd;border-bottom:1px solid #eef1f6}
+.chips:empty{display:none}
+.chip{white-space:nowrap;background:#e8eefc;color:#1f3a7a;border-radius:16px;padding:4px 10px;font-size:.8rem;font-weight:600;display:flex;gap:6px;align-items:center;cursor:pointer;border:0;flex:none}
+.chip i{font-style:normal;opacity:.6}
+.chip i:hover{opacity:1;color:#c0392b}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:12px}
+.gtile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;font-weight:600;font-size:.82rem;color:#222}
+.gtile:hover{background:#f0f4ff}
+.gtile .gi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;font-size:1.3rem;font-weight:800}
+
+/* Quản trị + cài đặt */
+.adr{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #eee;flex-wrap:wrap}
+.adr .t{flex:1 1 160px;min-width:0}
+.adr .t b,.adr .t small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adr select{width:auto;margin:0;padding:6px}
+.adr button{border:0;background:#4b3ac8;color:#fff;border-radius:8px;padding:7px 12px}
+.sec{border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin-bottom:12px}
+.sec h3{font-size:1rem;margin-bottom:8px;color:#31219b}
+.wps{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px;margin:8px 0}
+.wps button{height:48px;border-radius:10px;border:2px solid transparent;padding:0}
+.wps button.on{border-color:#4b3ac8;box-shadow:0 0 0 2px #fff inset}
+.prof{display:flex;align-items:center;gap:12px}
+
 /* Modal + toast */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20000;display:flex;align-items:center;justify-content:center;padding:15px}
 .toast{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);background:#1e8449;color:#fff;padding:10px 16px;border-radius:10px;z-index:30000;max-width:90vw;box-shadow:0 4px 14px rgba(0,0,0,.3);font-size:.95rem}
@@ -216,7 +305,13 @@ pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:22
 <div id="os" hidden>
  <div id="desk"></div>
  <div id="menu" hidden></div>
- <div id="bar"><button id="start" onclick="toggleMenu()" aria-label="Start" title="Start"><span class="flag"><i></i><i></i><i></i><i></i></span></button><div id="tasks"></div><span id="clock"></span></div>
+ <button id="dtog" onclick="toggleDock()" aria-label="Ẩn/hiện thanh dock" title="Ẩn/hiện thanh dock"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+ <div id="dock">
+  <button class="dk lnch" id="lnch" onclick="toggleMenu()" aria-label="Tất cả ứng dụng" title="Tất cả ứng dụng"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+  <div id="tasks"></div>
+  <span id="dsep"></span>
+  <span id="clock"></span>
+ </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -242,12 +337,13 @@ function toast(t, bad) {
 function ask(title, fields, okText = 'Lưu') {
   return new Promise(res => {
     const ov = document.createElement('div'); ov.className = 'modal';
-    ov.innerHTML = `<form class="card" style="max-width:360px"><h2 style="font-size:1.1rem">${esc(title)}</h2>${fields.map(f => {
-      const at = `name="${f.name}" ${f.req ? 'required' : ''} placeholder="${esc(f.ph || '')}"`;
-      return `<label style="display:block;margin-top:10px">${esc(f.label)}</label>` + (f.type === 'textarea'
-        ? `<textarea ${at} rows="4">${esc(f.value || '')}</textarea>`
-        : `<input ${at} type="${f.type || 'text'}" value="${esc(f.value || '')}" ${f.min != null ? 'min="' + f.min + '"' : ''} ${f.accept ? 'accept="' + f.accept + '"' : ''}>`);
-    }).join('')}<button class="btn">${esc(okText)}</button><button type="button" class="btn alt">Hủy</button></form>`;
+    const ctl = f => {
+      const at = `name="${f.name}" ${f.req ? 'required' : ''}`;
+      if (f.type === 'textarea') return `<textarea ${at} rows="4" placeholder="${esc(f.ph || '')}">${esc(f.value || '')}</textarea>`;
+      if (f.type === 'select') return `<select ${at}>${f.options.map(([v, l]) => `<option value="${esc(v)}" ${v === f.value ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>`;
+      return `<input ${at} placeholder="${esc(f.ph || '')}" type="${f.type || 'text'}" value="${esc(f.value || '')}" ${f.min != null ? 'min="' + f.min + '"' : ''} ${f.accept ? 'accept="' + f.accept + '"' : ''}>`;
+    };
+    ov.innerHTML = `<form class="card" style="max-width:360px;max-height:92vh;overflow:auto"><h2 style="font-size:1.1rem">${esc(title)}</h2>${fields.map(f => `<label style="display:block;margin-top:10px">${esc(f.label)}</label>${ctl(f)}`).join('')}<button class="btn">${esc(okText)}</button><button type="button" class="btn alt">Hủy</button></form>`;
     const onKey = e => { if (e.key === 'Escape') done(null); };
     const done = v => { ov.remove(); removeEventListener('keydown', onKey); res(v); };
     ov.querySelector('form').onsubmit = e => { e.preventDefault(); done(Object.fromEntries(new FormData(e.target))); };
@@ -311,90 +407,227 @@ async function logout() { try { await sb.auth.signOut(); } catch (e) {} location
   .forEach(([id, fn]) => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') fn(); }));
 
 let entered = false;
+let isAdm = false, myPlan = null, unread = 0;
+const dmBus = new Set();
 async function enter(session) {
   if (entered) return; entered = true;
   user = session.user;
   $('auth').hidden = true; $('os').hidden = false;
   await loadProfile();
   applyWallpaper();
+  try { if (localStorage.getItem('dockhide') === '1') $('os').classList.add('dockhide'); } catch (e) {}
   buildDesktop();
-  tick(); setInterval(tick, 30000);
+  tick(); setInterval(tick, 1000);
+  startDM();
   if (!me) openApp('settings');
 }
 const tick = () => {
   const d = new Date();
-  $('clock').innerHTML = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + '<br>' + d.toLocaleDateString('vi-VN');
+  $('clock').textContent = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
   $('clock').title = d.toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
 };
 
+/* ---- Tiện ích dùng chung ---- */
+const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+const rid = () => Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+const pubUrl = (b, p) => sb.storage.from(b).getPublicUrl(p).data.publicUrl;
+const popup = url => window.open(url, '_blank', 'popup=yes,width=1100,height=720,noopener,noreferrer');
+const winActive = k => { const o = wins[k]; return !!o && !o.min && o.t.classList.contains('on') && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || ''); };
+const avatar = (name, url, s = 32) => url
+  ? `<img class="av" src="${esc(url)}" alt="" style="width:${s}px;height:${s}px" referrerpolicy="no-referrer">`
+  : `<span class="av" style="width:${s}px;height:${s}px;font-size:${Math.round(s * .45)}px">${esc((name || '?').trim().charAt(0).toUpperCase() || '?')}</span>`;
+function lightbox(url) {
+  const ov = document.createElement('div'); ov.className = 'modal'; ov.style.background = 'rgba(0,0,0,.88)';
+  ov.innerHTML = `<img src="${esc(url)}" alt="" style="max-width:96vw;max-height:92vh;border-radius:8px">`;
+  ov.onclick = () => ov.remove(); document.body.appendChild(ov);
+}
+/* Thu nhỏ ảnh trước khi tải lên để tiết kiệm dung lượng */
+function shrinkImage(file, max = 800, q = .82) {
+  return new Promise(res => {
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return res(file);
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(u);
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(b => res(b || file), 'image/jpeg', q);
+    };
+    img.onerror = () => { URL.revokeObjectURL(u); res(file); };
+    img.src = u;
+  });
+}
+const extFor = b => b.type === 'image/gif' ? 'gif' : b.type === 'image/png' ? 'png' : b.type === 'image/webp' ? 'webp' : 'jpg';
+/* Tải ảnh lên một bucket; trả về đường dẫn trong bucket */
+async function putImage(bucket, file, max, q) {
+  const blob = await shrinkImage(file, max, q);
+  const path = user.id + '/' + rid() + '.' + extFor(blob);
+  const { error } = await sb.storage.from(bucket).upload(path, blob, { contentType: blob.type || 'image/jpeg' });
+  if (error) throw error;
+  return path;
+}
+async function delPublic(bucket, url) {
+  const k = '/object/public/' + bucket + '/';
+  if (url && url.includes(k)) { try { await sb.storage.from(bucket).remove([decodeURIComponent(url.split(k)[1].split('?')[0])]); } catch (e) {} }
+}
+const prof = new Map(); let profAt = 0;
+async function loadProfMap(force) {
+  if (!force && prof.size && Date.now() - profAt < 60000) return prof;
+  const { data } = await sb.from('profiles').select('*');
+  prof.clear(); (data || []).forEach(p => prof.set(p.id, p)); profAt = Date.now();
+  return prof;
+}
+
+/* ---- Gói dung lượng ---- */
+const planName = () => myPlan || (user.app_metadata || {}).plan || 'free';
+const planGB = () => PLANS[planName()] || PLANS.free;
+
+/* ---- Biểu tượng (SVG nét mảnh) ---- */
+const IC = {
+  files: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  board: '<path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 9a4 4 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/>',
+  chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z"/>',
+  send: '<path d="M22 2 11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>',
+  bag: '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  note: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8M8 9h2"/>',
+  calc: '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>',
+  game: '<path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/><path d="M17.3 5H6.7a4 4 0 0 0-3.9 3.2l-1.5 7.5A3 3 0 0 0 4.2 19a3 3 0 0 0 2.3-1l1.6-2h7.8l1.6 2a3 3 0 0 0 2.3 1 3 3 0 0 0 2.9-3.3l-1.5-7.5A4 4 0 0 0 17.3 5z"/>',
+  wheel: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2"/><path d="M12 2v8M12 14v8M2 12h8M14 12h8"/>',
+  globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+  pin: '<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',
+  play: '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/>',
+  cal: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+  gear: '<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>'
+};
+const svg = (k, s = 24) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[k] || ''}</svg>`;
+const grad = c => `linear-gradient(145deg,${c[0]},${c[1]})`;
+
+/* ---- Hình nền ---- */
+const WP = [
+  'radial-gradient(120% 90% at 85% 15%,#7a14d6 0,transparent 55%),radial-gradient(90% 80% at 15% 90%,#00c6f2 0,transparent 60%),radial-gradient(80% 60% at 40% 25%,#ffd7c2 0,transparent 55%),linear-gradient(135deg,#f58a3a,#b142d8 50%,#4a1fc6)',
+  'linear-gradient(135deg,#00a8ec,#4b3ac8)',
+  'linear-gradient(135deg,#11998e,#38ef7d)',
+  'linear-gradient(135deg,#ff5f6d,#ffc371)',
+  'linear-gradient(135deg,#232526,#414345)',
+  'linear-gradient(135deg,#667eea,#764ba2)',
+  'radial-gradient(circle at 20% 20%,#ffecd2,transparent 50%),radial-gradient(circle at 80% 80%,#fcb69f,transparent 50%),linear-gradient(135deg,#a1c4fd,#c2e9fb)'
+];
+function applyWallpaper() {
+  const w = me?.wallpaper || '', s = document.body.style, m = /^preset:(\d+)$/.exec(w);
+  if (m && WP[+m[1]]) s.background = WP[+m[1]];
+  else if (/^https?:\/\//i.test(w)) s.background = `url(${JSON.stringify(w)}) center/cover no-repeat`;
+  else s.background = '';
+}
+
 /* ---- Hệ thống cửa sổ ---- */
 const APPS = {
-  files: ['📁', 'Tệp', filesApp],
-  board: ['📢', 'Bảng tin', boardApp],
-  chat: ['💬', 'Tin nhắn', chatApp],
-  market: ['🛒', 'Chợ đồ cũ', marketApp],
-  people: ['📋', 'Danh sách lớp', peopleApp],
-  browser: ['🌐', 'Trình duyệt', browserApp],
-  wheel: ['🎡', 'Vòng quay', wheelApp],
-  settings: ['⚙️', 'Cài đặt', settingsApp]
+  files: { n: 'Tệp', i: 'files', c: ['#ffb84d', '#f08a1c'], f: filesApp },
+  board: { n: 'Bảng tin', i: 'board', c: ['#ff7a7a', '#e0405a'], f: boardApp },
+  chat: { n: 'Tin nhắn lớp', i: 'chat', c: ['#5fd68a', '#1fa35b'], f: chatApp },
+  dm: { n: 'Nhắn riêng', i: 'send', c: ['#6cb4ff', '#2f7de1'], f: dmApp },
+  market: { n: 'Chợ đồ cũ', i: 'bag', c: ['#ffcf5c', '#f2a20c'], f: marketApp },
+  people: { n: 'Danh sách lớp', i: 'users', c: ['#4fd1c5', '#1b9a9a'], f: peopleApp },
+  notes: { n: 'Ghi chú', i: 'note', c: ['#ffbf3f', '#f29a0b'], f: notesApp },
+  calc: { n: 'Máy tính', i: 'calc', c: ['#6b7280', '#2f343d'], f: calcApp },
+  game: { n: 'Trò chơi', i: 'game', c: ['#b388ff', '#6a3fe0'], f: gameApp },
+  wheel: { n: 'Vòng quay', i: 'wheel', c: ['#ff8fd0', '#d6409f'], f: wheelApp },
+  browser: { n: 'Trình duyệt', i: 'globe', c: ['#7aa7ff', '#3f6fe6'], f: browserApp },
+  google: { n: 'Google', i: 'search', c: ['#6aa0ff', '#2f6fe0'], f: googleApp },
+  gmaps: { n: 'Google Maps', i: 'pin', c: ['#5ed38d', '#1f9d55'], f: mapsApp },
+  youtube: { n: 'YouTube', i: 'play', c: ['#ff6b6b', '#d91f26'], f: youtubeApp },
+  gdocs: { n: 'Google Tài liệu', i: 'note', c: ['#6aa6ff', '#2b6bdc'], f: gdocsApp },
+  gcal: { n: 'Google Lịch', i: 'cal', c: ['#59c6e8', '#1f8fc0'], f: gcalApp },
+  admin: { n: 'Quản trị', i: 'shield', c: ['#ff8a65', '#c2410c'], f: adminApp, adm: true },
+  settings: { n: 'Cài đặt', i: 'gear', c: ['#667089', '#3a4157'], f: settingsApp }
 };
+const appKeys = () => Object.keys(APPS).filter(k => !APPS[k].adm || isAdm);
 const wins = {}; let z = 10, me = null;
+const RS = () => $('os').classList.contains('dockhide') ? 0 : 78;
 
 async function loadProfile() {
   const { data } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
   me = data;
+  try { const r = await sb.rpc('is_admin'); isAdm = r.data === true; } catch (e) {}
+  try { const r = await sb.from('plans').select('plan').eq('user_id', user.id).maybeSingle(); myPlan = r.data?.plan || null; } catch (e) {}
 }
-function applyWallpaper() {
-  const w = me?.wallpaper;
-  document.body.style.backgroundImage = (w && /^https?:\/\//i.test(w)) ? `url(${JSON.stringify(w)})` : '';
+
+function setBadge(k, n) {
+  document.querySelectorAll(`[data-k="${k}"]`).forEach(b => {
+    let s = b.querySelector('.bd');
+    if (!n) { if (s) s.remove(); return; }
+    if (!s) { s = document.createElement('span'); s.className = 'bd'; b.appendChild(s); }
+    s.textContent = n > 9 ? '9+' : n;
+  });
+}
+let dmCh = null;
+function startDM() {
+  if (dmCh) return;
+  dmCh = sb.channel('dms:' + user.id).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'dms' }, p => {
+    const m = p.new; dmBus.forEach(f => { try { f(m); } catch (e) {} });
+    if (m.receiver !== user.id) return;
+    const o = wins.dm;
+    if (o && !o.min && o.peerId === m.sender && o.t.classList.contains('on')) return;
+    unread++; setBadge('dm', unread);
+    toast('💬 ' + (m.sender_name || 'Tin nhắn mới') + ': ' + (m.body || '📷 Ảnh').slice(0, 40));
+  }).subscribe();
 }
 
 function buildDesktop() {
-  const pos = JSON.parse(localStorage.getItem('ipos') || '{}');
+  let pos = {}; try { pos = JSON.parse(localStorage.getItem('ipos') || '{}'); } catch (e) {}
+  const rows = Math.max(1, Math.floor((innerHeight - RS() - 20) / 100));
   $('desk').innerHTML = '';
-  Object.entries(APPS).forEach(([k, a], i) => {
-    const b = document.createElement('button'); b.className = 'ico'; b.innerHTML = `<b>${a[0]}</b>${a[1]}`;
-    const p = pos[k] || [12 + (i % 3) * 92, 12 + Math.floor(i / 3) * 100];
+  appKeys().forEach((k, i) => {
+    const a = APPS[k], b = document.createElement('button'); b.className = 'ico'; b.dataset.k = k;
+    b.innerHTML = `<span class="aic" style="background:${grad(a.c)}">${svg(a.i, 28)}</span><span class="nm">${esc(a.n)}</span>`;
+    const p = pos[k] || [14 + Math.floor(i / rows) * 92, 14 + (i % rows) * 100];
     b.style.left = p[0] + 'px'; b.style.top = p[1] + 'px';
     b.addEventListener('pointerdown', e => {
       const sx = e.clientX, sy = e.clientY, ox = b.offsetLeft, oy = b.offsetTop; let moved = false;
       const mv = ev => {
         if (Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) > 8) moved = true;
-        if (moved) { b.style.left = Math.max(0, Math.min(innerWidth - 84, ox + ev.clientX - sx)) + 'px'; b.style.top = Math.max(0, Math.min(innerHeight - 150, oy + ev.clientY - sy)) + 'px'; }
+        if (moved) { b.style.left = Math.max(0, Math.min(innerWidth - 84, ox + ev.clientX - sx)) + 'px'; b.style.top = Math.max(0, Math.min(innerHeight - 110, oy + ev.clientY - sy)) + 'px'; }
       };
       const up = ev => {
         removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
-        if (moved) { pos[k] = [b.offsetLeft, b.offsetTop]; localStorage.setItem('ipos', JSON.stringify(pos)); } else if (ev.type === 'pointerup') openApp(k);
+        if (moved) { pos[k] = [b.offsetLeft, b.offsetTop]; lsSet('ipos', JSON.stringify(pos)); } else if (ev.type === 'pointerup') openApp(k);
       };
       addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
     });
     $('desk').appendChild(b);
   });
+  if (unread) setBadge('dm', unread);
 }
 
 /* Dựng nội dung ứng dụng; app có thể trả về { off } để dọn dẹp khi đóng */
 function mount(k) {
   const o = wins[k]; if (!o) return;
   if (o.off) { try { o.off(); } catch (e) {} o.off = null; }
-  const body = o.w.querySelector('.body'); body.innerHTML = '';
-  Promise.resolve().then(() => APPS[k][2](body)).then(r => {
+  const arg = o.arg; o.arg = undefined;
+  const body = o.w.querySelector('.body'); body.innerHTML = ''; body.removeAttribute('style');
+  Promise.resolve().then(() => APPS[k].f(body, arg)).then(r => {
     if (r && r.off) { if (wins[k] === o) o.off = r.off; else r.off(); }
   }).catch(e => { body.textContent = 'Lỗi: ' + e.message; });
 }
-function refreshApps() { ['chat', 'market', 'board'].forEach(k => wins[k] && mount(k)); }
+function refreshApps() { ['chat', 'market', 'board', 'dm', 'people'].forEach(k => wins[k] && mount(k)); }
 
-function openApp(k) {
+function openApp(k, arg) {
   closeMenu();
-  if (wins[k]) return show(k);
-  const a = APPS[k], w = document.createElement('div'), n = Object.keys(wins).length;
+  const a = APPS[k]; if (!a || (a.adm && !isAdm)) return;
+  if (wins[k]) { show(k); if (arg !== undefined) { wins[k].arg = arg; mount(k); } return; }
+  const w = document.createElement('div'), n = Object.keys(wins).length;
   w.className = 'win';
-  w.innerHTML = `<header><span>${a[0]} ${a[1]}</span><div><button class="mn" aria-label="Thu nhỏ">–</button><button class="mx" aria-label="Phóng to">□</button><button class="x" aria-label="Đóng">×</button></div></header><div class="body"></div>${['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'].map(d => `<i class="rz" data-d="${d}"></i>`).join('')}`;
+  w.innerHTML = `<header><span class="wt">${svg(a.i, 16)} ${esc(a.n)}</span><div><button class="mn" aria-label="Thu nhỏ">–</button><button class="mx" aria-label="Phóng to">□</button><button class="x" aria-label="Đóng">×</button></div></header><div class="body"></div>${['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'].map(d => `<i class="rz" data-d="${d}"></i>`).join('')}`;
   $('os').appendChild(w);
   if (innerWidth < 640) w.classList.add('max');
   w.style.left = Math.max(0, Math.min(40 + n * 28, innerWidth - w.offsetWidth)) + 'px';
-  w.style.top = Math.max(0, Math.min(24 + n * 28, innerHeight - 48 - w.offsetHeight)) + 'px';
-  const t = document.createElement('button'); t.textContent = a[0]; t.title = a[1]; t.setAttribute('aria-label', a[1]); $('tasks').appendChild(t);
-  const o = wins[k] = { w, t, min: false, off: null };
+  w.style.top = Math.max(0, Math.min(24 + n * 28, innerHeight - RS() - w.offsetHeight)) + 'px';
+  const t = document.createElement('button'); t.className = 'dk run'; t.dataset.k = k; t.style.background = grad(a.c);
+  t.innerHTML = svg(a.i, 24); t.title = a.n; t.setAttribute('aria-label', a.n); $('tasks').appendChild(t);
+  const o = wins[k] = { w, t, min: false, off: null, arg };
   t.onclick = () => (o.min || !t.classList.contains('on')) ? show(k) : hide(k);
   w.querySelector('.mn').onclick = () => hide(k);
   w.querySelector('.mx').onclick = () => w.classList.toggle('max');
@@ -405,22 +638,29 @@ function openApp(k) {
   resizer(w);
   show(k);
   mount(k);
+  if (k === 'dm') setBadge('dm', unread);
 }
 
-function show(k) { const o = wins[k]; o.min = false; o.w.style.display = 'flex'; Object.values(wins).forEach(x => x.t.classList.remove('on')); o.w.style.zIndex = ++z; o.t.classList.add('on'); o.t.classList.remove('mn'); }
+function show(k) {
+  const o = wins[k]; if (!o) return;
+  o.min = false; o.w.style.display = 'flex';
+  Object.values(wins).forEach(x => x.t.classList.remove('on'));
+  o.w.style.zIndex = ++z; o.t.classList.add('on'); o.t.classList.remove('mn');
+  if (k === 'dm' && unread) { unread = 0; setBadge('dm', 0); }
+}
 function hide(k) { const o = wins[k]; o.min = true; o.w.style.display = 'none'; o.t.classList.remove('on'); o.t.classList.add('mn'); }
 
 function drag(w, h) {
   h.addEventListener('pointerdown', e => {
     if (e.target.closest('button') || w.classList.contains('max')) return;
     const dx = e.clientX - w.offsetLeft, dy = e.clientY - w.offsetTop;
-    const mv = ev => { w.style.left = Math.max(0, Math.min(innerWidth - 60, ev.clientX - dx)) + 'px'; w.style.top = Math.max(0, Math.min(innerHeight - 100, ev.clientY - dy)) + 'px'; };
+    const mv = ev => { w.style.left = Math.max(0, Math.min(innerWidth - 60, ev.clientX - dx)) + 'px'; w.style.top = Math.max(0, Math.min(innerHeight - 60, ev.clientY - dy)) + 'px'; };
     const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up); };
     addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
   });
 }
 
-/* Kéo giãn cửa sổ từ 4 cạnh và 4 góc, luôn giữ trong màn hình và phía trên taskbar */
+/* Kéo giãn cửa sổ từ 4 cạnh và 4 góc, luôn giữ trong màn hình */
 function resizer(w) {
   const MINW = 300, MINH = 200;
   w.querySelectorAll('.rz').forEach(h => h.addEventListener('pointerdown', e => {
@@ -429,10 +669,10 @@ function resizer(w) {
     const d = h.dataset.d, sx = e.clientX, sy = e.clientY;
     const r = { l: w.offsetLeft, t: w.offsetTop, w: w.offsetWidth, h: w.offsetHeight };
     const mv = ev => {
-      const dx = ev.clientX - sx, dy = ev.clientY - sy;
+      const dx = ev.clientX - sx, dy = ev.clientY - sy, bottom = innerHeight - RS();
       let l = r.l, t = r.t, wd = r.w, ht = r.h;
       if (d.includes('e')) wd = Math.min(Math.max(MINW, r.w + dx), innerWidth - r.l);
-      if (d.includes('s')) ht = Math.min(Math.max(MINH, r.h + dy), innerHeight - 48 - r.t);
+      if (d.includes('s')) ht = Math.min(Math.max(MINH, r.h + dy), Math.max(MINH, bottom - r.t));
       if (d.includes('w')) { wd = Math.max(MINW, r.w - dx); l = r.l + r.w - wd; if (l < 0) { l = 0; wd = r.l + r.w; } }
       if (d.includes('n')) { ht = Math.max(MINH, r.h - dy); t = r.t + r.h - ht; if (t < 0) { t = 0; ht = r.t + r.h; } }
       Object.assign(w.style, { left: l + 'px', top: t + 'px', width: wd + 'px', height: ht + 'px' });
@@ -444,43 +684,44 @@ function resizer(w) {
 /* Khi đổi cỡ cửa sổ trình duyệt, co các cửa sổ lại cho vừa màn hình */
 addEventListener('resize', () => Object.values(wins).forEach(o => {
   const w = o.w; if (o.min || w.classList.contains('max')) return;
-  const mw = Math.min(w.offsetWidth, innerWidth), mh = Math.min(w.offsetHeight, innerHeight - 48);
+  const mw = Math.min(w.offsetWidth, innerWidth), mh = Math.min(w.offsetHeight, Math.max(200, innerHeight - RS()));
   w.style.width = mw + 'px'; w.style.height = mh + 'px';
   w.style.left = Math.max(0, Math.min(w.offsetLeft, innerWidth - mw)) + 'px';
-  w.style.top = Math.max(0, Math.min(w.offsetTop, innerHeight - 48 - mh)) + 'px';
+  w.style.top = Math.max(0, Math.min(w.offsetTop, innerHeight - RS() - mh)) + 'px';
 }));
 
+/* ---- Dock + bảng ứng dụng ---- */
+function toggleDock() {
+  const os = $('os'); os.classList.toggle('dockhide'); closeMenu();
+  lsSet('dockhide', os.classList.contains('dockhide') ? '1' : '0');
+}
 function toggleMenu() { $('menu').hidden ? openMenu() : closeMenu(); }
 function openMenu() {
-  const m = $('menu');
-  const nm = me?.name || (user.email || '').split('@')[0];
-  const links = [['files', '📁', 'Tài liệu'], ['board', '📢', 'Bảng tin'], ['chat', '💬', 'Tin nhắn'], ['people', '📋', 'Danh sách lớp'], ['settings', '⚙️', 'Bảng điều khiển']];
-  m.innerHTML = `<div class="l"><div class="list"></div><input class="srch" placeholder="Tìm chương trình" autocomplete="off"></div>
-   <div class="r"><div class="usr"><span class="av">${esc(nm.charAt(0).toUpperCase())}</span><span>${esc(nm)}</span></div>
-   ${links.map(([k, i, t]) => `<button class="lk" data-k="${k}">${i} ${t}</button>`).join('')}
-   <div class="sp"></div><div class="sd"><button class="lk" data-out="1">⏻ Đăng xuất</button></div></div>`;
-  const list = m.querySelector('.list'), s = m.querySelector('.srch');
+  const m = $('menu'), nm = me?.name || (user.email || '').split('@')[0];
+  m.innerHTML = `<input class="srch" placeholder="Tìm ứng dụng..." autocomplete="off"><div class="mg"></div><div class="mf">${avatar(nm, me?.avatar, 34)}<span class="u">${esc(nm)}</span><button data-out="1">Đăng xuất</button></div>`;
+  const g = m.querySelector('.mg'), s = m.querySelector('.srch');
   const render = () => {
     const f = s.value.trim().toLowerCase();
-    list.innerHTML = Object.entries(APPS).filter(([k, a]) => !f || a[1].toLowerCase().includes(f))
-      .map(([k, a]) => `<button class="it" data-k="${k}"><span class="ic">${a[0]}</span>${esc(a[1])}</button>`).join('') || '<p class="small" style="padding:8px">Không tìm thấy chương trình.</p>';
+    g.innerHTML = appKeys().filter(k => !f || APPS[k].n.toLowerCase().includes(f))
+      .map(k => `<button class="mi" data-k="${k}"><span class="aic" style="background:${grad(APPS[k].c)}">${svg(APPS[k].i, 26)}</span>${esc(APPS[k].n)}</button>`).join('')
+      || '<p class="small" style="grid-column:1/-1;padding:8px;color:#ddd">Không tìm thấy ứng dụng.</p>';
+    if (unread) setBadge('dm', unread);
   };
   m.onclick = e => {
     const b = e.target.closest('[data-k]'); if (b) return openApp(b.dataset.k);
     if (e.target.closest('[data-out]')) logout();
   };
   s.oninput = render;
-  s.onkeydown = e => { if (e.key === 'Enter') { const b = list.querySelector('[data-k]'); if (b) openApp(b.dataset.k); } };
+  s.onkeydown = e => { if (e.key === 'Enter') { const b = g.querySelector('[data-k]'); if (b) openApp(b.dataset.k); } };
   render();
-  m.hidden = false; $('start').classList.add('open');
+  m.hidden = false;
   if (innerWidth >= 640) s.focus();
 }
-function closeMenu() { $('menu').hidden = true; $('start').classList.remove('open'); }
-addEventListener('pointerdown', e => { if (!e.target.closest('#menu,#start')) closeMenu(); });
+function closeMenu() { $('menu').hidden = true; }
+addEventListener('pointerdown', e => { if (!e.target.closest('#menu,#lnch')) closeMenu(); });
 addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
 /* ---- APP 1: TỆP (giao diện giống Windows Explorer) ---- */
-const planGB = () => PLANS[(user.app_metadata || {}).plan] || PLANS.free;
 const fmt = b => b > GB ? (b / GB).toFixed(2) + ' GB' : b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.ceil(b / 1024) + ' KB';
 const extOf = n => (n.includes('.') ? n.split('.').pop().toLowerCase() : '');
 const FTYPES = [
@@ -904,91 +1145,200 @@ function filesApp(el) {
 }
 
 /* ---- APP 2: BẢNG TIN LỚP ---- */
+const KINDS = { tb: ['📢', 'Thông báo'], tkb: ['🗓️', 'Thời khóa biểu'], kt: ['📝', 'Lịch kiểm tra'] };
+const dueTxt = d => {
+  if (!d) return '';
+  const dt = new Date(d + 'T00:00:00'), days = Math.round((dt - new Date(new Date().toDateString())) / 864e5);
+  return `⏰ ${dt.toLocaleDateString('vi-VN')} · ${days < 0 ? 'đã qua' : days === 0 ? 'hôm nay' : 'còn ' + days + ' ngày'}`;
+};
 function boardApp(el) {
-  const isAdmin = me?.role === 'admin' || (user.email || '').includes('goldnef');
-  el.innerHTML = `${isAdmin ? '<button class="btn" id="btnPost" style="margin-top:0">+ Đăng thông báo mới</button>' : ''}<div id="bl" style="margin-top:10px"></div>`;
-  const bl = el.querySelector('#bl');
-
+  el.innerHTML = `<div class="tabs" id="bt"><button class="on" data-k="">Tất cả</button>${Object.entries(KINDS).map(([k, v]) => `<button data-k="${k}">${v[0]} ${v[1]}</button>`).join('')}</div>${isAdm ? '<button class="btn" id="btnPost" style="margin:0 0 10px">+ Đăng bài mới</button>' : ''}<div id="bl"></div>`;
+  const bl = el.querySelector('#bl'), tabs = el.querySelectorAll('#bt button');
+  let kind = '', all = [];
+  const render = () => {
+    const l = all.filter(b => !kind || (b.kind || 'tb') === kind);
+    bl.innerHTML = l.map(b => {
+      const kd = KINDS[b.kind || 'tb'] || KINDS.tb;
+      return `<div class="prod bp"><span class="bk">${kd[0]} ${esc(kd[1])}</span><br><b style="color:#4b3ac8">${esc(b.title)}</b>
+      <div style="margin:4px 0;white-space:pre-wrap">${esc(b.content)}</div>
+      ${b.due ? `<div class="due">${esc(dueTxt(b.due))}</div>` : ''}
+      <small class="small">${new Date(b.created_at).toLocaleString('vi-VN')} - Bởi ${esc(b.author)}</small>
+      ${isAdm ? `<div><button class="del" data-id="${esc(b.id)}">Xóa</button></div>` : ''}</div>`;
+    }).join('') || '<p class="small">Chưa có bài nào.</p>';
+  };
   async function load() {
     const { data, error } = await sb.from('board').select('*').order('created_at', { ascending: false });
     if (error) { bl.innerHTML = '<p class="small">Lỗi tải: ' + esc(error.message) + '</p>'; return; }
-    bl.innerHTML = (data || []).map(b => `<div class="prod" style="margin-bottom:8px">
-      <b style="color:#4b3ac8">${esc(b.title)}</b>
-      <div style="margin:4px 0;white-space:pre-wrap">${esc(b.content)}</div>
-      <small class="small">${new Date(b.created_at).toLocaleString('vi-VN')} - Bởi ${esc(b.author)}</small>
-      ${isAdmin ? `<div><button class="del" data-id="${esc(b.id)}">Xóa</button></div>` : ''}
-    </div>`).join('') || '<p class="small">Chưa có thông báo nào.</p>';
+    all = data || []; render();
   }
+  tabs.forEach(b => b.onclick = () => { tabs.forEach(x => x.className = ''); b.className = 'on'; kind = b.dataset.k; render(); });
   bl.onclick = async e => {
-    const b = e.target.closest('.del'); if (!b || !confirm('Xóa thông báo này?')) return;
+    const b = e.target.closest('.del'); if (!b || !confirm('Xóa bài này?')) return;
     const { error } = await sb.from('board').delete().eq('id', b.dataset.id);
     if (error) toast('Không xóa được: ' + error.message, true);
     load();
   };
-  if (isAdmin) {
+  if (isAdm) {
     el.querySelector('#btnPost').onclick = async () => {
-      const v = await ask('Đăng thông báo', [
+      const v = await ask('Đăng bài lên bảng tin', [
+        { name: 'kind', label: 'Loại', type: 'select', options: Object.entries(KINDS).map(([k, x]) => [k, x[0] + ' ' + x[1]]) },
         { name: 'title', label: 'Tiêu đề', req: 1 },
-        { name: 'content', label: 'Nội dung / thời khóa biểu', type: 'textarea', req: 1 }], 'Đăng');
+        { name: 'content', label: 'Nội dung / thời khóa biểu', type: 'textarea', req: 1 },
+        { name: 'due', label: 'Ngày (dành cho lịch kiểm tra, không bắt buộc)', type: 'date' }], 'Đăng');
       if (!v) return;
-      const { error } = await sb.from('board').insert({ title: v.title.trim(), content: v.content.trim(), author: me?.name || user.email });
+      const row = { title: v.title.trim(), content: v.content.trim(), author: me?.name || user.email, kind: v.kind };
+      if (v.due) row.due = v.due;
+      const { error } = await sb.from('board').insert(row);
       if (error) return toast('Lỗi: ' + error.message, true);
-      toast('Đã đăng thông báo.'); load();
+      toast('Đã đăng bài.'); load();
     };
   }
   load();
 }
 
-/* ---- APP 3: TIN NHẮN ---- */
+/* ---- APP 3: TIN NHẮN LỚP ---- */
 function chatApp(el) {
   if (!me) { el.innerHTML = '<p class="small">Vào Cài đặt, đặt tên và chọn tổ trước.</p>'; return; }
   const rooms = [['all', 'Cả lớp']]; if (me.team) rooms.push(['t' + me.team, 'Tổ ' + me.team]);
-  el.innerHTML = '<div class="tabs"></div><div class="msgs"></div><div style="display:flex;gap:6px;margin-top:8px"><input placeholder="Nhập tin nhắn..." maxlength="500" style="margin:0"><button class="btn" style="width:auto;margin:0">Gửi</button></div>';
-  const rs = el.querySelector('.tabs'), ms = el.querySelector('.msgs'), mi = el.querySelector('input');
+  el.style.display = 'flex'; el.style.flexDirection = 'column';
+  el.innerHTML = `<div class="tabs"></div><div class="msgs"></div><div class="cin"><button class="ib" title="Gửi ảnh">📷</button><input type="file" accept="image/*" hidden><input type="text" placeholder="Nhập tin nhắn..." maxlength="500"><button class="btn" style="width:auto;margin:0">Gửi</button></div>`;
+  const rs = el.querySelector('.tabs'), ms = el.querySelector('.msgs'), mi = el.querySelector('input[type=text]'), fi = el.querySelector('input[type=file]');
   let room, ch, seen = new Set();
   const add = m => {
     if (m.id != null) { if (seen.has(m.id)) return; seen.add(m.id); }
-    const d = document.createElement('div'); d.className = 'msg' + (m.user_id === user.id ? ' me' : '');
-    const s = document.createElement('small'); s.textContent = m.name; const t = document.createElement('div'); t.textContent = m.body;
-    d.append(s, t); ms.appendChild(d); ms.scrollTop = ms.scrollHeight;
+    const mine = m.user_id === user.id, p = prof.get(m.user_id);
+    const row = document.createElement('div'); row.className = 'mrow' + (mine ? ' me' : '');
+    if (!mine) row.insertAdjacentHTML('beforeend', avatar(m.name, p?.avatar, 28));
+    const d = document.createElement('div'); d.className = 'msg' + (mine ? ' me' : '');
+    if (!mine) { const s = document.createElement('small'); s.textContent = m.name; d.append(s); }
+    if (m.image) {
+      const im = document.createElement('img'); im.className = 'mimg'; im.alt = ''; im.loading = 'lazy'; im.src = m.image;
+      im.onclick = () => lightbox(m.image); im.onload = () => { ms.scrollTop = ms.scrollHeight; }; d.append(im);
+    }
+    if (m.body) { const t = document.createElement('div'); t.textContent = m.body; d.append(t); }
+    row.append(d); ms.appendChild(row); ms.scrollTop = ms.scrollHeight;
   };
   async function go(r) {
     room = r; ms.innerHTML = ''; seen = new Set();
     if (ch) { sb.removeChannel(ch); ch = null; }
     [...rs.children].forEach(b => b.className = b.dataset.r === r ? 'on' : '');
+    await loadProfMap();
     const { data } = await sb.from('messages').select('*').eq('room', r).order('created_at', { ascending: false }).limit(100);
-    if (room !== r) return;   // người dùng đã đổi phòng trong lúc chờ
+    if (room !== r) return;
     if (data) data.reverse().forEach(add);
     ch = sb.channel('chat:' + r).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: 'room=eq.' + r }, p => add(p.new)).subscribe();
   }
   rs.innerHTML = rooms.map(([k, n]) => `<button data-r="${k}">${esc(n)}</button>`).join('');
   rs.querySelectorAll('button').forEach(b => b.onclick = () => go(b.dataset.r));
-  const send = async () => {
-    const body = mi.value.trim(); if (!body) return; mi.value = '';
-    const { error } = await sb.from('messages').insert({ room, user_id: user.id, name: me.name || user.email, body });
-    if (error) { mi.value = body; toast('Không gửi được: ' + error.message, true); }
+  const send = async (body, image) => {
+    const row = { room, user_id: user.id, name: me.name || user.email, body: body || '' };
+    if (image) row.image = image;
+    const { error } = await sb.from('messages').insert(row);
+    if (error) { toast('Không gửi được: ' + error.message, true); return false; }
+    return true;
   };
-  el.querySelector('button.btn').onclick = send;
-  mi.onkeydown = e => { if (e.key === 'Enter') send(); };
+  const sendText = async () => {
+    const body = mi.value.trim(); if (!body) return; mi.value = '';
+    if (!(await send(body))) mi.value = body;
+  };
+  el.querySelector('.btn').onclick = sendText;
+  mi.onkeydown = e => { if (e.key === 'Enter') sendText(); };
+  el.querySelector('.ib').onclick = () => fi.click();
+  fi.onchange = async () => {
+    const f = fi.files[0]; fi.value = ''; if (!f) return;
+    if (!f.type.startsWith('image/')) return toast('Hãy chọn một tệp ảnh.', true);
+    toast('Đang gửi ảnh...');
+    try { const path = await putImage('chat', f, 1024, .8); await send('', pubUrl('chat', path)); }
+    catch (e) { toast('Không gửi được ảnh: ' + e.message, true); }
+  };
   go(rooms[0][0]);
   return { off: () => { if (ch) sb.removeChannel(ch); } };
 }
 
-/* Thu nhỏ ảnh trước khi tải lên (tối đa 800px, JPEG) để tiết kiệm dung lượng */
-function shrinkImage(file, max = 800) {
-  return new Promise(res => {
-    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return res(file);
-    const img = new Image(), u = URL.createObjectURL(file);
-    img.onload = () => {
-      URL.revokeObjectURL(u);
-      const k = Math.min(1, max / Math.max(img.width, img.height));
-      const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
-      const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
-      c.toBlob(b => res(b || file), 'image/jpeg', .82);
+/* ---- APP: NHẮN RIÊNG ---- */
+function dmApp(el, arg) {
+  if (!me) { el.innerHTML = '<p class="small">Vào Cài đặt, đặt tên trước.</p>'; return; }
+  const o = wins.dm; let stopChat = null;
+  el.style.display = 'flex'; el.style.flexDirection = 'column';
+  const signed = new Map();
+  const signedUrl = path => {
+    if (!signed.has(path)) signed.set(path, sb.storage.from('dm').createSignedUrl(path, 3600).then(r => r.data?.signedUrl || null));
+    return signed.get(path);
+  };
+  const row = (p, sub, time) => `<div class="dmr" data-id="${esc(p.id)}">${avatar(p.name, p.avatar, 40)}<div class="t"><b>${esc(p.name || 'Chưa đặt tên')}</b><small>${esc(sub)}</small></div><small>${time ? esc(new Date(time).toLocaleDateString('vi-VN')) : ''}</small></div>`;
+
+  async function list() {
+    if (stopChat) { stopChat(); stopChat = null; }
+    if (o) o.peerId = null;
+    el.innerHTML = '<input class="srch0" placeholder="🔍 Tìm bạn trong lớp..." style="margin:0 0 8px"><div id="dl"><p class="small">Đang tải...</p></div>';
+    const dl = el.querySelector('#dl'), s = el.querySelector('.srch0');
+    const [pm, ms] = await Promise.all([loadProfMap(true), sb.from('dms').select('sender,receiver,sender_name,body,image,created_at').or(`sender.eq.${user.id},receiver.eq.${user.id}`).order('created_at', { ascending: false }).limit(300)]);
+    if (ms.error) { dl.innerHTML = '<p class="small">Lỗi: ' + esc(ms.error.message) + '<br>Hãy chạy file supabase-setup.sql mới nhất trong Supabase.</p>'; return; }
+    const conv = new Map();
+    (ms.data || []).forEach(m => { const pid = m.sender === user.id ? m.receiver : m.sender; if (!conv.has(pid)) conv.set(pid, m); });
+    const render = () => {
+      const f = s.value.trim().toLowerCase(), hit = p => !f || (p?.name || '').toLowerCase().includes(f);
+      const recent = [...conv.entries()].map(([id, m]) => ({ m, p: pm.get(id) || { id, name: 'Người dùng' } })).filter(x => hit(x.p));
+      const others = [...pm.values()].filter(p => p.id !== user.id && !conv.has(p.id) && hit(p));
+      dl.innerHTML = (recent.length ? '<div class="small" style="margin:4px 0">Gần đây</div>' : '')
+        + recent.map(x => row(x.p, (x.m.sender === user.id ? 'Bạn: ' : '') + (x.m.body || '📷 Ảnh'), x.m.created_at)).join('')
+        + (others.length ? '<div class="small" style="margin:8px 0 4px">Cả lớp</div>' : '')
+        + others.map(p => row(p, p.email || '', '')).join('')
+        || '<p class="small">Không tìm thấy ai.</p>';
     };
-    img.onerror = () => { URL.revokeObjectURL(u); res(file); };
-    img.src = u;
-  });
+    s.oninput = render;
+    dl.onclick = e => { const r = e.target.closest('.dmr'); if (r) chat(pm.get(r.dataset.id) || { id: r.dataset.id, name: 'Người dùng' }); };
+    render();
+  }
+
+  async function chat(p0, draft) {
+    await loadProfMap();
+    const p = { ...p0, ...(prof.get(p0.id) || {}) };
+    if (!p.name) p.name = p0.name;
+    if (o) o.peerId = p.id;
+    el.innerHTML = `<div class="dmh"><button class="fxb" id="bk" title="Quay lại">◀</button>${avatar(p.name, p.avatar, 34)}<b>${esc(p.name || 'Người dùng')}</b></div><div class="msgs"></div><div class="cin"><button class="ib" title="Gửi ảnh">📷</button><input type="file" accept="image/*" hidden><input type="text" placeholder="Nhắn cho ${esc(p.name || 'bạn')}..." maxlength="500"><button class="btn" style="width:auto;margin:0">Gửi</button></div>`;
+    const ms = el.querySelector('.msgs'), mi = el.querySelector('input[type=text]'), fi = el.querySelector('input[type=file]');
+    const seen = new Set();
+    const add = m => {
+      if (seen.has(m.id)) return; seen.add(m.id);
+      const mine = m.sender === user.id;
+      const rw = document.createElement('div'); rw.className = 'mrow' + (mine ? ' me' : '');
+      const d = document.createElement('div'); d.className = 'msg' + (mine ? ' me' : '');
+      if (m.image) {
+        const im = document.createElement('img'); im.className = 'mimg'; im.alt = ''; d.append(im);
+        signedUrl(m.image).then(u => { if (u) { im.src = u; im.onclick = () => lightbox(u); im.onload = () => { ms.scrollTop = ms.scrollHeight; }; } });
+      }
+      if (m.body) { const t = document.createElement('div'); t.textContent = m.body; d.append(t); }
+      const tm = document.createElement('small'); tm.textContent = new Date(m.created_at).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }); d.append(tm);
+      rw.append(d); ms.appendChild(rw); ms.scrollTop = ms.scrollHeight;
+    };
+    const onMsg = m => { if ((m.sender === p.id && m.receiver === user.id) || (m.sender === user.id && m.receiver === p.id)) add(m); };
+    dmBus.add(onMsg); stopChat = () => dmBus.delete(onMsg);
+    const { data, error } = await sb.from('dms').select('*').or(`and(sender.eq.${user.id},receiver.eq.${p.id}),and(sender.eq.${p.id},receiver.eq.${user.id})`).order('created_at', { ascending: false }).limit(200);
+    if (error) ms.innerHTML = '<p class="small">Lỗi: ' + esc(error.message) + '<br>Hãy chạy file supabase-setup.sql mới nhất.</p>';
+    else (data || []).reverse().forEach(add);
+    const send = async (body, image) => {
+      const { data: d, error: er } = await sb.from('dms').insert({ sender: user.id, receiver: p.id, sender_name: me.name || user.email, body: body || null, image: image || null }).select().single();
+      if (er) { toast('Không gửi được: ' + er.message, true); return false; }
+      add(d); return true;
+    };
+    const sendText = async () => { const b = mi.value.trim(); if (!b) return; mi.value = ''; if (!(await send(b))) mi.value = b; };
+    el.querySelector('.btn').onclick = sendText;
+    mi.onkeydown = e => { if (e.key === 'Enter') sendText(); };
+    el.querySelector('.ib').onclick = () => fi.click();
+    fi.onchange = async () => {
+      const f = fi.files[0]; fi.value = ''; if (!f) return;
+      if (!f.type.startsWith('image/')) return toast('Hãy chọn một tệp ảnh.', true);
+      toast('Đang gửi ảnh...');
+      try { await send('', await putImage('dm', f, 1024, .8)); } catch (e) { toast('Không gửi được ảnh: ' + e.message, true); }
+    };
+    el.querySelector('#bk').onclick = list;
+    if (draft) mi.value = draft;
+    mi.focus();
+  }
+
+  if (arg?.peer) chat(arg.peer, arg.draft); else list();
+  return { off: () => { if (stopChat) stopChat(); } };
 }
 
 /* ---- APP 4: CHỢ ĐỒ CŨ ---- */
@@ -1005,7 +1355,9 @@ function marketApp(el) {
       <b>${esc(p.title)}</b>
       <div class="pr">${Number(p.price).toLocaleString('vi-VN')} đ</div>
       <div class="small">${esc(p.seller)}</div>
-      ${p.user_id === user.id ? `<button class="del" data-id="${esc(p.id)}">Xóa</button>` : ''}
+      ${p.user_id === user.id
+        ? `<button class="del" data-id="${esc(p.id)}">Xóa</button>`
+        : `<button class="msgb" data-uid="${esc(p.user_id)}" data-seller="${esc(p.seller)}" data-title="${esc(p.title)}" style="margin-top:6px;width:100%;border:0;border-radius:8px;padding:7px;background:#eef;color:#31219b">💬 Nhắn người bán</button>`}
     </div>`).join('') || '<p class="small">Không có món đồ nào.</p>';
     grid.querySelectorAll('img').forEach(i => i.onerror = () => { const d = document.createElement('div'); d.className = 'noimg'; d.textContent = '🛍️'; i.replaceWith(d); });
   }
@@ -1016,14 +1368,13 @@ function marketApp(el) {
   }
   ms.oninput = render;
   grid.onclick = async e => {
+    const m = e.target.closest('.msgb');
+    if (m) return openApp('dm', { peer: { id: m.dataset.uid, name: m.dataset.seller }, draft: `Mình quan tâm món "${m.dataset.title}" còn không bạn?` });
     const b = e.target.closest('.del'); if (!b || !confirm('Xóa món này?')) return;
     const item = all.find(p => String(p.id) === b.dataset.id);
     const { error } = await sb.from('market').delete().eq('id', b.dataset.id);
     if (error) toast('Không xóa được: ' + error.message, true);
-    else if (item?.image && item.image.includes('/object/public/market/')) {
-      // xóa luôn ảnh đã tải lên để khỏi tốn dung lượng
-      try { await sb.storage.from('market').remove([decodeURIComponent(item.image.split('/object/public/market/')[1])]); } catch (e) {}
-    }
+    else if (item?.image) delPublic('market', item.image);
     load();
   };
   el.querySelector('#mAdd').onclick = async () => {
@@ -1039,12 +1390,8 @@ function marketApp(el) {
     if (file && file.size > 0) {
       if (!file.type.startsWith('image/')) return toast('Hãy chọn một tệp ảnh.', true);
       toast('Đang tải ảnh lên...');
-      const blob = await shrinkImage(file);
-      const name = blob === file ? cleanName(file.name) : 'anh.jpg';
-      const path = user.id + '/' + Date.now() + '_' + name;
-      const up = await sb.storage.from('market').upload(path, blob, { contentType: blob.type || file.type });
-      if (up.error) return toast('Không tải được ảnh: ' + up.error.message, true);
-      image = sb.storage.from('market').getPublicUrl(path).data.publicUrl;
+      try { image = pubUrl('market', await putImage('market', file, 800, .82)); }
+      catch (e) { return toast('Không tải được ảnh: ' + e.message, true); }
     }
     const { error } = await sb.from('market').insert({ user_id: user.id, title: v.title.trim(), price, image, seller: me.name || user.email });
     if (error) return toast('Lỗi: ' + error.message, true);
@@ -1064,13 +1411,62 @@ function peopleApp(el) {
     const { data, error } = await q;
     if (error) { pl.innerHTML = '<p class="small">Lỗi tải: ' + esc(error.message) + '</p>'; return; }
     pl.innerHTML = (data && data.length ? `<p class="small">${data.length} thành viên</p>` : '') +
-      ((data || []).map(p => `<div class="file"><span><b>${esc(p.name || 'Chưa đặt tên')}</b><br><small>${esc(p.email)}</small></span><span style="flex:none">Tổ ${esc(p.team || '?')}</span></div>`).join('') || '<p class="small">Chưa có thành viên.</p>');
+      ((data || []).map(p => `<div class="file">${avatar(p.name, p.avatar, 36)}<span><b>${esc(p.name || 'Chưa đặt tên')}</b><br><small>${esc(p.email)}</small></span><span style="flex:none">Tổ ${esc(p.team || '?')}</span>${p.id !== user.id ? `<button class="dmb" data-id="${esc(p.id)}" data-nm="${esc(p.name || '')}" title="Nhắn riêng">💬</button>` : ''}</div>`).join('') || '<p class="small">Chưa có thành viên.</p>');
   }
+  pl.onclick = e => { const b = e.target.closest('.dmb'); if (b) openApp('dm', { peer: { id: b.dataset.id, name: b.dataset.nm } }); };
   tabs.forEach((b, i) => b.onclick = () => {
     tabs.forEach(x => x.className = ''); b.className = 'on';
     team = i === 0 ? null : i; load();
   });
   load();
+}
+
+/* ---- APP: GHI CHÚ ---- */
+function notesApp(el) {
+  el.style.cssText += ';padding:0;display:flex;overflow:hidden;container:ntw / inline-size';
+  el.innerHTML = `<div class="nt"><div class="nt-l"><button class="btn" id="nn">+ Ghi chú mới</button><div id="nl"></div></div><div class="nt-r" id="nr"></div></div>`;
+  const nl = el.querySelector('#nl'), nr = el.querySelector('#nr');
+  let list = [], cur = null, tmr = null, dirty = false, st = null;
+  const title = n => (n.title || '').trim() || (n.body || '').trim().split('\n')[0].slice(0, 40) || 'Ghi chú trống';
+  const paintList = () => {
+    nl.innerHTML = list.map(n => `<div class="nti ${cur && cur.id === n.id ? 'on' : ''}" data-id="${esc(n.id)}"><b>${esc(title(n))}</b><small>${esc(new Date(n.updated_at).toLocaleDateString('vi-VN'))}</small></div>`).join('') || '<p class="small">Chưa có ghi chú.</p>';
+  };
+  async function flush() {
+    clearTimeout(tmr);
+    if (!dirty || !cur) return;
+    dirty = false;
+    const n = cur;
+    const { error } = await sb.from('notes').update({ title: n.title, body: n.body, updated_at: n.updated_at }).eq('id', n.id);
+    if (st && st.isConnected) st.textContent = error ? 'Lỗi lưu: ' + error.message : 'Đã lưu';
+  }
+  function pick(n) {
+    flush(); cur = n; paintList();
+    if (!n) { nr.innerHTML = '<div class="fx-empty">📝<br>Chọn hoặc tạo ghi chú mới</div>'; return; }
+    nr.innerHTML = '<input id="nti" placeholder="Tiêu đề" maxlength="100"><textarea id="ntb" placeholder="Viết ghi chú..."></textarea><div class="nt-s"><span id="nts"></span><button class="del" id="ndel">🗑️ Xóa</button></div>';
+    const ti = nr.querySelector('#nti'), tb = nr.querySelector('#ntb'); st = nr.querySelector('#nts');
+    ti.value = n.title || ''; tb.value = n.body || '';
+    const ch = () => { n.title = ti.value; n.body = tb.value; n.updated_at = new Date().toISOString(); dirty = true; st.textContent = 'Đang lưu…'; paintList(); clearTimeout(tmr); tmr = setTimeout(flush, 800); };
+    ti.oninput = ch; tb.oninput = ch;
+    nr.querySelector('#ndel').onclick = async () => {
+      if (!confirm('Xóa ghi chú này?')) return;
+      dirty = false; clearTimeout(tmr);
+      await sb.from('notes').delete().eq('id', n.id);
+      list = list.filter(x => x.id !== n.id); pick(list[0] || null);
+    };
+  }
+  nl.onclick = e => { const r = e.target.closest('.nti'); if (r) pick(list.find(n => String(n.id) === r.dataset.id)); };
+  el.querySelector('#nn').onclick = async () => {
+    const { data, error } = await sb.from('notes').insert({ user_id: user.id, title: '', body: '' }).select().single();
+    if (error) return toast('Không tạo được: ' + error.message, true);
+    list.unshift(data); pick(data);
+    const t = nr.querySelector('#nti'); if (t) t.focus();
+  };
+  (async () => {
+    const { data, error } = await sb.from('notes').select('*').order('updated_at', { ascending: false });
+    if (error) { nr.innerHTML = '<p class="small" style="padding:10px">Lỗi: ' + esc(error.message) + '<br>Hãy chạy file supabase-setup.sql mới nhất.</p>'; return; }
+    list = data || []; pick(list[0] || null);
+  })();
+  return { off: flush };
 }
 
 /* ---- APP 6: TRÌNH DUYỆT WEB ---- */
@@ -1133,35 +1529,436 @@ function wheelApp(el) {
 
 /* ---- APP 8: CÀI ĐẶT & CÁ NHÂN HÓA ---- */
 function settingsApp(el) {
-  el.innerHTML = `<p class="small">Tài khoản: <b>${esc(user.email)}</b> · Gói: <b>${esc((user.app_metadata || {}).plan || 'free')}</b> (${planGB()} GB)</p>
-   <label style="display:block;margin-top:10px">Tên hiển thị</label><input id="pn" maxlength="40" value="${esc(me?.name || '')}">
-   <label style="display:block;margin-top:10px">Tổ</label><select id="pt"><option value="0">Chưa chọn</option>${[1, 2, 3, 4].map(i => `<option value="${i}" ${Number(me?.team) === i ? 'selected' : ''}>Tổ ${i}</option>`).join('')}</select>
-   <label style="display:block;margin-top:10px">Link ảnh nền máy tính</label><input id="pw" value="${esc(me?.wallpaper || '')}" placeholder="https://example.com/anh.jpg">
-   <button class="btn" id="sv">Lưu thông tin & Hình nền</button>
-   <button class="btn alt" id="cw">Xóa hình nền (về màu mặc định)</button>
-   <label style="display:block;margin-top:14px">Đổi mật khẩu mới</label><input type="password" id="np" autocomplete="new-password" placeholder="Mật khẩu mới (từ 6 ký tự)">
-   <button class="btn alt" id="sp">Lưu mật khẩu</button>
-   <button class="btn alt" id="lo" style="margin-top:16px">Đăng xuất</button>`;
-  async function save(wallpaperOverride) {
-    const name = el.querySelector('#pn').value.trim(); if (!name) return toast('Nhập tên trước.', true);
-    const wallpaper = wallpaperOverride !== undefined ? wallpaperOverride : el.querySelector('#pw').value.trim();
-    if (wallpaper && !/^https?:\/\//i.test(wallpaper)) return toast('Link ảnh nền phải bắt đầu bằng http(s)://', true);
-    const row = { id: user.id, email: user.email, name, team: +el.querySelector('#pt').value, wallpaper };
+  const nm = me?.name || '';
+  el.innerHTML = `
+   <div class="sec"><h3>👤 Hồ sơ</h3>
+    <div class="prof"><span id="avp">${avatar(nm || user.email, me?.avatar, 64)}</span>
+     <div style="flex:1"><button class="btn alt" id="avb" style="margin:0 0 6px">Đổi ảnh đại diện</button><button class="btn alt" id="avx" style="margin:0">Xóa ảnh đại diện</button><input type="file" id="avf" accept="image/*" hidden></div></div>
+    <label style="display:block;margin-top:10px">Tên hiển thị</label><input id="pn" maxlength="40" value="${esc(nm)}">
+    <label style="display:block;margin-top:10px">Tổ</label><select id="pt"><option value="0">Chưa chọn</option>${[1, 2, 3, 4].map(i => `<option value="${i}" ${Number(me?.team) === i ? 'selected' : ''}>Tổ ${i}</option>`).join('')}</select>
+    <button class="btn" id="sv">Lưu hồ sơ</button></div>
+   <div class="sec"><h3>🖼️ Hình nền</h3><div class="wps" id="wps"></div>
+    <button class="btn alt" id="wb" style="margin:0 0 6px">Tải ảnh nền từ máy</button><input type="file" id="wf" accept="image/*" hidden>
+    <label style="display:block;margin-top:8px">Hoặc dán link ảnh</label><input id="pw" placeholder="https://example.com/anh.jpg" value="${/^https?:/i.test(me?.wallpaper || '') && !(me.wallpaper || '').includes('/object/public/wallpapers/') ? esc(me.wallpaper) : ''}">
+    <button class="btn alt" id="wl">Dùng link này</button></div>
+   <div class="sec"><h3>🔐 Tài khoản</h3>
+    <p class="small">Email: <b>${esc(user.email)}</b><br>Gói: <b>${esc(planName())}</b> (${planGB()} GB lưu trữ)</p>
+    <label style="display:block;margin-top:10px">Đổi mật khẩu mới</label><input type="password" id="np" autocomplete="new-password" placeholder="Mật khẩu mới (từ 6 ký tự)">
+    <button class="btn alt" id="sp">Lưu mật khẩu</button>
+    <button class="btn alt" id="lo" style="margin-top:12px">Đăng xuất</button></div>`;
+  const $$ = s => el.querySelector(s);
+  async function save(patch) {
+    const base = { id: user.id, email: user.email, name: me?.name || (user.email || '').split('@')[0], team: me?.team || 0, wallpaper: me?.wallpaper || '' };
+    if (patch.avatar !== undefined || (me && 'avatar' in me)) base.avatar = me?.avatar || '';
+    const row = { ...base, ...patch };
     const { error } = await sb.from('profiles').upsert(row);
-    if (error) return toast('Lỗi: ' + error.message, true);
-    me = { ...(me || {}), ...row };   // giữ lại các trường khác như role
-    applyWallpaper(); refreshApps();
-    toast('Đã lưu thông tin!');
+    if (error) { toast('Lỗi: ' + error.message, true); return false; }
+    me = { ...(me || {}), ...row };
+    applyWallpaper(); loadProfMap(true); refreshApps();
+    return true;
   }
-  el.querySelector('#sv').onclick = () => save();
-  el.querySelector('#cw').onclick = () => { el.querySelector('#pw').value = ''; save(''); };
-  el.querySelector('#sp').onclick = async () => {
-    const pw = el.querySelector('#np').value;
+  const paintAv = () => { $$('#avp').innerHTML = avatar($$('#pn').value || user.email, me?.avatar, 64); };
+  const curWp = () => me?.wallpaper || 'preset:0';
+  const paintWps = () => {
+    $$('#wps').innerHTML = WP.map((c, i) => `<button data-i="${i}" class="${curWp() === 'preset:' + i ? 'on' : ''}" style="background:${c}" aria-label="Hình nền ${i + 1}"></button>`).join('');
+  };
+  paintWps();
+  $$('#wps').onclick = async e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const old = me?.wallpaper;
+    if (await save({ wallpaper: 'preset:' + b.dataset.i })) { delPublic('wallpapers', old); paintWps(); toast('Đã đổi hình nền.'); }
+  };
+  $$('#wb').onclick = () => $$('#wf').click();
+  $$('#wf').onchange = async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    if (!f.type.startsWith('image/')) return toast('Hãy chọn một tệp ảnh.', true);
+    toast('Đang tải hình nền...');
+    try {
+      const old = me?.wallpaper, url = pubUrl('wallpapers', await putImage('wallpapers', f, 1920, .85));
+      if (await save({ wallpaper: url })) { delPublic('wallpapers', old); paintWps(); toast('Đã đổi hình nền.'); }
+    } catch (er) { toast('Không tải được ảnh: ' + er.message, true); }
+  };
+  $$('#wl').onclick = async () => {
+    const u = $$('#pw').value.trim();
+    if (!/^https?:\/\//i.test(u)) return toast('Link ảnh phải bắt đầu bằng http(s)://', true);
+    const old = me?.wallpaper;
+    if (await save({ wallpaper: u })) { delPublic('wallpapers', old); paintWps(); toast('Đã đổi hình nền.'); }
+  };
+  $$('#avb').onclick = () => $$('#avf').click();
+  $$('#avf').onchange = async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    if (!f.type.startsWith('image/')) return toast('Hãy chọn một tệp ảnh.', true);
+    toast('Đang tải ảnh đại diện...');
+    try {
+      const old = me?.avatar, url = pubUrl('avatars', await putImage('avatars', f, 256, .85));
+      if (await save({ avatar: url })) { delPublic('avatars', old); paintAv(); toast('Đã đổi ảnh đại diện.'); }
+    } catch (er) { toast('Không tải được ảnh: ' + er.message, true); }
+  };
+  $$('#avx').onclick = async () => {
+    if (!me?.avatar) return;
+    const old = me.avatar;
+    if (await save({ avatar: '' })) { delPublic('avatars', old); paintAv(); toast('Đã xóa ảnh đại diện.'); }
+  };
+  $$('#sv').onclick = async () => {
+    const name = $$('#pn').value.trim(); if (!name) return toast('Nhập tên trước.', true);
+    if (await save({ name, team: +$$('#pt').value })) { paintAv(); toast('Đã lưu hồ sơ!'); }
+  };
+  $$('#sp').onclick = async () => {
+    const pw = $$('#np').value;
     if (pw.length < 6) return toast('Mật khẩu tối thiểu 6 ký tự.', true);
     const { error } = await sb.auth.updateUser({ password: pw });
-    if (error) toast('Lỗi: ' + error.message, true); else { toast('Đã đổi mật khẩu.'); el.querySelector('#np').value = ''; }
+    if (error) toast('Lỗi: ' + error.message, true); else { toast('Đã đổi mật khẩu.'); $$('#np').value = ''; }
   };
-  el.querySelector('#lo').onclick = logout;
+  $$('#lo').onclick = logout;
+}
+
+/* ---- APP: QUẢN TRỊ (nâng gói cho thành viên) ---- */
+async function adminApp(el) {
+  el.innerHTML = '<p class="small">Đang tải...</p>';
+  const [pr, pl] = await Promise.all([sb.from('profiles').select('*').order('name', { ascending: true }), sb.from('plans').select('*')]);
+  if (pr.error) { el.innerHTML = '<p class="small">Lỗi: ' + esc(pr.error.message) + '</p>'; return; }
+  if (pl.error) { el.innerHTML = '<p class="small">Lỗi: ' + esc(pl.error.message) + '<br>Hãy chạy file supabase-setup.sql mới nhất trong Supabase.</p>'; return; }
+  const plan = new Map((pl.data || []).map(r => [r.user_id, r.plan]));
+  const users = pr.data || [];
+  const PL = { free: 'Free · 5 GB', pro: 'Pro · 15 GB', promax: 'Promax · 50 GB' };
+  el.innerHTML = `<p class="small" id="ast"></p><input id="asr" placeholder="🔍 Tìm theo tên hoặc email..." style="margin:0 0 6px"><div id="al"></div>`;
+  const al = el.querySelector('#al'), ast = el.querySelector('#ast'), asr = el.querySelector('#asr');
+  const stat = () => {
+    const c = { free: 0, pro: 0, promax: 0 };
+    users.forEach(u => { c[plan.get(u.id) || 'free']++; });
+    ast.textContent = `${users.length} thành viên · Free ${c.free} · Pro ${c.pro} · Promax ${c.promax}`;
+  };
+  const render = () => {
+    const f = asr.value.trim().toLowerCase();
+    al.innerHTML = users.filter(u => !f || (u.name || '').toLowerCase().includes(f) || (u.email || '').toLowerCase().includes(f)).map(u => {
+      const p = plan.get(u.id) || 'free';
+      return `<div class="adr" data-id="${esc(u.id)}" data-cur="${esc(p)}">${avatar(u.name, u.avatar, 36)}<div class="t"><b>${esc(u.name || 'Chưa đặt tên')}</b><small>${esc(u.email)} · Tổ ${esc(u.team || '?')}</small></div>
+      <select>${Object.entries(PL).map(([k, v]) => `<option value="${k}" ${k === p ? 'selected' : ''}>${v}</option>`).join('')}</select><button hidden>Lưu</button></div>`;
+    }).join('') || '<p class="small">Không có ai.</p>';
+  };
+  asr.oninput = render;
+  al.onchange = e => { const r = e.target.closest('.adr'); if (r && e.target.tagName === 'SELECT') r.querySelector('button').hidden = e.target.value === r.dataset.cur; };
+  al.onclick = async e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const r = b.closest('.adr'), id = r.dataset.id, p = r.querySelector('select').value;
+    b.disabled = true;
+    const { error } = await sb.from('plans').upsert({ user_id: id, plan: p, updated_at: new Date().toISOString() });
+    b.disabled = false;
+    if (error) return toast('Không lưu được: ' + error.message, true);
+    plan.set(id, p); if (id === user.id) myPlan = p;
+    r.dataset.cur = p; b.hidden = true; stat(); toast('Đã nâng gói ' + p.toUpperCase() + '.');
+  };
+  stat(); render();
+}
+
+/* ---- APP: MÁY TÍNH ---- */
+function calcApp(el) {
+  const K = ['C', '⌫', '%', '÷', '7', '8', '9', '×', '4', '5', '6', '−', '1', '2', '3', '+', '±', '0', '.', '='];
+  const cls = k => k === '=' ? 'eq' : '+−×÷'.includes(k) ? 'op' : 'C⌫%±'.includes(k) ? 'fn' : '';
+  el.innerHTML = `<div class="calc"><div class="cd"><small id="ce"></small><div id="cv">0</div></div><div class="ck">${K.map(k => `<button data-k="${k}" class="${cls(k)}">${k}</button>`).join('')}</div></div>`;
+  const cv = el.querySelector('#cv'), ce = el.querySelector('#ce');
+  let cur = '0', acc = null, op = null, fresh = true, ex = '';
+  const num = () => parseFloat(cur);
+  const fmtN = n => !isFinite(n) ? 'Lỗi' : String(+n.toPrecision(12));
+  const calc = (a, o, b) => o === '+' ? a + b : o === '−' ? a - b : o === '×' ? a * b : o === '÷' ? (b === 0 ? NaN : a / b) : b;
+  function press(k) {
+    if (cur === 'Lỗi' && k !== 'C') return;
+    if (/^\d$/.test(k)) { if (fresh || cur === '0') { cur = k; fresh = false; } else if (cur.replace(/[-.]/g, '').length < 14) cur += k; }
+    else if (k === '.') { if (fresh) { cur = '0.'; fresh = false; } else if (!cur.includes('.')) cur += '.'; }
+    else if (k === 'C') { cur = '0'; acc = null; op = null; fresh = true; ex = ''; }
+    else if (k === '⌫') { if (!fresh) { cur = cur.slice(0, -1); if (cur === '' || cur === '-') cur = '0'; } }
+    else if (k === '±') { if (cur !== '0') cur = cur[0] === '-' ? cur.slice(1) : '-' + cur; }
+    else if (k === '%') { cur = fmtN(num() / 100); fresh = true; }
+    else if ('+−×÷'.includes(k)) {
+      if (op && !fresh) { acc = calc(acc, op, num()); cur = fmtN(acc); } else acc = num();
+      op = k; fresh = true; ex = fmtN(acc) + ' ' + k;
+    }
+    else if (k === '=') { if (op) { const r = calc(acc, op, num()); ex = fmtN(acc) + ' ' + op + ' ' + cur + ' ='; cur = fmtN(r); acc = null; op = null; fresh = true; } }
+    cv.textContent = cur; ce.textContent = ex;
+    cv.style.fontSize = cur.length > 11 ? '1.4rem' : cur.length > 8 ? '1.8rem' : '2.2rem';
+  }
+  el.querySelector('.ck').onclick = e => { const b = e.target.closest('button'); if (b) press(b.dataset.k); };
+  const kd = e => {
+    if (!winActive('calc') || e.ctrlKey || e.metaKey) return;
+    const m = { '*': '×', '/': '÷', '-': '−', Enter: '=', Backspace: '⌫', Escape: 'C', Delete: 'C', ',': '.' }[e.key] || e.key;
+    if (K.includes(m)) { e.preventDefault(); press(m); }
+  };
+  addEventListener('keydown', kd);
+  return { off: () => removeEventListener('keydown', kd) };
+}
+
+/* ---- APP: TRÒ CHƠI ---- */
+function gameApp(el) {
+  const G = { snake: ['🐍 Rắn', snakeGame], g2048: ['🔢 2048', g2048Game], mem: ['🃏 Lật hình', memGame] };
+  el.innerHTML = `<div class="tabs">${Object.entries(G).map(([k, v]) => `<button data-g="${k}">${v[0]}</button>`).join('')}</div><div class="gbox" id="gb" style="text-align:center"></div>`;
+  const box = el.querySelector('#gb'), tabs = el.querySelectorAll('.tabs button');
+  let stop = null;
+  function start(k) {
+    if (stop) { try { stop(); } catch (e) {} stop = null; }
+    tabs.forEach(b => b.className = b.dataset.g === k ? 'on' : '');
+    box.innerHTML = ''; lsSet('lastgame', k);
+    stop = G[k][1](box);
+  }
+  tabs.forEach(b => b.onclick = () => start(b.dataset.g));
+  start(G[lsGet('lastgame', 'snake')] ? lsGet('lastgame', 'snake') : 'snake');
+  return { off: () => { if (stop) stop(); } };
+}
+function snakeGame(box) {
+  const N = 14, C = 20;
+  box.innerHTML = `<div class="gm-top"><span>Điểm: <b id="sc">0</b></span><span>Kỷ lục: <b id="hi">0</b></span></div><canvas width="${N * C}" height="${N * C}" style="border-radius:10px;background:#f4f5f9;touch-action:none"></canvas><div class="dpad"><button data-d="u">▲</button><div><button data-d="l">◀</button><button data-d="d">▼</button><button data-d="r">▶</button></div></div><button class="btn" id="rs">Chơi lại</button>`;
+  const cv = box.querySelector('canvas'), g = cv.getContext('2d'), sc = box.querySelector('#sc'), hiEl = box.querySelector('#hi');
+  const V = { u: [0, -1], d: [0, 1], l: [-1, 0], r: [1, 0] }, OPP = { u: 'd', d: 'u', l: 'r', r: 'l' };
+  let snake, dir, nd, food, score, hi = +lsGet('snakehi', 0), timer, over, started;
+  hiEl.textContent = hi;
+  function place() { do food = [Math.floor(Math.random() * N), Math.floor(Math.random() * N)]; while (snake.some(s => s[0] === food[0] && s[1] === food[1])); }
+  function reset() { snake = [[7, 7], [6, 7], [5, 7]]; dir = nd = 'r'; score = 0; over = false; started = false; sc.textContent = 0; place(); clearInterval(timer); draw(); }
+  function begin() { if (!started && !over) { started = true; timer = setInterval(step, 120); } }
+  function turn(d) { begin(); if (d !== OPP[dir]) nd = d; }
+  function step() {
+    dir = nd; const h = [snake[0][0] + V[dir][0], snake[0][1] + V[dir][1]];
+    if (h[0] < 0 || h[1] < 0 || h[0] >= N || h[1] >= N || snake.some(s => s[0] === h[0] && s[1] === h[1])) { over = true; clearInterval(timer); draw(); return; }
+    snake.unshift(h);
+    if (h[0] === food[0] && h[1] === food[1]) { score++; sc.textContent = score; if (score > hi) { hi = score; hiEl.textContent = hi; lsSet('snakehi', hi); } place(); } else snake.pop();
+    draw();
+  }
+  function draw() {
+    g.clearRect(0, 0, N * C, N * C);
+    g.fillStyle = '#e74c3c'; g.beginPath(); g.arc(food[0] * C + C / 2, food[1] * C + C / 2, C / 2 - 2, 0, 7); g.fill();
+    snake.forEach((s, i) => { g.fillStyle = i ? '#4b3ac8' : '#2d1f8f'; g.beginPath(); g.roundRect(s[0] * C + 1, s[1] * C + 1, C - 2, C - 2, 5); g.fill(); });
+    if (!started && !over) { g.fillStyle = 'rgba(0,0,0,.45)'; g.fillRect(0, 0, N * C, N * C); g.fillStyle = '#fff'; g.font = 'bold 17px system-ui'; g.textAlign = 'center'; g.fillText('Bấm mũi tên để bắt đầu', N * C / 2, N * C / 2); }
+    if (over) { g.fillStyle = 'rgba(0,0,0,.55)'; g.fillRect(0, 0, N * C, N * C); g.fillStyle = '#fff'; g.font = 'bold 24px system-ui'; g.textAlign = 'center'; g.fillText('Thua rồi! ' + score + ' điểm', N * C / 2, N * C / 2); }
+  }
+  const MAP = { ArrowUp: 'u', ArrowDown: 'd', ArrowLeft: 'l', ArrowRight: 'r', w: 'u', s: 'd', a: 'l', d: 'r' };
+  const kd = e => { if (!winActive('game')) return; const m = MAP[e.key] || MAP[(e.key || '').toLowerCase()]; if (m) { e.preventDefault(); turn(m); } };
+  addEventListener('keydown', kd);
+  box.querySelector('.dpad').onclick = e => { const b = e.target.closest('button'); if (b) turn(b.dataset.d); };
+  box.querySelector('#rs').onclick = reset;
+  let t0 = null;
+  cv.addEventListener('touchstart', e => { t0 = [e.touches[0].clientX, e.touches[0].clientY]; }, { passive: true });
+  cv.addEventListener('touchend', e => {
+    if (!t0) return; const dx = e.changedTouches[0].clientX - t0[0], dy = e.changedTouches[0].clientY - t0[1]; t0 = null;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
+    turn(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'r' : 'l') : (dy > 0 ? 'd' : 'u'));
+  });
+  reset();
+  return () => { clearInterval(timer); removeEventListener('keydown', kd); };
+}
+function g2048Game(box) {
+  box.innerHTML = `<div class="gm-top"><span>Điểm: <b id="sc">0</b></span><span>Kỷ lục: <b id="hi">0</b></span></div><div class="g48"></div><p class="small" id="gm" style="margin:8px 0;min-height:1.3em"></p><button class="btn" id="rs">Chơi lại</button><p class="small">Dùng phím mũi tên hoặc vuốt trên bảng.</p>`;
+  const bd = box.querySelector('.g48'), sc = box.querySelector('#sc'), hiEl = box.querySelector('#hi'), gm = box.querySelector('#gm');
+  const COL = { 0: '#cdc1b4', 2: '#eee4da', 4: '#ede0c8', 8: '#f2b179', 16: '#f59563', 32: '#f67c5f', 64: '#f65e3b', 128: '#edcf72', 256: '#edcc61', 512: '#edc850', 1024: '#edc53f', 2048: '#edc22e' };
+  let grid, score, best = +lsGet('best2048', 0), done = false;
+  hiEl.textContent = best;
+  const empty = () => { const l = []; grid.forEach((r, i) => r.forEach((v, j) => { if (!v) l.push([i, j]); })); return l; };
+  function addTile() { const e = empty(); if (!e.length) return; const [i, j] = e[Math.floor(Math.random() * e.length)]; grid[i][j] = Math.random() < .9 ? 2 : 4; }
+  function render() {
+    bd.innerHTML = grid.flat().map(v => `<div style="background:${COL[v] || '#3c3a32'};color:${v <= 4 ? '#776e65' : '#fff'};font-size:${v >= 1024 ? '1.1rem' : v >= 128 ? '1.3rem' : '1.6rem'}">${v || ''}</div>`).join('');
+    sc.textContent = score;
+  }
+  function reset() { grid = [0, 1, 2, 3].map(() => [0, 0, 0, 0]); score = 0; done = false; gm.textContent = ''; addTile(); addTile(); render(); }
+  const slide = row => { const a = row.filter(Boolean); let s = 0; for (let i = 0; i < a.length - 1; i++) { if (a[i] === a[i + 1]) { a[i] *= 2; s += a[i]; a.splice(i + 1, 1); } } while (a.length < 4) a.push(0); return [a, s]; };
+  function move(dir) {   // 0 trái, 1 lên, 2 phải, 3 xuống
+    if (done) return;
+    const g = grid.map(r => r.slice()); let gain = 0;
+    for (let i = 0; i < 4; i++) {
+      const line = [0, 1, 2, 3].map(j => dir === 0 ? g[i][j] : dir === 2 ? g[i][3 - j] : dir === 1 ? g[j][i] : g[3 - j][i]);
+      const [res, s] = slide(line); gain += s;
+      res.forEach((v, j) => { if (dir === 0) g[i][j] = v; else if (dir === 2) g[i][3 - j] = v; else if (dir === 1) g[j][i] = v; else g[3 - j][i] = v; });
+    }
+    if (JSON.stringify(g) === JSON.stringify(grid)) return;
+    grid = g; score += gain; addTile();
+    if (score > best) { best = score; hiEl.textContent = best; lsSet('best2048', best); }
+    render();
+    if (grid.flat().includes(2048)) gm.textContent = '🎉 Bạn đã đạt 2048! Cứ chơi tiếp nhé.';
+    if (!empty().length && !grid.some((r, i) => r.some((v, j) => v === (r[j + 1] ?? -1) || v === (grid[i + 1]?.[j] ?? -1)))) { done = true; gm.textContent = 'Hết nước đi rồi! Bấm Chơi lại.'; }
+  }
+  const MAP = { ArrowLeft: 0, ArrowUp: 1, ArrowRight: 2, ArrowDown: 3, a: 0, w: 1, d: 2, s: 3 };
+  const kd = e => { if (!winActive('game')) return; const m = MAP[e.key] ?? MAP[(e.key || '').toLowerCase()]; if (m !== undefined) { e.preventDefault(); move(m); } };
+  addEventListener('keydown', kd);
+  let t0 = null;
+  bd.addEventListener('touchstart', e => { t0 = [e.touches[0].clientX, e.touches[0].clientY]; }, { passive: true });
+  bd.addEventListener('touchend', e => {
+    if (!t0) return; const dx = e.changedTouches[0].clientX - t0[0], dy = e.changedTouches[0].clientY - t0[1]; t0 = null;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
+    move(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 2 : 0) : (dy > 0 ? 3 : 1));
+  });
+  box.querySelector('#rs').onclick = reset;
+  reset();
+  return () => removeEventListener('keydown', kd);
+}
+function memGame(box) {
+  const E = ['🐶', '🐱', '🦊', '🐼', '🐸', '🦁', '🐵', '🐙'];
+  box.innerHTML = `<div class="gm-top"><span>Lượt: <b id="mv">0</b></span><span>Tốt nhất: <b id="bs">-</b></span></div><div class="mem"></div><p class="small" id="gm" style="margin:8px 0;min-height:1.3em"></p><button class="btn" id="rs">Chơi lại</button>`;
+  const bd = box.querySelector('.mem'), mv = box.querySelector('#mv'), bs = box.querySelector('#bs'), gm = box.querySelector('#gm');
+  let deck, open, moves, matched, lock, tmo;
+  const best = () => +lsGet('membest', 0);
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  function reset() {
+    clearTimeout(tmo); deck = shuffle([...E, ...E]); open = []; moves = 0; matched = new Set(); lock = false; gm.textContent = ''; mv.textContent = 0; bs.textContent = best() || '-';
+    bd.innerHTML = deck.map((_, i) => `<button data-i="${i}">?</button>`).join('');
+  }
+  bd.onclick = e => {
+    const b = e.target.closest('button'); if (!b || lock) return;
+    const i = +b.dataset.i; if (open.includes(i) || matched.has(i)) return;
+    b.textContent = deck[i]; b.className = 'up'; open.push(i);
+    if (open.length < 2) return;
+    moves++; mv.textContent = moves;
+    const [a, c] = open;
+    if (deck[a] === deck[c]) {
+      matched.add(a); matched.add(c); open = [];
+      bd.children[a].className = 'ok'; bd.children[c].className = 'ok';
+      if (matched.size === deck.length) {
+        gm.textContent = `🎉 Hoàn thành trong ${moves} lượt!`;
+        if (!best() || moves < best()) { lsSet('membest', moves); bs.textContent = moves; }
+      }
+    } else {
+      lock = true;
+      tmo = setTimeout(() => { [a, c].forEach(k => { bd.children[k].textContent = '?'; bd.children[k].className = ''; }); open = []; lock = false; }, 700);
+    }
+  };
+  box.querySelector('#rs').onclick = reset;
+  reset();
+  return () => clearTimeout(tmo);
+}
+
+/* ---- APP GOOGLE: dạng cửa sổ (nhúng) hoặc cửa sổ riêng ---- */
+const mkFrame = (box, src) => {
+  box.innerHTML = '';
+  const f = document.createElement('iframe');
+  f.setAttribute('allow', 'fullscreen; autoplay; clipboard-write; encrypted-media; picture-in-picture');
+  f.setAttribute('allowfullscreen', '');
+  f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-presentation');
+  f.referrerPolicy = 'strict-origin-when-cross-origin';
+  f.src = src; box.append(f);
+};
+function shell(el, { ph, val, btn = 'Mở', extra = '' }) {
+  el.style.cssText += ';padding:0;display:flex;flex-direction:column;overflow:hidden';
+  el.innerHTML = `<div class="emb"><form class="tb"><input placeholder="${esc(ph)}" value="${esc(val || '')}" style="margin:0;flex:1;min-width:130px"><button class="btn" style="width:auto;margin:0">${esc(btn)}</button>${extra}</form><div class="eb"></div></div>`;
+  return { form: el.querySelector('form'), inp: el.querySelector('input'), box: el.querySelector('.eb'), x: [...el.querySelectorAll('form .x')] };
+}
+const XBTN = t => `<button type="button" class="btn alt x" style="width:auto;margin:0">${t}</button>`;
+
+function googleApp(el) {
+  const S = [
+    ['Gmail', 'https://mail.google.com', '#ea4335', 'M'], ['Drive', 'https://drive.google.com', '#34a853', '▲'], ['Classroom', 'https://classroom.google.com', '#0f9d58', 'C'],
+    ['Meet', 'https://meet.google.com', '#00897b', '▶'], ['Dịch', 'https://translate.google.com', '#4285f4', 'A'], ['Ảnh', 'https://photos.google.com', '#fbbc04', '✿'],
+    ['Docs', 'https://docs.google.com/document/u/0/', '#4285f4', 'D'], ['Sheets', 'https://docs.google.com/spreadsheets/u/0/', '#0f9d58', 'S'],
+    ['Slides', 'https://docs.google.com/presentation/u/0/', '#f4b400', 'P'], ['Lịch', 'https://calendar.google.com', '#4285f4', '31'],
+    ['Maps', 'https://www.google.com/maps', '#34a853', '⌖'], ['YouTube', 'https://www.youtube.com', '#ff0000', '▶']
+  ];
+  el.innerHTML = `<form id="gf" style="display:flex;gap:6px"><input placeholder="Tìm kiếm trên Google..." style="margin:0"><button class="btn" style="width:auto;margin:0">Tìm</button></form>
+   <p class="small" style="margin-top:8px">Google không cho hiển thị trực tiếp trong khung, nên các trang bên dưới sẽ mở trong một cửa sổ riêng. Maps, YouTube, Tài liệu và Lịch có app riêng chạy ngay trong GNwebOS.</p>
+   <div class="ggrid">${S.map(([n, u, c, i]) => `<button class="gtile" data-u="${esc(u)}"><span class="gi" style="background:${c}">${esc(i)}</span>${esc(n)}</button>`).join('')}</div>`;
+  el.querySelector('#gf').onsubmit = e => {
+    e.preventDefault(); const q = el.querySelector('input').value.trim(); if (!q) return;
+    popup('https://www.google.com/search?q=' + encodeURIComponent(q));
+  };
+  el.querySelector('.ggrid').onclick = e => { const b = e.target.closest('[data-u]'); if (b) popup(b.dataset.u); };
+}
+
+function mapsApp(el) {
+  const s = shell(el, { ph: 'Tìm địa điểm, địa chỉ...', val: lsGet('mapq', 'Hà Nội'), btn: 'Tìm', extra: XBTN('↗ Mở Maps') });
+  const go = () => { const q = s.inp.value.trim(); if (!q) return; lsSet('mapq', q); mkFrame(s.box, 'https://maps.google.com/maps?q=' + encodeURIComponent(q) + '&hl=vi&z=14&output=embed'); };
+  s.form.onsubmit = e => { e.preventDefault(); go(); };
+  s.x[0].onclick = () => popup('https://www.google.com/maps/search/' + encodeURIComponent(s.inp.value.trim()));
+  go();
+}
+
+function ytEmbed(str) {
+  str = str.trim(); if (!str) return null;
+  const E = 'https://www.youtube-nocookie.com/embed/';
+  if (/^[\w-]{11}$/.test(str)) return E + str;
+  try {
+    const u = new URL(/^https?:\/\//i.test(str) ? str : 'https://' + str), h = u.hostname.replace(/^(www|m)\./, '');
+    const list = u.searchParams.get('list'), v = u.searchParams.get('v'), p = u.pathname.split('/').filter(Boolean);
+    if (h === 'youtu.be' && p[0]) return E + p[0] + (list ? '?list=' + encodeURIComponent(list) : '');
+    if (h.endsWith('youtube.com') || h.endsWith('youtube-nocookie.com')) {
+      if (v) return E + encodeURIComponent(v) + (list ? '?list=' + encodeURIComponent(list) : '');
+      if (['shorts', 'embed', 'live'].includes(p[0]) && p[1]) return E + p[1];
+      if (list) return E + 'videoseries?list=' + encodeURIComponent(list);
+    }
+  } catch (e) {}
+  return null;
+}
+function youtubeApp(el) {
+  const s = shell(el, { ph: 'Dán link video hoặc playlist YouTube...', val: lsGet('ytlast', ''), btn: 'Phát', extra: XBTN('🔍 Tìm trên YouTube') });
+  const go = () => {
+    const v = s.inp.value.trim(); if (!v) return;
+    const src = ytEmbed(v);
+    if (!src) return toast('Link YouTube chưa đúng. Hãy dán link video hoặc playlist.', true);
+    lsSet('ytlast', v); mkFrame(s.box, src);
+  };
+  s.form.onsubmit = e => { e.preventDefault(); go(); };
+  s.x[0].onclick = () => popup('https://www.youtube.com/results?search_query=' + encodeURIComponent(s.inp.value.trim()));
+  s.box.innerHTML = '<div class="ph">▶️<br>Dán link video hoặc playlist YouTube rồi bấm <b>Phát</b> để xem ngay trong cửa sổ.<br>YouTube không cho nhúng ô tìm kiếm, nên nút “Tìm trên YouTube” sẽ mở cửa sổ riêng.</div>';
+  if (s.inp.value) go();
+}
+
+function gEmbed(str) {
+  let u; try { u = new URL(str.trim()); } catch (e) { return null; }
+  const h = u.hostname, p = u.pathname; let m;
+  if (h === 'docs.google.com') {
+    if ((m = p.match(/^\/(document|spreadsheets|presentation)\/d\/(e\/)?([\w-]+)/))) {
+      const [, t, e, id] = m;
+      if (e) return `https://docs.google.com/${t}/d/e/${id}/` + (t === 'spreadsheets' ? 'pubhtml?widget=true&headers=false' : t === 'presentation' ? 'embed?start=false&loop=false' : 'pub?embedded=true');
+      return `https://docs.google.com/${t}/d/${id}/preview`;
+    }
+    if ((m = p.match(/^\/forms\/d\/e\/([\w-]+)/))) return `https://docs.google.com/forms/d/e/${m[1]}/viewform?embedded=true`;
+  }
+  if (h === 'drive.google.com') {
+    if ((m = p.match(/\/folders\/([\w-]+)/))) return `https://drive.google.com/embeddedfolderview?id=${m[1]}#list`;
+    if ((m = p.match(/\/file\/d\/([\w-]+)/))) return `https://drive.google.com/file/d/${m[1]}/preview`;
+    const id = u.searchParams.get('id'); if (id) return `https://drive.google.com/file/d/${id}/preview`;
+  }
+  return null;
+}
+function gdocsApp(el) {
+  const s = shell(el, { ph: 'Dán link Docs, Sheets, Slides, Forms hoặc thư mục Drive...', val: '', btn: 'Mở', extra: XBTN('☆ Lưu') + XBTN('↗') });
+  s.box.insertAdjacentHTML('beforebegin', '<div class="chips"></div>');
+  const chips = el.querySelector('.chips');
+  let saved = []; try { saved = JSON.parse(lsGet('gdl', '[]')); } catch (e) {}
+  const paint = () => { chips.innerHTML = saved.map((x, i) => `<button class="chip" data-i="${i}">${esc(x.n)} <i data-x="${i}" title="Xóa">✕</i></button>`).join(''); };
+  const open = u => {
+    const src = gEmbed(u);
+    if (!src) return toast('Chưa nhận ra link. Hãy dán link Google Docs/Sheets/Slides/Forms/Drive.', true);
+    s.inp.value = u; mkFrame(s.box, src);
+  };
+  s.form.onsubmit = e => { e.preventDefault(); if (s.inp.value.trim()) open(s.inp.value.trim()); };
+  s.x[0].onclick = async () => {
+    const u = s.inp.value.trim(); if (!gEmbed(u)) return toast('Hãy mở một link hợp lệ trước khi lưu.', true);
+    const v = await ask('Lưu liên kết', [{ name: 'n', label: 'Tên gợi nhớ', value: 'Tài liệu ' + (saved.length + 1), req: 1 }]);
+    if (!v) return;
+    saved.push({ n: v.n.trim(), u }); lsSet('gdl', JSON.stringify(saved)); paint();
+  };
+  s.x[1].onclick = () => { const u = s.inp.value.trim(); if (/^https?:\/\//i.test(u)) popup(u); else toast('Chưa có link để mở.', true); };
+  chips.onclick = e => {
+    const x = e.target.closest('[data-x]');
+    if (x) { e.stopPropagation(); saved.splice(+x.dataset.x, 1); lsSet('gdl', JSON.stringify(saved)); paint(); return; }
+    const c = e.target.closest('.chip'); if (c) open(saved[+c.dataset.i].u);
+  };
+  s.box.innerHTML = '<div class="ph">📄<br>Dán link Google Docs, Sheets, Slides, Forms hoặc thư mục Drive để xem ngay trong cửa sổ.<br><small>Tệp cần đặt chế độ “Bất kỳ ai có đường liên kết đều xem được”. Bấm ☆ Lưu để ghim link vào thanh phía trên.</small></div>';
+  paint();
+}
+
+function calSrc(s) {
+  s = s.trim(); if (!s) return null;
+  try {
+    const u = new URL(s), src = u.searchParams.get('src'); if (src) return src;
+    const cid = u.searchParams.get('cid'); if (cid) { try { return atob(cid); } catch (e) { return cid; } }
+  } catch (e) {}
+  return s;
+}
+function gcalApp(el) {
+  const s = shell(el, { ph: 'Dán link Google Lịch công khai hoặc địa chỉ Gmail của lịch...', val: lsGet('calsrc', ''), btn: 'Mở', extra: XBTN('↗ Google Lịch') });
+  const go = () => {
+    const src = calSrc(s.inp.value); if (!src) return;
+    lsSet('calsrc', s.inp.value.trim());
+    mkFrame(s.box, 'https://calendar.google.com/calendar/embed?src=' + encodeURIComponent(src) + '&ctz=Asia%2FHo_Chi_Minh&hl=vi&showTitle=0');
+  };
+  s.form.onsubmit = e => { e.preventDefault(); go(); };
+  s.x[0].onclick = () => popup('https://calendar.google.com');
+  s.box.innerHTML = '<div class="ph">📅<br>Nhập địa chỉ Gmail (hoặc link chia sẻ) của một lịch <b>công khai</b> để xem ngay trong cửa sổ.<br><small>Trong Google Lịch: Cài đặt lịch → Quyền truy cập → “Cung cấp cho công chúng”. Lịch riêng tư cần mở bằng nút ↗.</small></div>';
+  if (s.inp.value) go();
 }
 
 /* ---- Khởi động: khôi phục phiên đăng nhập nếu có ---- */
