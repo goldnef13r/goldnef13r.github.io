@@ -305,9 +305,16 @@ pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:22
    <label>Gmail</label><input id="lEmail" type="email" autocomplete="email" placeholder="ten@gmail.com">
    <label style="display:block;margin-top:10px">Mật khẩu</label><input id="lPass" type="password" autocomplete="current-password">
    <button class="btn" id="bLogin" onclick="doLogin()">Đăng nhập</button>
-   <p class="small" style="text-align:center;margin-top:10px"><a href="#" onclick="tab('reg');return false">Quên mật khẩu? Lấy lại bằng mã gửi về Gmail</a></p>
+   <p class="small" style="text-align:center;margin-top:10px"><a href="#" onclick="tab('reg');$('fNew').hidden=true;$('fOtp').hidden=false;return false">Quên mật khẩu? Lấy lại bằng mã gửi về Gmail</a></p>
   </div>
   <div id="fReg" hidden>
+   <div id="fNew">
+    <label>Gmail</label><input id="nEmail" type="email" autocomplete="email" placeholder="ten@gmail.com">
+    <label style="display:block;margin-top:10px">Mật khẩu (tối thiểu 6 ký tự)</label><input id="nPass" type="password" autocomplete="new-password">
+    <button class="btn" id="bNew" onclick="doSignup()">Tạo tài khoản</button>
+    <p class="small" style="text-align:center;margin-top:10px"><a href="#" onclick="$('fNew').hidden=true;$('fOtp').hidden=false;return false">Quên mật khẩu? Lấy lại bằng mã gửi về Gmail</a></p>
+   </div>
+   <div id="fOtp" hidden>
    <p class="small" style="margin-bottom:8px">Đã có tài khoản mà quên mật khẩu? Nhập lại Gmail, nhận mã và đặt mật khẩu mới.</p>
    <label>Gmail</label><input id="rEmail" type="email" autocomplete="email" placeholder="ten@gmail.com">
    <button class="btn alt" id="bSend" onclick="sendCode()">Gửi mã xác nhận về Gmail</button>
@@ -315,6 +322,8 @@ pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:22
     <label style="display:block;margin-top:12px">Mã xác nhận</label><input id="rCode" inputmode="numeric" autocomplete="one-time-code" placeholder="Nhập mã">
     <label style="display:block;margin-top:10px">Mật khẩu (tối thiểu 6 ký tự)</label><input id="rPass" type="password" autocomplete="new-password">
     <button class="btn" id="bReg" onclick="doRegister()">Hoàn tất</button>
+   </div>
+   <p class="small" style="text-align:center;margin-top:10px"><a href="#" onclick="$('fOtp').hidden=true;$('fNew').hidden=false;return false">← Quay lại tạo tài khoản</a></p>
    </div>
   </div>
   <div class="row"><input type="checkbox" id="remember" checked><label for="remember" style="font-weight:400">Luôn đăng nhập</label></div>
@@ -392,6 +401,21 @@ function cooldown(btn, sec = 30) {
     else btn.textContent = base + ' (' + n + 's)';
   }, 1000);
 }
+async function doSignup() {
+  const email = $('nEmail').value.trim().toLowerCase(), pw = $('nPass').value;
+  if (!email || !email.includes('@')) return say('Nhập Gmail hợp lệ.');
+  if (pw.length < 6) return say('Mật khẩu tối thiểu 6 ký tự.');
+  sb = mk(store());
+  $('bNew').disabled = true; say('Đang tạo tài khoản...', true);
+  const { data, error } = await sb.auth.signUp({ email, password: pw });
+  $('bNew').disabled = false;
+  if (error) return say(/registered|already/i.test(error.message) ? 'Gmail này đã có tài khoản, hãy bấm Đăng nhập.' : 'Không tạo được: ' + error.message);
+  if (data.user && data.user.identities && !data.user.identities.length) return say('Gmail này đã có tài khoản, hãy bấm Đăng nhập.');
+  if (data.session) { say(''); return enter(data.session); }
+  const r = await sb.auth.signInWithPassword({ email, password: pw });
+  if (r.error) return say('Đã tạo tài khoản nhưng cần xác nhận mail. Nhờ admin tắt "Confirm email" trong Supabase hoặc bấm link trong mail.');
+  say(''); enter(r.data.session);
+}
 async function sendCode() {
   const email = $('rEmail').value.trim().toLowerCase();
   if (!email) return say('Nhập Gmail trước.');
@@ -421,12 +445,12 @@ async function doLogin() {
   $('bLogin').disabled = true; say('Đang đăng nhập...', true);
   const { data, error } = await sb.auth.signInWithPassword({ email: $('lEmail').value.trim().toLowerCase(), password: $('lPass').value });
   $('bLogin').disabled = false;
-  if (error) return say('Sai Gmail hoặc mật khẩu.');
+  if (error) return say(/invalid login|invalid_credentials/i.test(error.message + (error.code || '')) ? 'Sai Gmail hoặc mật khẩu.' : 'Không đăng nhập được: ' + error.message);
   say('');
   enter(data.session);
 }
 async function logout() { try { await sb.auth.signOut(); } catch (e) {} location.reload(); }
-[['lEmail', () => $('lPass').focus()], ['lPass', doLogin], ['rEmail', sendCode], ['rCode', () => $('rPass').focus()], ['rPass', doRegister]]
+[['lEmail', () => $('lPass').focus()], ['lPass', doLogin], ['nEmail', () => $('nPass').focus()], ['nPass', doSignup], ['rEmail', sendCode], ['rCode', () => $('rPass').focus()], ['rPass', doRegister]]
   .forEach(([id, fn]) => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') fn(); }));
 
 let entered = false;
