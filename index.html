@@ -32,9 +32,9 @@ label{font-size:.9rem;font-weight:700}
 #msg.ok{color:#1e8449}
 
 /* OS */
-#os{height:100%;position:relative;--rsv:calc(78px + var(--sb))}
+#os{height:100%;position:relative;--mb:28px;--rsv:calc(78px + var(--sb))}
 #os.dockhide{--rsv:var(--sb)}
-#desk{position:absolute;inset:var(--st) 0 0 0}
+#desk{position:absolute;inset:calc(var(--st) + var(--mb)) 0 0 0}
 .ico{position:absolute;touch-action:none;user-select:none;width:84px;background:none;border:0;color:#fff;font-size:.78rem;text-align:center;padding:6px 2px;border-radius:14px;text-shadow:0 1px 3px rgba(0,0,0,.65);display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:500}
 .ico:hover{background:rgba(255,255,255,.14)}
 .ico:active{background:rgba(255,255,255,.22)}
@@ -42,20 +42,38 @@ label{font-size:.9rem;font-weight:700}
 .ico .nm{line-height:1.15;max-width:80px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
 /* Dock nổi */
-#dock{position:absolute;left:50%;bottom:calc(10px + var(--sb));transform:translateX(-50%);z-index:9998;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:24px;background:rgba(24,26,36,.55);-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);border:1px solid rgba(255,255,255,.14);box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:calc(100% - 16px);transition:transform .3s ease}
+#dock{position:absolute;left:50%;bottom:calc(10px + var(--sb));transform:translateX(-50%);z-index:9998;display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:22px;background:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(26px) saturate(1.8);backdrop-filter:blur(26px) saturate(1.8);border:1px solid rgba(255,255,255,.38);box-shadow:0 14px 40px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.45);max-width:calc(100% - 16px);transition:transform .3s ease}
 #os.dockhide #dock{transform:translate(-50%,calc(100% + 24px))}
-#tasks{display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none;min-width:0;padding:6px 2px}
+#tasks{display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none;min-width:0;padding:54px 2px 8px;margin:-54px 0 -8px;pointer-events:none}
+#tasks .dk{pointer-events:auto}
 #tasks::-webkit-scrollbar{display:none}
-.dk{position:relative;width:46px;height:46px;flex:none;border-radius:14px;border:0;padding:0;display:grid;place-items:center;color:#fff;transition:transform .15s;box-shadow:0 3px 8px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+.dk{position:relative;width:46px;height:46px;flex:none;border-radius:12px;transform-origin:50% 100%;border:0;padding:0;display:grid;place-items:center;color:#fff;transition:transform .15s;box-shadow:0 3px 8px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.35)}
 .dk:hover{transform:translateY(-4px) scale(1.06)}
+@media (hover:hover){
+ .dk{transition:transform .16s cubic-bezier(.3,.8,.4,1.2)}
+ .dk:hover{transform:translateY(-5px) scale(1.38)}
+ .dk:hover + .dk,.dk:has(+ .dk:hover){transform:translateY(-2px) scale(1.18)}
+}
+@keyframes bnc{0%,100%{transform:none}30%{transform:translateY(-22px)}60%{transform:translateY(-8px)}}
+.dk.new{animation:bnc .65s ease 2}
 .dk.lnch{background:rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
 .dk.mn{opacity:.55}
-.dk.run::after{content:'';position:absolute;bottom:-6px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#fff;opacity:.8}
+.dk.run::after{content:'';position:absolute;bottom:-7px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#fff;opacity:.8}
 .dk.on::after{width:14px;margin-left:-7px;border-radius:3px;opacity:1}
 .bd{position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;border-radius:9px;background:#ef4444;color:#fff;font-size:.66rem;display:grid;place-items:center;padding:0 4px;border:2px solid rgba(24,26,36,.9);font-weight:700;pointer-events:none}
 .ico .bd{top:2px;right:12px}
-#dsep{width:1px;height:28px;background:rgba(255,255,255,.22);flex:none}
-#clock{color:#fff;font-weight:700;font-size:.85rem;white-space:nowrap;padding:0 4px;text-shadow:0 1px 2px rgba(0,0,0,.45);font-variant-numeric:tabular-nums;flex:none}
+#dsep{width:1px;height:34px;background:rgba(255,255,255,.35);flex:none;margin:0 2px}
+#clock{color:#fff;font-weight:500;font-size:.8rem;white-space:nowrap;padding:0 4px;font-variant-numeric:tabular-nums;flex:none;text-transform:capitalize}
+/* Thanh menu kiểu macOS */
+#mb{position:absolute;top:0;left:0;right:0;z-index:9997;height:calc(var(--mb) + var(--st));padding:var(--st) 10px 0;display:flex;align-items:center;gap:2px;color:#fff;font-size:.8rem;background:rgba(20,20,30,.32);-webkit-backdrop-filter:blur(24px) saturate(1.8);backdrop-filter:blur(24px) saturate(1.8);box-shadow:0 .5px 0 rgba(255,255,255,.18);text-shadow:0 1px 2px rgba(0,0,0,.35);user-select:none}
+#mb .mi{background:none;border:0;color:#fff;font:inherit;font-weight:500;padding:3px 9px;border-radius:5px;display:flex;align-items:center;gap:6px;white-space:nowrap;text-shadow:inherit;height:22px}
+#mb .mi:hover,#mb .mi.on{background:rgba(255,255,255,.22)}
+#mb #mapp{font-weight:800;max-width:34vw;overflow:hidden;text-overflow:ellipsis}
+#mb .sp{flex:1}
+#mbm{position:absolute;top:calc(var(--mb) + var(--st) - 2px);z-index:9997;min-width:210px;padding:5px;border-radius:10px;background:rgba(246,246,250,.82);-webkit-backdrop-filter:blur(30px) saturate(1.8);backdrop-filter:blur(30px) saturate(1.8);border:.5px solid rgba(0,0,0,.2);box-shadow:0 12px 34px rgba(0,0,0,.35);color:#1d1d22}
+#mbm button{display:block;width:100%;text-align:left;background:none;border:0;padding:6px 10px;border-radius:5px;font-size:.84rem;font-weight:400;color:inherit}
+#mbm button:hover{background:#2f6df6;color:#fff}
+#mbm hr{border:0;border-top:1px solid rgba(0,0,0,.14);margin:4px 8px}
 #dtog{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(56px + var(--sb));z-index:9999;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(24,26,36,.88);color:#fff;display:grid;place-items:center;padding:0;transition:bottom .3s ease}
 #dtog:hover{background:rgba(60,64,84,.95)}
 #dtog svg{transition:transform .3s}
@@ -76,7 +94,7 @@ label{font-size:.9rem;font-weight:700}
 #menu .mf button:hover{background:#e0555a}
 
 /* Win */
-.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;width:480px;max-width:100%;height:440px;max-height:calc(100% - var(--rsv,78px));min-width:300px;min-height:220px}
+.win{position:absolute;background:#fff;border-radius:12px;box-shadow:0 0 0 .5px rgba(0,0,0,.3),0 24px 64px rgba(0,0,0,.4),0 5px 14px rgba(0,0,0,.2);display:flex;flex-direction:column;overflow:hidden;width:480px;max-width:100%;height:440px;max-height:calc(100% - var(--rsv,78px) - var(--mb));min-width:300px;min-height:220px}
 .rz{position:absolute;z-index:6;touch-action:none}
 .rz[data-d=n]{top:0;left:12px;right:12px;height:5px;cursor:ns-resize}
 .rz[data-d=s]{bottom:0;left:12px;right:12px;height:6px;cursor:ns-resize}
@@ -87,12 +105,15 @@ label{font-size:.9rem;font-weight:700}
 .rz[data-d=se]{bottom:0;right:0;width:16px;height:16px;cursor:nwse-resize}
 .rz[data-d=sw]{bottom:0;left:0;width:12px;height:12px;cursor:nesw-resize}
 .win.max .rz{display:none}
-.win header{background:#4b3ac8;color:#fff;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;cursor:move;touch-action:none;user-select:none}
-.win header div{display:flex;gap:6px}
-.win header button{background:rgba(255,255,255,.25);color:#fff;border:0;border-radius:6px;width:30px;height:28px;font-size:1rem}
-.win header .x{background:#e74c3c}
+.win header{background:linear-gradient(#f1f1f3,#dedee2);color:#3a3a40;padding:0 14px;height:40px;flex:none;position:relative;display:flex;align-items:center;border-bottom:1px solid #c6c6cc;cursor:move;touch-action:none;user-select:none}
+.win header .tl{display:flex;gap:8px;position:relative;z-index:2}
+.win header .tl button{width:14px;height:14px;border-radius:50%;padding:0;border:.5px solid rgba(0,0,0,.22);font-size:0;display:grid;place-items:center;line-height:1}
+.win header .tl .x{background:#ff5f57}.win header .tl .mn{background:#febc2e}.win header .tl .mx{background:#28c840}
+.win header .tl button::after{font-size:10px;font-weight:800;color:rgba(0,0,0,.55);opacity:0;line-height:1}
+.win header .tl:hover button::after{opacity:1}
+.win header .tl .x::after{content:'×'}.win header .tl .mn::after{content:'–'}.win header .tl .mx::after{content:'+'}
 .win .body{padding:14px;overflow:auto;flex:1}
-.win.max{left:0!important;top:var(--st)!important;width:100%!important;height:calc(100% - var(--rsv,78px) - var(--st))!important;max-height:none;max-width:none;border-radius:0;resize:none}
+.win.max{left:0!important;top:calc(var(--st) + var(--mb))!important;width:100%!important;height:calc(100% - var(--rsv,78px) - var(--st) - var(--mb))!important;max-height:none;max-width:none;border-radius:0;resize:none}
 
 /* Component */
 .bar{height:12px;background:#e4e6eb;border-radius:6px;overflow:hidden;margin:6px 0}
@@ -175,7 +196,7 @@ pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:22
 
 /* Ứng dụng: dùng chung */
 .av{border-radius:50%;object-fit:cover;background:linear-gradient(135deg,#7f8cff,#4b3ac8);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex:none;overflow:hidden}
-.win header .wt{display:flex;align-items:center;gap:8px}
+.win header .wt{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:7px;font-weight:600;font-size:.86rem;pointer-events:none;padding:0 70px}
 .msgs{height:auto;flex:1;min-height:120px}
 .mrow{display:flex;gap:6px;align-items:flex-end;align-self:flex-start;max-width:90%}
 .mrow.me{align-self:flex-end;flex-direction:row-reverse}
@@ -267,7 +288,7 @@ pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:22
 .prof{display:flex;align-items:center;gap:12px}
 
 /* Widget góc phải, thông báo gói, tuyết */
-#wg{position:absolute;top:calc(14px + var(--st));right:14px;z-index:20;display:flex;flex-direction:column;gap:10px;width:200px;pointer-events:none}
+#wg{position:absolute;top:calc(var(--mb) + 14px + var(--st));right:14px;z-index:20;display:flex;flex-direction:column;gap:10px;width:200px;pointer-events:none}
 #wn{position:absolute;right:14px;bottom:calc(86px + var(--sb));z-index:9000;width:300px;max-width:calc(100% - 28px);pointer-events:none}
 #os.dockhide #wn{bottom:calc(14px + var(--sb))}
 .wgc{pointer-events:auto;position:relative;color:#fff;border-radius:18px;padding:12px 14px;background:rgba(24,26,36,.55);-webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3);border:1px solid rgba(255,255,255,.16);box-shadow:0 8px 24px rgba(0,0,0,.28);font-size:.85rem;line-height:1.4}
@@ -332,6 +353,13 @@ pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:22
 </div>
 
 <div id="os" hidden>
+ <div id="mb">
+  <button class="mi" id="mlogo" aria-label="Menu hệ thống"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z" opacity=".95"/></svg><b>GNwebOS</b></button>
+  <button class="mi" id="mapp">Màn hình chính</button>
+  <span class="sp"></span>
+  <span id="clock"></span>
+ </div>
+ <div id="mbm" hidden></div>
  <div id="desk"></div>
  <canvas id="snow" hidden></canvas>
  <div id="wg"></div>
@@ -341,8 +369,6 @@ pre.txt{text-align:left;white-space:pre-wrap;word-break:break-word;max-height:22
  <div id="dock">
   <button class="dk lnch" id="lnch" onclick="toggleMenu()" aria-label="Tất cả ứng dụng" title="Tất cả ứng dụng"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
   <div id="tasks"></div>
-  <span id="dsep"></span>
-  <span id="clock"></span>
  </div>
 </div>
 
@@ -466,13 +492,13 @@ async function enter(session) {
   buildDesktop();
   tick(); setInterval(tick, 1000);
   startDM();
-  setSnow(snowOn()); renderWidgets(); checkPlan();
+  initMb(); setSnow(snowOn()); renderWidgets(); checkPlan();
   setInterval(() => { renderWidgets(); checkPlan(); setSnow(snowOn()); }, 3600e3);
   if (!me) openApp('settings');
 }
 const tick = () => {
   const d = new Date();
-  $('clock').textContent = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  $('clock').textContent = d.toLocaleDateString('vi-VN', { weekday: 'short', day: 'numeric', month: 'short' }).replace(/,/g, '') + '  ' + d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false });
   $('clock').title = d.toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
 };
 
@@ -673,6 +699,29 @@ const APPS = {
 };
 const appKeys = () => Object.keys(APPS).filter(k => !APPS[k].adm || isAdm);
 const wins = {}; let z = 10, me = null;
+const MBH = () => ($('mb') || {}).offsetHeight || 0;
+/* Thanh menu: tên ứng dụng đang dùng + menu thả xuống */
+function activeKey() { return Object.keys(wins).find(k => wins[k].t.classList.contains('on')) || null; }
+function updMb() { const k = activeKey(); const m = $('mapp'); if (m) m.textContent = k ? APPS[k].n : 'Màn hình chính'; closeMb(); }
+function closeMb() { const m = $('mbm'); if (m) m.hidden = true; document.querySelectorAll('#mb .mi.on').forEach(b => b.classList.remove('on')); }
+function openMb(btn, items) {
+  const m = $('mbm');
+  if (!m.hidden && btn.classList.contains('on')) return closeMb();
+  closeMb(); btn.classList.add('on');
+  m.innerHTML = items.map(i => i === '-' ? '<hr>' : `<button data-i="${items.indexOf(i)}">${esc(i[0])}</button>`).join('');
+  m.style.left = btn.offsetLeft + 'px'; m.hidden = false;
+  m.onclick = e => { const b = e.target.closest('button'); if (!b) return; const f = items[+b.dataset.i][1]; closeMb(); f(); };
+}
+function initMb() {
+  $('mlogo').onclick = e => { e.stopPropagation(); openMb($('mlogo'), [
+    ['Giới thiệu GNwebOS', () => toast('GNwebOS · hệ điều hành web cho lớp học 🎓')], '-',
+    ['Cài đặt hệ thống…', () => openApp('settings')], ['Tất cả ứng dụng', () => toggleMenu()], '-',
+    ['Đăng xuất', () => logout()]]); };
+  $('mapp').onclick = e => { e.stopPropagation(); const k = activeKey();
+    openMb($('mapp'), k ? [['Ẩn ' + APPS[k].n, () => hide(k)], ['Đóng ' + APPS[k].n, () => wins[k].w.querySelector('.x').click()], '-', ['Tất cả ứng dụng', () => toggleMenu()]]
+                        : [['Tất cả ứng dụng', () => toggleMenu()], ['Cài đặt…', () => openApp('settings')]]); };
+  addEventListener('pointerdown', e => { if (!e.target.closest('#mb,#mbm')) closeMb(); });
+}
 const RS = () => $('os').classList.contains('dockhide') ? 0 : 78;
 
 async function loadProfile() {
@@ -709,7 +758,7 @@ function startDM() {
 
 function buildDesktop() {
   let pos = {}; try { pos = JSON.parse(localStorage.getItem('ipos') || '{}'); } catch (e) {}
-  const rows = Math.max(1, Math.floor((innerHeight - RS() - 20) / 100));
+  const rows = Math.max(1, Math.floor((innerHeight - MBH() - RS() - 20) / 100));
   $('desk').innerHTML = '';
   appKeys().forEach((k, i) => {
     const a = APPS[k], b = document.createElement('button'); b.className = 'ico'; b.dataset.k = k;
@@ -751,18 +800,18 @@ function openApp(k, arg) {
   if (wins[k]) { show(k); if (arg !== undefined) { wins[k].arg = arg; mount(k); } return; }
   const w = document.createElement('div'), n = Object.keys(wins).length;
   w.className = 'win';
-  w.innerHTML = `<header><span class="wt">${svg(a.i, 16)} ${esc(a.n)}</span><div><button class="mn" aria-label="Thu nhỏ">–</button><button class="mx" aria-label="Phóng to">□</button><button class="x" aria-label="Đóng">×</button></div></header><div class="body"></div>${['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'].map(d => `<i class="rz" data-d="${d}"></i>`).join('')}`;
+  w.innerHTML = `<header><div class="tl"><button class="x" aria-label="Đóng"></button><button class="mn" aria-label="Thu nhỏ"></button><button class="mx" aria-label="Phóng to"></button></div><span class="wt">${svg(a.i, 16)} ${esc(a.n)}</span></header><div class="body"></div>${['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'].map(d => `<i class="rz" data-d="${d}"></i>`).join('')}`;
   $('os').appendChild(w);
   if (innerWidth < 640) w.classList.add('max');
   w.style.left = Math.max(0, Math.min(40 + n * 28, innerWidth - w.offsetWidth)) + 'px';
-  w.style.top = Math.max(0, Math.min(24 + n * 28, innerHeight - RS() - w.offsetHeight)) + 'px';
-  const t = document.createElement('button'); t.className = 'dk run'; t.dataset.k = k; t.style.background = grad(a.c);
+  w.style.top = Math.max(MBH(), Math.min(MBH() + 16 + n * 28, innerHeight - RS() - w.offsetHeight)) + 'px';
+  const t = document.createElement('button'); t.className = 'dk run new'; setTimeout(() => t.classList.remove('new'), 1500); t.dataset.k = k; t.style.background = grad(a.c);
   t.innerHTML = svg(a.i, 24); t.title = a.n; t.setAttribute('aria-label', a.n); $('tasks').appendChild(t);
   const o = wins[k] = { w, t, min: false, off: null, arg };
   t.onclick = () => (o.min || !t.classList.contains('on')) ? show(k) : hide(k);
   w.querySelector('.mn').onclick = () => hide(k);
   w.querySelector('.mx').onclick = () => w.classList.toggle('max');
-  w.querySelector('.x').onclick = () => { if (o.off) { try { o.off(); } catch (e) {} } w.remove(); t.remove(); delete wins[k]; };
+  w.querySelector('.x').onclick = () => { if (o.off) { try { o.off(); } catch (e) {} } w.remove(); t.remove(); delete wins[k]; updMb(); };
   w.addEventListener('pointerdown', () => show(k));
   w.querySelector('header').addEventListener('dblclick', e => { if (!e.target.closest('button')) w.classList.toggle('max'); });
   drag(w, w.querySelector('header'));
@@ -778,14 +827,15 @@ function show(k) {
   Object.values(wins).forEach(x => x.t.classList.remove('on'));
   o.w.style.zIndex = ++z; o.t.classList.add('on'); o.t.classList.remove('mn');
   if (k === 'dm' && unread) { unread = 0; setBadge('dm', 0); }
+  updMb();
 }
-function hide(k) { const o = wins[k]; o.min = true; o.w.style.display = 'none'; o.t.classList.remove('on'); o.t.classList.add('mn'); }
+function hide(k) { const o = wins[k]; o.min = true; o.w.style.display = 'none'; o.t.classList.remove('on'); o.t.classList.add('mn'); updMb(); }
 
 function drag(w, h) {
   h.addEventListener('pointerdown', e => {
     if (e.target.closest('button') || w.classList.contains('max')) return;
     const dx = e.clientX - w.offsetLeft, dy = e.clientY - w.offsetTop;
-    const mv = ev => { w.style.left = Math.max(0, Math.min(innerWidth - 60, ev.clientX - dx)) + 'px'; w.style.top = Math.max(0, Math.min(innerHeight - 60, ev.clientY - dy)) + 'px'; };
+    const mv = ev => { w.style.left = Math.max(0, Math.min(innerWidth - 60, ev.clientX - dx)) + 'px'; w.style.top = Math.max(MBH(), Math.min(innerHeight - 60, ev.clientY - dy)) + 'px'; };
     const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up); };
     addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
   });
@@ -805,7 +855,7 @@ function resizer(w) {
       if (d.includes('e')) wd = Math.min(Math.max(MINW, r.w + dx), innerWidth - r.l);
       if (d.includes('s')) ht = Math.min(Math.max(MINH, r.h + dy), Math.max(MINH, bottom - r.t));
       if (d.includes('w')) { wd = Math.max(MINW, r.w - dx); l = r.l + r.w - wd; if (l < 0) { l = 0; wd = r.l + r.w; } }
-      if (d.includes('n')) { ht = Math.max(MINH, r.h - dy); t = r.t + r.h - ht; if (t < 0) { t = 0; ht = r.t + r.h; } }
+      if (d.includes('n')) { ht = Math.max(MINH, r.h - dy); t = r.t + r.h - ht; if (t < MBH()) { t = MBH(); ht = r.t + r.h - t; } }
       Object.assign(w.style, { left: l + 'px', top: t + 'px', width: wd + 'px', height: ht + 'px' });
     };
     const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up); };
@@ -818,7 +868,7 @@ addEventListener('resize', () => Object.values(wins).forEach(o => {
   const mw = Math.min(w.offsetWidth, innerWidth), mh = Math.min(w.offsetHeight, Math.max(200, innerHeight - RS()));
   w.style.width = mw + 'px'; w.style.height = mh + 'px';
   w.style.left = Math.max(0, Math.min(w.offsetLeft, innerWidth - mw)) + 'px';
-  w.style.top = Math.max(0, Math.min(w.offsetTop, innerHeight - RS() - mh)) + 'px';
+  w.style.top = Math.max(MBH(), Math.min(w.offsetTop, innerHeight - RS() - mh)) + 'px';
 }));
 
 /* ---- Dock + bảng ứng dụng ---- */
